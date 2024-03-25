@@ -9,3 +9,5 @@ add top level script that represents the application will be microblog.py
 
 since there are no users yet, to build a new app with feature which doesnt exist,
 use dummy variables/users/data to build base of the feature. 
+
+-- using jinja2, both {{user.username}}, {{user['username']}} works. 
