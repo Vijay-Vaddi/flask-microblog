@@ -4,5 +4,10 @@
     
     
 <h1>Hello there {{ user['username']}}</h1>
+{% for post in posts %}
+<div>
+    <p>{{post.author.username}} : {{post.body}} </p>
+</div>
+{% endfor%}
 
 {% endblock %}
