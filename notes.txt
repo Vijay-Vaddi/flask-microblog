@@ -4,3 +4,8 @@ offending module(import) to the bottom.
 @app.route() -> decorator allows assignment of more than on url to a view function
 
 add top level script that represents the application will be microblog.py
+
+---
+
+since there are no users yet, to build a new app with feature which doesnt exist,
+use dummy variables/users/data to build base of the feature. 
