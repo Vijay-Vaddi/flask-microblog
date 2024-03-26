@@ -25,3 +25,9 @@ using a slighly more elaborate structure, keep configs in a seperate file.
  -wtf uses it to protect forms against CSRF (seasurf)
  cross site request forgery
 
+-----
+The novalidate attribute tells the web browser to not apply validation 
+to the fields in this form, leaving this task to the Flask application running in the server.
+
+-- .hidden_tag generates hidden field that has token to protect against CSRF
+
