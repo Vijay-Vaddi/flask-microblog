@@ -11,3 +11,11 @@ since there are no users yet, to build a new app with feature which doesnt exist
 use dummy variables/users/data to build base of the feature. 
 
 -- using jinja2, both {{user.username}}, {{user['username']}} works. 
+
+flask apps configs can be done as keys in app.config[''] ways
+or to enforce the principle of 'seperation of concerns', 
+using a slighly more elaborate structure, keep configs in a seperate file. 
+--its extensible using python class to store configs
+--seperate module gives better organization of files
+
+
