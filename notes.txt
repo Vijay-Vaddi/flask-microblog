@@ -31,3 +31,4 @@ to the fields in this form, leaving this task to the Flask application running i
 
 -- .hidden_tag generates hidden field that has token to protect against CSRF
 
+-- forms can have more than one validators so form.fieldname.errors will be a list. #
