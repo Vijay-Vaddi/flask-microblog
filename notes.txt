@@ -17,5 +17,11 @@ or to enforce the principle of 'seperation of concerns',
 using a slighly more elaborate structure, keep configs in a seperate file. 
 --its extensible using python class to store configs
 --seperate module gives better organization of files
+-- this way cann add/remove configs,
+--if more than one config set, can create subclasses. 
 
+- Flask and some of its extensions use secret key as a cryptographic key,
+ useful to generate signatures or tokens, 
+ -wtf uses it to protect forms against CSRF (seasurf)
+ cross site request forgery
 
