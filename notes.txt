@@ -32,3 +32,7 @@ to the fields in this form, leaving this task to the Flask application running i
 -- .hidden_tag generates hidden field that has token to protect against CSRF
 
 -- forms can have more than one validators so form.fieldname.errors will be a list. #
+
+--better to use url_for()
+-URLs more likely to change than view functions, 
+-some URLs have dynamic component in them, so will have to concat strings

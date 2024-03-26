@@ -16,8 +16,8 @@
 </head>
 <body>
     <div>Our blog
-      <a href="/index">Home</a>
-      <a href="/login">Log In</a>
+      <a href="{{url_for('index')}}">Home</a>
+      <a href="{{url_for('login')}}">Log In</a>
     </div>
     <hr>
     {% with messages = get_flashed_messages() %}
