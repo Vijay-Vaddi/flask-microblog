@@ -71,5 +71,11 @@ flask db migrate -m 'description'
 this migration hasnt been done to db yet. 
 flask db history, current gives relevant info of migrations. 
 
+db.ForeignKey('user.id') -- represents authorship of the Post table 
 
+backref='author' -> adds author attribute to Post model, so as to access post.author 
+to give user instance, 
+
+lazy = dynamic --> makes posts attribute a query instead of list of posts 
+this will allows adding(qualifiers) more filters, sorting and other actions on posts 
 
