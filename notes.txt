@@ -60,4 +60,16 @@ not given clear instructions, it'll throw errors, so set to False for now.
 ---
 Add index=True for search. 
 relations dbs do search well if data is indexed.
- 
+
+-- Migration 
+to take db as python object and initialise the migration framework(repo) to maintain db 
+flask init db
+
+after migration repo, do first migration 
+flask db migrate -m 'description'
+
+this migration hasnt been done to db yet. 
+flask db history, current gives relevant info of migrations. 
+
+
+
