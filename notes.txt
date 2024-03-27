@@ -45,7 +45,7 @@ the structure of the database changes, as application grows and changes.
 
 flask-sqlalchem doesnt do this , but only hlps in creation and updating of datadase. 
 supports 
---sqlite, a small firebase database, postgress and sql. 
+--sqlite, a small file base database, postgress and sql. 
 can use sqlite for dev and and on production server can switch to postgres without making changes. ?? nice 
 
 to tell flask type and location of database 
@@ -79,3 +79,5 @@ to give user instance,
 lazy = dynamic --> makes posts attribute a query instead of list of posts 
 this will allows adding(qualifiers) more filters, sorting and other actions on posts 
 
+--
+chapter 5. Auth
