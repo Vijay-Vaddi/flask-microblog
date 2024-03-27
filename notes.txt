@@ -36,3 +36,28 @@ to the fields in this form, leaving this task to the Flask application running i
 --better to use url_for()
 -URLs more likely to change than view functions, 
 -some URLs have dynamic component in them, so will have to concat strings
+this is a test tio check the new keyboard hf hf sd 
+
+DATABASE:
+
+flask migrate is used to help migrate old data to new structure when 
+the structure of the database changes, as application grows and changes. 
+
+flask-sqlalchem doesnt do this , but only hlps in creation and updating of datadase. 
+supports 
+--sqlite, a small firebase database, postgress and sql. 
+can use sqlite for dev and and on production server can switch to postgres without making changes. ?? nice 
+
+to tell flask type and location of database 
+add var to config file --  
+
+'sqlite:// [hostname]-> sqlite:/// 
+third / is to skip the hostname to tell locally stored file  
+
+-track modification - to tell flask how to behave everytime models/object changes, if its 
+not given clear instructions, it'll throw errors, so set to False for now. 
+
+---
+Add index=True for search. 
+relations dbs do search well if data is indexed.
+ 
