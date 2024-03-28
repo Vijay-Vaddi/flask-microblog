@@ -7,17 +7,18 @@
     {{form.username.label()}}<br>
     {{form.username(size = 25)}}<br>
     {%for error in form.username.errors%}
-    {{error}}<br>
+    <span style="color: red;">[{{ error }}]</span><br>
     {%endfor%}
 
     {{form.password.label()}}<br>
     {{form.password(size = 25)}}<br>
     {%for error in form.password.errors%}
-    {{error}}<br>
+    <span style="color: red;">[{{ error }}]</span><br>
     {%endfor%}
 
     {{form.remember_me()}}{{form.remember_me.label()}}<br>
     {{form.submit()}}
+    <p>Not signed up? <a href="{{url_for('register')}}">Register Here</a></p>
 
 
 </form>
