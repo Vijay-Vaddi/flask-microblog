@@ -81,3 +81,21 @@ this will allows adding(qualifiers) more filters, sorting and other actions on p
 
 --
 chapter 5. Auth
+
+Flask-login
+
+manages user logged in state, remembers logged in state when user navigates to diff pages,
+'remember_me' feature when browser is closed. 
+
+it works with apps User model and expects certain properties, methods to be implemented. 
+requires 4 items. 'check blog'
+
+These are also provided by flask-login, by a 
+UserMixin class, for safe implementation for most user model classes. 
+
+
+flask-login passes ID as string so convert to int for any db that use int IDs. 
+
+
+
+
