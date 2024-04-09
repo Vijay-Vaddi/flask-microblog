@@ -96,6 +96,7 @@ UserMixin class, for safe implementation for most user model classes.
 
 flask-login passes ID as string so convert to int for any db that use int IDs. 
 
-
+*********
+User Profile 
 
 

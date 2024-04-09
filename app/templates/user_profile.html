@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{%block content%}
+{% if current_user.is_authenticated %}
+<P>Hello {{current_user.username}}</P>
+<p>This is your email {{current_user.email}}</p>
+{%endif%}
+{% for post in posts%}
+<p>Post Author: {{post.author.username}}<br>
+Post: {{post.body}}
+</p>
+{%endfor%}
+
+{% endblock %}
