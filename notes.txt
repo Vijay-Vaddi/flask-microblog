@@ -131,5 +131,15 @@ Error handling
 
 Flask reloader:
 
+@app.errorhandler
+
+flask sends error exceptions into this funtion in case we need it 
+to generate the error page 
+
+By default return render_template('500.html') send 200 success status code as HTTP response. 
+but can add correct status code after like 
+return render_template('500.html'), 500 
+
+include erros module into init app
 
  
