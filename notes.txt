@@ -99,4 +99,11 @@ flask-login passes ID as string so convert to int for any db that use int IDs.
 *********
 User Profile 
 
+create hash with md5, 
+use http://gravatar.com/avatar/hash to render image
+default if not set. can set size. 
 
+-----
+
+seperate blog post into sub templates since its used by other templates
+ 

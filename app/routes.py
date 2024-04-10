@@ -20,7 +20,7 @@ def index():
             'body':"I have failed you Anakin"
         },
     ]
-    return render_template("index.html", title='Home',posts=posts)
+    return render_template("index.html", title='Home', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,7 +68,7 @@ def register():
     
     return render_template('register.html', title = 'Register User', form=form)
 
-@app.route('/user-profile/')
+
 @app.route('/user-profile/<username>')
 @login_required
 def user_profile(username): #=current_user.username
