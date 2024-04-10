@@ -124,4 +124,12 @@ Edit user details :
 
 Length(min=0, max=140) -> min =0 makes about_me optional. 
 
+**********
+
+Error handling
+------
+
+Flask reloader:
+
+
  
