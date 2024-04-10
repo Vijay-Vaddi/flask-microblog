@@ -1,7 +1,7 @@
 One of the ways to solve circular dependancies is to move the 
 offending module(import) to the bottom. 
 
-@app.route() -> decorator allows assignment of more than on url to a view function
+@app.route() -> decorator allows assignment of more than one url to a view function
 
 add top level script that represents the application will be microblog.py
 
@@ -141,5 +141,28 @@ but can add correct status code after like
 return render_template('500.html'), 500 
 
 include erros module into init app
+
+=====
+
+Sending errors by email:
+
+To get notifications when bugs occur and get trace of it. 
+First config an email server for the app to use to send emails 
+    mail_port, has to be int, add default, 
+    need a flag that check if the app is using encripted connection to 
+    the email server or not. 
+    -need username and password
+    admins, are the receipients of the error emails. 
+
+then tell flask to send errors, 
+    flask is already logging all the errors in the app
+    flask uses standard logging object from python standard library
+    can attach additional handlers that can send errors, even list of email addresses
+
+
+
+
+
+
 
  
