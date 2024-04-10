@@ -106,4 +106,22 @@ default if not set. can set size.
 -----
 
 seperate blog post into sub templates since its used by other templates
+--better to start sub templates with _ (underscore)
+
+********
+-- to add last_seen, keep track when a user is logged in/requests a page on all routes, 
+--better way to DRY is.. using before_request handler, 
+-- the logic that involves to all the routes can be included in this function
+
+--- db.session.commit() -- directly committing here without .add()  
+since user object is already loaded in the session when the user logs in 
+and the flask_login function invokes the user loader function to load it from  
+the id that is stored in the user session. 
+
+************
+
+Edit user details :
+
+Length(min=0, max=140) -> min =0 makes about_me optional. 
+
  

@@ -1,9 +1,16 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, UpdateUserProfileForm
 from app.models import User
 from urllib.parse import urlsplit
+from datetime import datetime, timezone
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
 
 @app.route('/')
 @app.route('/index')
@@ -72,6 +79,7 @@ def register():
 @app.route('/user-profile/<username>')
 @login_required
 def user_profile(username): #=current_user.username
+
     print(current_user)
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
@@ -79,3 +87,23 @@ def user_profile(username): #=current_user.username
         {'author': user, 'body':'Sample Post2'},
     ]
     return render_template('user_profile.html', user=user, posts=posts)
+
+
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = UpdateUserProfileForm()
+
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+
+        flash('Changes saved.')
+        return redirect(url_for('edit_profile'))
+    # to pre populate user info in the form to edit
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
