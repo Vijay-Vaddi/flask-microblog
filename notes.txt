@@ -159,6 +159,8 @@ then tell flask to send errors,
     flask uses standard logging object from python standard library
     can attach additional handlers that can send errors, even list of email addresses
 
+Logging errors into a file. 
+
 
 
 
