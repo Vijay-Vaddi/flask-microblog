@@ -184,6 +184,9 @@ the posts attribute in the model class represents a database query that is auto 
 and the author attribute is added to the posts model the same way. 
 to access author.username 
 
+For followers, User refers to other users in the same model/entity. 
+This is called self referential.
+
 
 
 
