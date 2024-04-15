@@ -115,7 +115,7 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
-@app.route('follow/<username>')
+@app.route('/follow/<username>')
 @login_required
 def follow(username):
     user = User.query.filter_by(username=username).first()
@@ -128,10 +128,10 @@ def follow(username):
     current_user.follow(user)
     db.session.commit()
     flash('You are now following {}'.format(username))
-    return redirect(url_for('user', username=username))
+    return redirect(url_for('user_profile', username=username))
 
 
-@app.route('unfollow/<username>')
+@app.route('/unfollow/<username>')
 @login_required
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
@@ -147,5 +147,5 @@ def unfollow(username):
     current_user.unfollow(user)
     db.session.commit()
     flash('You are now following {}'.format(username))
-    return redirect(url_for('user', username=username))
+    return redirect(url_for('user_profile', username=username))
 
