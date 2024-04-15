@@ -187,6 +187,52 @@ to access author.username
 For followers, User refers to other users in the same model/entity. 
 This is called self referential.
 
+followers = db.Table(
+    'followers',
+    db.Column('follower_id',db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id',db.Integer, db.ForeignKey('user.id'))
+)
+
+an auxiliary table containing 'followers' information. 
+there is no model for this. just using sqlalchemy to connect users in a follower->followed 
+relationship
+
+need two sides of a relationship, 
+    follower is the one who is following - left
+    followed is the one being followed - right
+
+
+followed = db.relationship(
+        'User',  secondary = followers,
+        primaryjoin = (followers.c.follower_id == id),
+        secondaryjoin = (followers.c.followed_id == id),
+        backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+'User',  secondary = followers,
+    since we have an auxiliary table, we've to define that.  
+Here
+    followed: This user followed... [list of users] current user is following.
+    'User' : since this relationship with another 'User' of the same entity/model.
+    Now to define the many to many relationship, 
+    sqlalchemy will not know just from 'follower' table which is the left side, follower side 
+    and right side the followed side, since follower table has pretty much identicle ForeignKeys 
+    so we've to add pair of arguments to define how to use these ForeignKeys
+
+    primaryjoin: takes an expression that sqlalchemy can use to generate db query
+        followers.c.follower_id == id #I'm a follower
+    secondaryjoin: for the right side 
+        followers.c.followed_id == id #  who followed
+    backref : to define relationship from right side, that given an 'user', 
+        we can get all the users that are following 'that user'. 
+        'followers' ---> who are my followers 
+
+
+** implementing logic of adding/remove followers 
+
+
+
+
+
 
 
 
