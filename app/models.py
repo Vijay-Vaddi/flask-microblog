@@ -51,6 +51,19 @@ class User(UserMixin, db.Model):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
 
+    def followed_posts(self):
+        followed_posts = Post.query.join(
+            #first get all the posts where followed_id 
+            #== post's authors id, i e only followed posts. 
+            followers, (Post.user_id == followers.c.followed_id)).filter(
+                #then get those posts where follower_id == current_user.id
+                followers.c.follower_id == self.id)
+        #to include self posts in the timeline. 
+        return followed_posts.union(self.post).order_by(Post.timestamp.desc())
+
+
+
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
