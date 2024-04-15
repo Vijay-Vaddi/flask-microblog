@@ -235,6 +235,8 @@ To get posts of the current_user in the timeline, can create a relationship
 to follow oneself, this can be done using Union. or adding user following themselves
 ie, followed_id==follower_id in followers 
 
+************
+adding followers to UI
 
 
 
