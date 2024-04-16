@@ -1,8 +1,8 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, UpdateUserProfileForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, UpdateUserProfileForm, Postform
+from app.models import User, Post
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
 
@@ -14,10 +14,19 @@ def before_request():
         db.session.commit()
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    
+    form = Postform()
+
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Post submitted')
+        return redirect(url_for('index'))
     
     posts =[ 
         {
@@ -29,7 +38,7 @@ def index():
             'body':"I have failed you Anakin"
         },
     ]
-    return render_template("index.html", title='Home', posts=posts)
+    return render_template("index.html", title='Home', posts=posts, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

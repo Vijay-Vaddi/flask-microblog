@@ -49,4 +49,9 @@ class UpdateUserProfileForm(FlaskForm):
 
             if user is not None:
                 raise ValidationError("Username taken. Please use a different username")
-            
+
+
+class Postform(FlaskForm):
+    post = TextAreaField('Write your post here', 
+                         validators=[DataRequired(), Length(min=1, max=140)])
+    submit = SubmitField('Post')

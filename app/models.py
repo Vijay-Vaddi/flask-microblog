@@ -36,7 +36,7 @@ class User(UserMixin, db.Model):
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return f"https://www.gravatar.com/avatar/{digest}?s={size}&d=identicon"
+        return f"https://www.gravatar.com/avatar/4f9fecabbd77fba02d2497f880f44e6f?s={size}&d=identicon"
 
     def follow(self, user): #pass a user to follow
         if not self.is_following(user):
