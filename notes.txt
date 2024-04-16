@@ -242,7 +242,30 @@ adding followers to UI
 ************
 Pagination
 
+redirect() is better than render_template :
+    when you send post request, if page is refreshed again, render template would 
+    re submit the form again. redirect would redirect to the added view page. 
+LEARN more on this. 
 
+********
+to find other users to follow and check out there posts 
+    posts by all users. application wide timeline. 
+route('/explore')
+    since explore is similar to index, can use the same template instead of creating new. 
+    since index page has form to submit blog, add if form check to display/block form.  
+
+Add posts_per_page to config
+posts = current_user.followed_posts().paginate(
+        1, app.config['POSTS_PER_PAGE'], False)
+        1st argument is page number, 
+        second item per page
+        3rd if to return 404 when out of range. 
+    change to 
+page = reguest.args.get('page', 1, type=int)
+     argument is called page, default is 1 and type. 
+
+paginate returns paginate object which needs to be converted to lists,
+    which is available as items attribute 
 
 
 

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    
-    
+
+
 <h1>Hello there {{ current_user.username}}</h1>
+{% if form %}
 <form action="" method="POST">
     {{form.hidden_tag()}}
     {{form.post.label()}}
@@ -13,9 +14,11 @@
     {% endfor%}
     {{form.submit()}}
 </form>
+{%endif%}
+
 {% for post in posts %}
 <div>
-    <p>{{post.author.username}} : {{post.body}} </p>
+    {% include "_post.html"%}
 </div>
 {% endfor%}
 

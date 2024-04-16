@@ -28,17 +28,11 @@ def index():
         flash('Post submitted')
         return redirect(url_for('index'))
     
-    posts =[ 
-        {
-            'author':{'username':'Vijay-Vaddi'},
-            'body':"This is the new beginning"
-        },
-        {
-            'author':{'username':'Obi-Wan Kenobi'},
-            'body':"I have failed you Anakin"
-        },
-    ]
-    return render_template("index.html", title='Home', posts=posts, form=form)
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_posts().paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    return render_template("index.html", title='Home', 
+                           posts=posts.items, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -95,10 +89,8 @@ def user_profile(username): #=current_user.username
 
     print(current_user)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body':'Sample Post1'},
-        {'author': user, 'body':'Sample Post2'},
-    ]
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.timestamp.desc())
+    
     return render_template('user_profile.html', user=user, posts=posts)
 
 
@@ -158,3 +150,12 @@ def unfollow(username):
     flash('You are now following {}'.format(username))
     return redirect(url_for('user_profile', username=username))
 
+
+@app.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+
+    return render_template('index.html', title='Explore', posts=posts.items) 
