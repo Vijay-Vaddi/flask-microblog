@@ -255,17 +255,17 @@ route('/explore')
     since index page has form to submit blog, add if form check to display/block form.  
 
 Add posts_per_page to config
-posts = current_user.followed_posts().paginate(
-        1, app.config['POSTS_PER_PAGE'], False)
-        1st argument is page number, 
-        second item per page
-        3rd if to return 404 when out of range. 
+posts = current_user.followed_posts()..paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
     change to 
 page = reguest.args.get('page', 1, type=int)
      argument is called page, default is 1 and type. 
 
 paginate returns paginate object which needs to be converted to lists,
     which is available as items attribute 
+
+Pagination navigation:
+    
 
 
 
