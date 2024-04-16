@@ -96,9 +96,17 @@ def user_profile(username): #=current_user.username
 
     print(current_user)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.timestamp.desc())
+    page = request.args.get('page', 1, type=int)
+    posts = user.post.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
     
-    return render_template('user_profile.html', user=user, posts=posts)
+    next_url = url_for('user_profile', username=username, page=posts.next_num) \
+                                    if posts.has_next else None
+    prev_url = url_for('user_profile', username=username, page=posts.prev_num) \
+                                    if posts.has_prev else None
+    
+    return render_template('user_profile.html', user=user, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
 
 
 @app.route('/edit-profile', methods=['GET', 'POST'])

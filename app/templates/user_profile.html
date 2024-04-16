@@ -32,4 +32,7 @@
     {% include "_post.html" %}
 {%endfor%}
 
+{%if prev_url %}<a href="{{prev_url}}"> &lt;&lt;Latest </a>{%endif%}<span> &lt;Page {{page}}&gt; </span>
+{%if next_url %}<a href="{{next_url}}">Older&gt;&gt;</a>{%endif%}
+
 {% endblock %}
