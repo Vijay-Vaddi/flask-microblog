@@ -1,8 +1,10 @@
-from app import db, login
+from app import db, login, app
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
+import jwt
+from time import time
 
 followers = db.Table(
     'followers',
@@ -61,7 +63,20 @@ class User(UserMixin, db.Model):
         #to include self posts in the timeline. 
         return followed_posts.union(self.post).order_by(Post.timestamp.desc())
 
+    def get_password_reset_token(self, expiration=600):
+        return jwt.encode(
+            {'reset-password':self.id, 'exp':time()+expiration}, 
+            app.config['SECRET_KEY'], algorithm='HS256')
 
+    @staticmethod
+    def verify_reset_password_token(token):
+        # no need for self since user is trying to reset password
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset-password']
+        except:
+            return None
+        return User.query.get(id)
+    
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))

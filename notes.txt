@@ -265,7 +265,11 @@ paginate returns paginate object which needs to be converted to lists,
     which is available as items attribute 
 
 Pagination navigation:
-    
+
+Email : 
+    Flask-mail and use pyjwt for json web tokens for password reset links. 
+    flask-mail is configured from the app.config, 
+        
 
 
 

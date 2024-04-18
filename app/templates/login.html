@@ -18,6 +18,10 @@
 
     {{form.remember_me()}}{{form.remember_me.label()}}<br>
     {{form.submit()}}
+    <p>
+        Forgot Your Password?
+        <a href="{{ url_for('reset_password_request') }}">Reset here</a>
+    </p>
     <p>Not signed up? <a href="{{url_for('register')}}">Register Here</a></p>
 
 
