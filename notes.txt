@@ -270,7 +270,9 @@ Email :
     Flask-mail and use pyjwt for json web tokens for password reset links. 
     flask-mail is configured from the app.config, 
         
-
+_external=True: when url_for is used, it shows relative path 'site/login' to the view, and 
+the missing url 'www.example.com/' is auto added by browsers.  
+but when url is sent via email using url_for, have to mention its external to generate full url 
 
 
 

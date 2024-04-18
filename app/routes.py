@@ -2,7 +2,7 @@ from app import app, db
 from flask import render_template, redirect, flash, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, UpdateUserProfileForm 
-from app.forms import Postform, ResetPasswordForm
+from app.forms import Postform, ResetPasswordForm, ResetPasswordRequestForm
 from app.models import User, Post
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
@@ -186,7 +186,7 @@ def reset_password_request():
     if current_user.is_authenticated:
         redirect(url_for('index'))
     
-    form = ResetPasswordForm()
+    form = ResetPasswordRequestForm()
 
     if form.validate_on_submit:
         user = User.query.filter_by(email=form.email.data).first()
@@ -196,4 +196,20 @@ def reset_password_request():
         return redirect(url_for('login'))
     return render_template('reset_password_request.html', form=form, title='Reset Password')
 
+@app.route('reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('index'))
+
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Password has been reset')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
 
