@@ -6,7 +6,7 @@ from app.forms import Postform, ResetPasswordForm, ResetPasswordRequestForm
 from app.models import User, Post
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
-from app.email import send_password_reset_mail
+from app.email import send_password_reset_email
 
 
 @app.before_request
@@ -191,12 +191,12 @@ def reset_password_request():
     if form.validate_on_submit:
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            send_password_reset_mail(user)
+            send_password_reset_email(user)
         flash('Please check your email for further instructions')
         return redirect(url_for('login'))
     return render_template('reset_password_request.html', form=form, title='Reset Password')
 
-@app.route('reset_password/<token>', methods=['GET', 'POST'])
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
