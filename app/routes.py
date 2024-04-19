@@ -190,9 +190,7 @@ def reset_password_request():
     
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        flash(f'inside validate {user}')
         if user:
-            flash('inside if ')
             send_password_reset_email(user)
         flash('Please check your email for further instructions')
         return redirect(url_for('login'))

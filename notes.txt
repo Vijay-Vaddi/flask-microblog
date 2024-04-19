@@ -274,6 +274,15 @@ _external=True: when url_for is used, it shows relative path 'site/login' to the
 the missing url 'www.example.com/' is auto added by browsers.  
 but when url is sent via email using url_for, have to mention its external to generate full url 
 
+Async email: 
+
+due to multiple email address, mail server delay and send_email action etc, 
+the app can slow down. this 
+    schedule email sending task in the background, 
+    that way freeing the send_email to return and app can continue to run
+    can do this using threading or multiprocessing
+    threading is less resource intenstive so.. 
+    
 
 
 
