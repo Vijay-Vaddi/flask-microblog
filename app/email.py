@@ -11,7 +11,7 @@ def send_email(subject, sender, recipients, text_body,
 
 
 def send_password_reset_email(user):
-    token = user.get_password_reset_token()
+    token = user.get_reset_password_token()
     send_email('[flask-blog] reset your password',
                sender=app.config['ADMINS'][0], 
                recipients=[user.email],

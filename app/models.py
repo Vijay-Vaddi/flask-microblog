@@ -63,7 +63,7 @@ class User(UserMixin, db.Model):
         #to include self posts in the timeline. 
         return followed_posts.union(self.post).order_by(Post.timestamp.desc())
 
-    def get_password_reset_token(self, expiration=600):
+    def get_reset_password_token(self, expiration=600):
         return jwt.encode(
             {'reset-password':self.id, 'exp':time()+expiration}, 
             app.config['SECRET_KEY'], algorithm='HS256')
