@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% import "bootstrap_wtf_macros.html" as wtf %}
 
 {% block content %}
+
 <h1>Log in</h1>
+{{wtf.quick_form(form)}}
+
+<!-- 
 <form action="" method="POST" novalidate>
     {{form.hidden_tag()}}
     {{form.username.label()}}<br>
@@ -25,6 +30,6 @@
     <p>Not signed up? <a href="{{url_for('register')}}">Register Here</a></p>
 
 
-</form>
+</form> -->
 
 {% endblock %}
