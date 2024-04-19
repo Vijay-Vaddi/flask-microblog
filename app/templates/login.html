@@ -6,30 +6,11 @@
 <h1>Log in</h1>
 {{wtf.quick_form(form)}}
 
-<!-- 
-<form action="" method="POST" novalidate>
-    {{form.hidden_tag()}}
-    {{form.username.label()}}<br>
-    {{form.username(size = 25)}}<br>
-    {%for error in form.username.errors%}
-    <span style="color: red;">[{{ error }}]</span><br>
-    {%endfor%}
 
-    {{form.password.label()}}<br>
-    {{form.password(size = 25)}}<br>
-    {%for error in form.password.errors%}
-    <span style="color: red;">[{{ error }}]</span><br>
-    {%endfor%}
-
-    {{form.remember_me()}}{{form.remember_me.label()}}<br>
-    {{form.submit()}}
-    <p>
-        Forgot Your Password?
-        <a href="{{ url_for('reset_password_request') }}">Reset here</a>
-    </p>
-    <p>Not signed up? <a href="{{url_for('register')}}">Register Here</a></p>
-
-
-</form> -->
+<p>
+Forgot Your Password?
+    <a href="{{ url_for('reset_password_request') }}">Reset here</a>
+</p>
+<p>Not signed up? <a href="{{url_for('register')}}">Register Here</a></p>
 
 {% endblock %}

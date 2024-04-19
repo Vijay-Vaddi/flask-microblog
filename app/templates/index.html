@@ -7,11 +7,11 @@
 {% if form %}
 <form action="" method="POST">
     {{form.hidden_tag()}}
-    {{form.post.label()}}
-    {{form.post(cols=32, rows=4)}}
+    {{form.post.label()}}<br>
+    {{form.post(cols=35, rows=3)}}
     {% for error in form.post.errors%}
     <span style="color: red;">{{error}}</span>
-    {% endfor%}
+    {% endfor%}<br>
     {{form.submit()}}
 </form>
 {%endif%}
@@ -21,7 +21,20 @@
     {% include "_post.html"%}
 </div>
 {% endfor%}
-{%if prev_url %}<a href="{{prev_url}}"> &lt;&lt;Latest </a>{%endif%}<span> &lt;Page {{page}}&gt; </span>
-{%if next_url %}<a href="{{next_url}}">Older&gt;&gt;</a>{%endif%}
+<!-- pagination -->
+<nav aria-label="Post navigation">
+    <ul class="pagination">
+        <li class="page-item{% if not prev_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ prev_url }}">
+                <span aria-hidden="true">&larr;</span> Newer posts
+            </a>
+        </li>
+        <li class="page-item{% if not next_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ next_url }}">
+                Older posts <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 
 {% endblock %}
