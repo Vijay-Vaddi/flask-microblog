@@ -283,13 +283,18 @@ the app can slow down. this
     can do this using threading or multiprocessing
     threading is less resource intenstive so.. 
     
+********************
 
+Date and Time management and display
 
+irrespective of where the server is hosted, 
+    since time should make sense to users 
+    cant keep track of all the timezone value of a post/login time samples. 
 
+    solution is to convert utc to user timezone
+    by grabbing user timezone info. 
 
-
-
-
-
-
- 
+    some websites configure it by asking users to enter timezone
+    other way is to render timezone from os-> which is present in browser, 
+    and the browser exposes through standard javascript APIs 
+    
