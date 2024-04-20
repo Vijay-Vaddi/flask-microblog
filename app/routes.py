@@ -7,7 +7,7 @@ from app.models import User, Post
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from app.email import send_password_reset_email
-
+from flask_babel import _ 
 
 @app.before_request
 def before_request():
@@ -27,7 +27,7 @@ def index():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Post submitted')
+        flash(_('Post submitted'))
         return redirect(url_for('index'))
     
     page = request.args.get('page', 1, type=int)
@@ -54,7 +54,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         
         if user is None or not user.check_password(password=form.password.data):
-            flash('Invalid username or password')
+            flash(_('Invalid username or password'))
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
@@ -79,14 +79,13 @@ def register():
     
     form = RegistrationForm()
 
-    # 
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Registration Success!')
+        flash(_('Registration Success!'))
         return redirect(url_for('login'))
     
     return render_template('register.html', title = 'Register User', form=form)
@@ -123,7 +122,7 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
 
-        flash('Changes saved.')
+        flash(_('Changes saved.'))
         return redirect(url_for('edit_profile'))
     # to pre populate user info in the form to edit
     elif request.method == 'GET':
@@ -138,14 +137,14 @@ def edit_profile():
 def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('User {} not found.'.format(username))
+        flash(_('User %(username)s not found',username=username))
         return redirect(url_for('index'))
     if user == current_user:
-        flash('You can not follow yourself')
+        flash(_('You can not follow yourself'))
         return redirect(url_for('index'))
     current_user.follow(user)
     db.session.commit()
-    flash('You are now following {}'.format(username))
+    flash(_('You are now following %(username)s',username=username))
     return redirect(url_for('user_profile', username=username))
 
 
@@ -154,17 +153,17 @@ def follow(username):
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('User {} not found.'.format(username))
+        flash(_('User %(username)s not found',username=username))
         return redirect(url_for('index'))
     if user == current_user:
-        flash('You can not unfollow yourself')
+        flash(_('You can not unfollow yourself'))
         return redirect(url_for('index'))
     if not current_user.is_following(user):
-        flash(f"You are not following {username} yet!")
+        flash(_('You are not following %(username)s yet',username=username))
 
     current_user.unfollow(user)
     db.session.commit()
-    flash('You are now following {}'.format(username))
+    flash(_('You are now unfollowing %(username)s',username=username))
     return redirect(url_for('user_profile', username=username))
 
 
@@ -192,7 +191,7 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-        flash('Please check your email for further instructions')
+        flash(_('Please check your email for further instructions'))
         return redirect(url_for('login'))
     return render_template('reset_password_request.html', form=form, title='Reset Password')
 
@@ -209,7 +208,7 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Password has been reset')
+        flash(_('Password has been reset'))
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 

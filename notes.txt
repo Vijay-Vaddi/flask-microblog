@@ -297,4 +297,16 @@ irrespective of where the server is hosted,
     some websites configure it by asking users to enter timezone
     other way is to render timezone from os-> which is present in browser, 
     and the browser exposes through standard javascript APIs 
-    
+
+**********
+translate 
+--------
+
+flask babel
+
+web browsers send a accept language header in the requests
+can use that to best determine what languages to show
+based on the list sent in headers and our own list and factor the app
+to heigest rated headers.  best_match of request.accept_languages does that!
+    _() takes in text, used language selector by get_locale to find correct
+    translation and returns the translation
