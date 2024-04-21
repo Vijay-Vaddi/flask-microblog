@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     confirm_password = PasswordField(
         _l('Confirm Password'), validators=[EqualTo('password'), DataRequired()]) 
-    submit = SubmitField(_('Register')) 
+    submit = SubmitField(_l('Register')) 
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -39,7 +39,7 @@ class RegistrationForm(FlaskForm):
 class UpdateUserProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'), validators=[Length(min=0, max=140)])
-    submit = SubmitField(_('Save Changes'))
+    submit = SubmitField(_l('Save Changes'))
 
     def __init__(self, original_username, *args, **kwargs):
         super(UpdateUserProfileForm, self).__init__(*args, **kwargs)
