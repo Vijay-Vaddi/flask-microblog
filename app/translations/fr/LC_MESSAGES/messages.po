@@ -1,0 +1,153 @@
+# French translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-04-22 18:10+0100\n"
+"PO-Revision-Date: 2024-04-22 18:16+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: app/__init__.py:18
+msgid "Please log in to access this page"
+msgstr ""
+
+#: app/forms.py:11 app/forms.py:18 app/forms.py:40
+msgid "Username"
+msgstr ""
+
+#: app/forms.py:12 app/forms.py:20 app/forms.py:65
+msgid "Password"
+msgstr ""
+
+#: app/forms.py:13
+msgid "Remember Me?"
+msgstr ""
+
+#: app/forms.py:14
+msgid "Log in"
+msgstr ""
+
+#: app/forms.py:19 app/forms.py:61
+msgid "Email"
+msgstr ""
+
+#: app/forms.py:22 app/forms.py:67
+msgid "Confirm Password"
+msgstr ""
+
+#: app/forms.py:23
+msgid "Register"
+msgstr ""
+
+#: app/forms.py:29
+msgid "Username is already taken!!"
+msgstr ""
+
+#: app/forms.py:36
+msgid "Email is already taken!!"
+msgstr ""
+
+#: app/forms.py:41
+msgid "About me"
+msgstr ""
+
+#: app/forms.py:42
+msgid "Save Changes"
+msgstr ""
+
+#: app/forms.py:53
+msgid "Username taken. Please use a different username"
+msgstr ""
+
+#: app/forms.py:56
+msgid "Write your post here"
+msgstr ""
+
+#: app/forms.py:58
+msgid "Post"
+msgstr ""
+
+#: app/forms.py:62
+msgid "Proceed"
+msgstr ""
+
+#: app/forms.py:68
+msgid "Reset Password"
+msgstr ""
+
+#: app/routes.py:30
+msgid "Post submitted"
+msgstr ""
+
+#: app/routes.py:57
+msgid "Invalid username or password"
+msgstr ""
+
+#: app/routes.py:88
+msgid "Registration Success!"
+msgstr ""
+
+#: app/routes.py:125
+msgid "Changes saved."
+msgstr ""
+
+#: app/routes.py:140 app/routes.py:156
+#, python-format
+msgid "User %(username)s not found"
+msgstr ""
+
+#: app/routes.py:143
+msgid "You can not follow yourself"
+msgstr ""
+
+#: app/routes.py:147
+#, python-format
+msgid "You are now following %(username)s"
+msgstr ""
+
+#: app/routes.py:159
+msgid "You can not unfollow yourself"
+msgstr ""
+
+#: app/routes.py:162
+#, python-format
+msgid "You are not following %(username)s yet"
+msgstr ""
+
+#: app/routes.py:166
+#, python-format
+msgid "You are now unfollowing %(username)s"
+msgstr ""
+
+#: app/routes.py:194
+msgid "Please check your email for further instructions"
+msgstr ""
+
+#: app/routes.py:211
+msgid "Password has been reset"
+msgstr ""
+
+#: app/templates/404.html:4
+msgid "Sorry, this page does not exist"
+msgstr ""
+
+#: app/templates/404.html:5
+msgid "Home Page here"
+msgstr ""
+
+#: app/templates/_post.html:14
+#, python-format
+msgid "%(username)s says %(when)s"
+msgstr ""
+
