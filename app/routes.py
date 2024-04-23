@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, redirect, flash, url_for, request
+from flask import render_template, redirect, flash, url_for, request, g
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, UpdateUserProfileForm 
 from app.forms import Postform, ResetPasswordForm, ResetPasswordRequestForm
@@ -7,13 +7,15 @@ from app.models import User, Post
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from app.email import send_password_reset_email
-from flask_babel import _ 
+from flask_babel import _, get_locale 
 
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
+        g.locale = str(get_locale())
+
 
 
 @app.route('/', methods=['GET', 'POST'])

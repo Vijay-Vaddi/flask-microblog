@@ -57,7 +57,8 @@ if not app.debug:
 
 #func to look at user request for language preferance
 def get_locale():
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    # return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return 'es'
 
 babel = Babel(app, locale_selector=get_locale)
 

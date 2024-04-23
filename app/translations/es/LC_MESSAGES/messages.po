@@ -32,15 +32,15 @@ msgstr ""
 
 #: app/forms.py:13
 msgid "Remember Me?"
-msgstr ""
+msgstr "¿Acuérdate de mí?"
 
 #: app/forms.py:14
 msgid "Log in"
-msgstr ""
+msgstr "registro"
 
 #: app/forms.py:19 app/forms.py:61
 msgid "Email"
-msgstr ""
+msgstr "correo electrónico"
 
 #: app/forms.py:22 app/forms.py:67
 msgid "Confirm Password"
