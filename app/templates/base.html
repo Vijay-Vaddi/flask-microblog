@@ -82,7 +82,25 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
     {{moment.include_moment()}}
-    {{moment.land(g.locale)}}
+    {{moment.lang(g.locale)}}
+  <script type="text/javascript">
+    async function translate(source_Elem, dest_Elem, source_Lang, dest_lang){
+      document.getElementById(dest_Elem).innerHTML="<img src=\"{{url_for('static', filename='loading.gif')}}\">";
+
+      const response = await fetch('/translate', {
+        method:"POST",
+        headers:{'Content-Type': 'application/json; charset=utf-8'},
+        body: JSON.stringify({
+          text : document.getElementById(source_Elem).innerText,
+          source_language: source_Lang,
+          dest_language: dest_lang
+        })
+      })
+      const data = await response.json();
+      document.getElementById(dest_Elem).innerText = data.text;
+    }
+
+  </script>  
 </body>
 
 </html>
