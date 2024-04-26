@@ -43,7 +43,7 @@ def index():
     prev_url = url_for('main.index', page=posts.prev_num) \
                         if posts.has_prev else None
     
-    return render_template("main/index.html", title='Home', 
+    return render_template("index.html", title='Home', 
                            posts=posts.items, form=form, 
                            next_url=next_url, prev_url=prev_url, page=page)
 
@@ -63,7 +63,7 @@ def user_profile(username): #=current_user.username
     prev_url = url_for('main.user_profile', username=username, page=posts.prev_num) \
                                     if posts.has_prev else None
     
-    return render_template('main/user_profile.html', user=user, posts=posts,
+    return render_template('user_profile.html', user=user, posts=posts,
                            next_url=next_url, prev_url=prev_url)
 
 
@@ -86,7 +86,7 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
 
-    return render_template('main/edit_profile.html', title='Edit Profile', form=form)
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
 @bp.route('/follow/<username>')
@@ -133,5 +133,5 @@ def explore():
 
     next_url = url_for('main.index', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.index', page=posts.prev_num) if posts.has_prev else None
-    return render_template('main/index.html', title='Explore', posts=posts.items,
+    return render_template('index.html', title='Explore', posts=posts.items,
                            next_url=next_url, prev_url=prev_url) 
