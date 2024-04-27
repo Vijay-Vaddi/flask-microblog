@@ -8,6 +8,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
+from elasticsearch import Elasticsearch
 
 #func to look at user request for language preferance
 def get_locale():
@@ -27,7 +28,7 @@ babel = Babel()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
-
+    
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
@@ -35,6 +36,9 @@ def create_app(config_class=Config):
     moment.init_app(app)
 
     babel.init_app(app, locale_selector=get_locale)
+
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']])\
+        if app.config['ELASTICSEARCH_URL'] else None
 
     from app.errors import bp as bp_errors
     app.register_blueprint(bp_errors)
@@ -85,6 +89,6 @@ def create_app(config_class=Config):
     return app
     
 ''' imported after creating app to avoid common 
-flask problem of secular dependencies''' 
+flask problem of circular dependencies''' 
 from app import models
  
