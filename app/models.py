@@ -5,7 +5,8 @@ from flask_login import UserMixin
 from hashlib import md5
 import jwt
 from time import time
-from flask import current_app
+from flask import current_app, session
+from app.search import add_to_index, query_index, remove_from_index
 
 followers = db.Table(
     'followers',
@@ -82,8 +83,49 @@ class User(UserMixin, db.Model):
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
+    
+class SearchableMixin(object):
+    @classmethod
+    def search(cls, query, page, per_page):
+        ids, total = query_index(cls.__tablename__, query, page, per_page)
+        if total == 0:
+            return [], 0
+        when = []
 
-class Post(db.Model):
+        for i in range(len(ids)):
+            when.append((ids[i], i))
+
+        # pass when to order_by search query score 
+        return cls.query.filter(cls.id.in_(ids)).order_by(
+            db.case(when, value=Post.id)), total
+    
+    # store session activity in temp attribute _change to use after commit
+    @classmethod
+    def before_commit(cls, session):
+        session._change={
+            'add':[obj for obj in session.new if isinstance(obj, cls)],
+            'update':[obj for obj in session.dirty if isinstance(obj, cls)],
+            'delete':[obj for obj in session.deleted if isinstance(obj, cls)],
+        }
+
+    # using _change add/update or delete index by calling functions
+    @classmethod
+    def after_commit(cls, session):
+        for obj in session._change['add']:
+            add_to_index(cls.__tablename__, obj)
+        for obj in session._change['update']:
+            add_to_index(cls.__tablename__, obj)
+        for obj in session._change['deleted']:
+            remove_from_index(cls.__tablename__, obj)
+        session._change = None
+
+    #index all the items in model till date
+    @classmethod
+    def reindex(cls):
+        for obj in cls.query:
+            add_to_index(cls.__tablename__, obj)
+
+class Post(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default = datetime.now(timezone.utc))
@@ -93,5 +135,7 @@ class Post(db.Model):
 
     def __repr__(self) -> str:
         return f"{self.body}"
-    
 
+#to hook before_commit, after_commit event handlers to SQLalchemy event listeners
+db.event.listen(db.session, 'before_commit', Post.before_commit)
+db.event.listen(db.session, 'after_commit', Post.after_commit) 
