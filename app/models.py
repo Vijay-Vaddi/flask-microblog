@@ -97,7 +97,7 @@ class SearchableMixin(object):
 
         # pass when to order_by search query score 
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=Post.id)), total
+            db.case(*when, value=cls.id)), total
     
     # store session activity in temp attribute _change to use after commit
     @classmethod
@@ -105,7 +105,7 @@ class SearchableMixin(object):
         session._change={
             'add':[obj for obj in session.new if isinstance(obj, cls)],
             'update':[obj for obj in session.dirty if isinstance(obj, cls)],
-            'delete':[obj for obj in session.deleted if isinstance(obj, cls)],
+            'deleted':[obj for obj in session.deleted if isinstance(obj, cls)],
         }
 
     # using _change add/update or delete index by calling functions
