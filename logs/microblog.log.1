@@ -1,101 +1,85 @@
-2024-04-20 09:50:03,962 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:51]
-2024-04-20 09:50:29,180 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:51]
-2024-04-20 09:50:30,985 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:51]
-2024-04-20 16:55:24,656 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:53]
-2024-04-20 16:55:25,591 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:53]
-2024-04-20 20:50:39,624 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:54]
-2024-04-20 20:51:35,921 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:54]
-2024-04-20 21:48:14,773 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:54]
-2024-04-20 21:48:17,189 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:54]
-2024-04-20 21:51:47,721 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:54]
-2024-04-21 09:47:38,453 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-21 09:47:49,091 ERROR: Exception on / [GET] [in C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\app.py:828]
-Traceback (most recent call last):
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\app\routes.py", line 42, in index
-    return render_template("index.html", title='Home',
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\flask\templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Vaddi\python-practice\flask-microblog\app\templates\index.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\Vaddi\python-practice\flask-microblog\app\templates\base.html", line 71, in top-level template code
-    {% block content %}
-  File "C:\Users\Vaddi\python-practice\flask-microblog\app\templates\index.html", line 21, in block 'content'
-    {% include "_post.html"%}
-  File "C:\Users\Vaddi\python-practice\flask-microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Vaddi\python-practice\flask-microblog\app\templates\_post.html", line 14, in template
-    {{ _( %(username)s says %(when)s,
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.TemplateSyntaxError: unexpected '%'
-2024-04-21 09:49:31,837 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-21 09:49:32,775 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:25:37,652 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:25:40,052 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:28:19,276 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:28:21,300 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:48:16,985 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:48:26,866 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:48:42,108 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:50:53,322 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:51:00,329 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:52:05,962 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:52:12,857 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:52:17,692 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:52:23,331 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-23 17:52:32,795 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:21:42,784 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:21:58,944 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:22:26,032 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:22:37,205 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:23:09,594 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:24:01,297 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:24:02,404 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:24:18,418 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 18:24:57,740 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 19:10:00,624 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 19:10:09,539 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-24 19:10:16,772 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 16:52:00,848 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 16:54:26,501 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 21:28:09,773 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 21:28:11,180 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 21:49:07,465 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-25 21:49:08,535 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:55]
-2024-04-26 13:09:13,728 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:09:14,815 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:15:47,063 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:17:42,450 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:18:25,980 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:20:55,192 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:21:08,643 INFO: Microblog startup [in c:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:22:18,987 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:22:20,044 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:23:09,366 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:23:10,391 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:28:13,797 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:28:14,854 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
-2024-04-26 13:34:24,509 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 17:53:39,613 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 17:57:19,601 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 17:57:21,330 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:16:26,234 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:16:29,584 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:16:44,926 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:16:49,746 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:16:53,049 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:17:04,710 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:17:10,670 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:17:21,982 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:17:35,783 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:17:55,930 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:00,722 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:04,207 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:08,595 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:22,919 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:26,226 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:50,530 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:18:56,118 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:19:00,551 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:19:14,652 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:19:27,315 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:19:34,261 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:19:37,680 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 19:35:04,631 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:35:16,792 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:35:18,505 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:36:38,567 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:37:51,527 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:40:32,914 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:40:34,893 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:48:39,512 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:48:42,977 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:49:32,830 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:49:36,280 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:49:40,888 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:49:45,586 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:50:25,113 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:50:28,539 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:50:31,799 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:50:36,495 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:55:28,399 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-26 20:55:30,589 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:83]
+2024-04-28 13:12:32,395 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 13:12:34,719 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 13:51:15,602 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 13:51:29,883 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 14:08:31,505 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 14:17:00,610 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 14:18:51,900 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-28 14:21:38,592 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 15:11:33,867 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 15:21:07,582 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 15:51:53,310 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 15:51:54,713 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 15:53:08,470 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 16:54:01,598 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 16:54:02,914 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 16:59:00,333 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 16:59:02,021 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:28,292 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:34,359 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:40,498 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:44,296 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:51,444 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:00:56,316 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:01:01,317 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:01:05,157 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:01:16,769 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:01:20,769 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:01:56,595 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:02:25,579 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:04:15,233 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:05:14,025 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:05:18,847 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:06:20,780 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-04-29 17:06:21,993 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 10:16:26,725 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 10:24:13,197 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 10:24:14,530 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 12:27:48,363 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 12:35:04,346 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 12:35:19,668 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]
+2024-05-04 12:35:31,556 INFO: Microblog startup [in C:\Users\Vaddi\python-practice\flask-microblog\app\__init__.py:87]

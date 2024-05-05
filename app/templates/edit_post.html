@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Hello there {{ current_user.username}}</h1>
+{% if form %}
+<form action="" method="POST">
+    {{form.hidden_tag()}}
+    {{form.post.label()}}<br>
+    {{form.post(cols=35, rows=3)}}
+    {% for error in form.post.errors%}
+    <span style="color: red;">{{error}}</span>
+    {% endfor%}<br>
+    {{form.submit()}}
+</form>
+{%endif%}
+
+{% endblock %}

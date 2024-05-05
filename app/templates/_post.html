@@ -13,7 +13,10 @@
             {% endset %}
             {{ _( '%(username)s says %(when)s', 
                 username=user_link, when=moment(post.timestamp).fromNow() )}} 
-            <br>
+            {% if post.author == current_user %}
+                <span><a href="{{url_for('main.edit_post', id=post.id)}}">Button here</a></span>
+            {% endif %}
+                <br>
             <span id="post{{post.id}}">{{ post.body }}</span>
             {% if post.language and post.language !=g.locale %}
             <br><br>

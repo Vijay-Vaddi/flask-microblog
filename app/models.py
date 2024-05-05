@@ -136,6 +136,7 @@ class Post(SearchableMixin, db.Model):
     def __repr__(self) -> str:
         return f"{self.body}"
 
+
 #to hook before_commit, after_commit event handlers to SQLalchemy event listeners
 db.event.listen(db.session, 'before_commit', Post.before_commit)
 db.event.listen(db.session, 'after_commit', Post.after_commit) 
