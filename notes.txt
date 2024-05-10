@@ -310,3 +310,17 @@ based on the list sent in headers and our own list and factor the app
 to heigest rated headers.  best_match of request.accept_languages does that!
     _() takes in text, used language selector by get_locale to find correct
     translation and returns the translation
+
+
+docker:
+create network and add mysql container to that network. 
+then add app container to the same network 
+    which will communicated using hosts names 
+    mysql takes time to be up and running so, add 5 secs delay 
+    to try and conneect again using flask db upgrade in boot.sh 
+
+
+add --network env in the inital part of docker run not later to 
+    connect it to the same network as elastic search and mysql. 
+    
+     
