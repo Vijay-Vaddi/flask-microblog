@@ -1,11 +1,12 @@
 from app.main import bp
 from flask import redirect, render_template, flash, url_for, request, current_app, g
-from app.main.forms import Postform, UpdateUserProfileForm, SearchForm
+from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, SearchForm
 from flask_login import current_user, login_required
 from app.models import db, User, Post
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
+
 
 @bp.before_request
 def before_request():
@@ -193,3 +194,9 @@ def delete_post(id):
     return render_template('edit_post.html', form=form)
 
 
+@bp.route('/user/<username>/popup')
+@login_required
+def user_popup(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EmptyForm()
+    render_template('user_popup.html', user=user, form=form)

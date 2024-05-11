@@ -38,4 +38,7 @@ class SearchForm(FlaskForm):
             kwargs['meta'] = {'csrf':False} 
         
         super(SearchForm, self).__init__(*args, **kwargs)
-        
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
+    
