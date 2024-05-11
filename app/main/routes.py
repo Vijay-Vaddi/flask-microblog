@@ -194,9 +194,9 @@ def delete_post(id):
     return render_template('edit_post.html', form=form)
 
 
-@bp.route('/user/<username>/popup')
+@bp.route('/user-profile/<username>/popup')
 @login_required
 def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
     form = EmptyForm()
-    render_template('user_popup.html', user=user, form=form)
+    return render_template('user_popup.html', user=user, form=form)
