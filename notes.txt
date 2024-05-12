@@ -324,3 +324,8 @@ add --network env in the inital part of docker run not later to
     connect it to the same network as elastic search and mysql. 
     
      
+----
+Messages and notifications
+when there are two ForeignKeys in a table, 
+have to mention which ForeignKey needs to be used when messages are send and received seperately
+

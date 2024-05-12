@@ -29,6 +29,13 @@ class User(UserMixin, db.Model):
         secondaryjoin = (followers.c.followed_id == id),
         backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
+    messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', 
+                                   backref='author', lazy='dynamic')
+    messages_received = db.relationship('Message', foreign_keys='Message.receiver_id',
+                                        backref='receiver', lazy='dynamic')
+    
+    last_message_read_time = db.Column(db.DateTime, default = datetime.now(timezone.utc))
+
     def __repr__(self) -> str:
         return f"{self.username} , {self.email}"
     
@@ -79,6 +86,14 @@ class User(UserMixin, db.Model):
         except:
             return None
         return User.query.get(id)
+    
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900,1,1)
+
+        return Message.query.filter_by(receiver=self).filter(
+            Message.timestamp > last_read_time).count()
+    
+
     
 @login.user_loader
 def load_user(id):
@@ -136,6 +151,16 @@ class Post(SearchableMixin, db.Model):
     def __repr__(self) -> str:
         return f"{self.body}"
 
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now(timezone.utc))
+
+    def __repr__(self) -> str:
+        return f"Message {self.body}"
 
 #to hook before_commit, after_commit event handlers to SQLalchemy event listeners
 db.event.listen(db.session, 'before_commit', Post.before_commit)
