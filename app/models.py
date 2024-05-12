@@ -159,10 +159,10 @@ class Message(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now(timezone.utc))
 
-    author = db.relationship('User', foreign_keys='Message.sender_id', 
-                                   backref='messages_sent')
-    receiver = db.relationship('User', foreign_keys='Message.receiver_id',
-                                        backref='messages_received')
+    # author = db.relationship('User', foreign_keys='Message.sender_id', 
+    #                                backref='messages_sent')
+    # receiver = db.relationship('User', foreign_keys='Message.receiver_id',
+    #                                     backref='messages_received')
     def __repr__(self) -> str:
         return f"Message {self.body}"
 
