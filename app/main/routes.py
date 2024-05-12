@@ -1,8 +1,10 @@
 from app.main import bp
-from flask import redirect, render_template, flash, url_for, request, current_app, g
-from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, SearchForm
+from flask import redirect, render_template, flash, url_for, \
+                            request, current_app, g
+from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
+                            SearchForm, MessageForm
 from flask_login import current_user, login_required
-from app.models import db, User, Post
+from app.models import db, User, Post, Message
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
@@ -200,4 +202,22 @@ def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
     form = EmptyForm()
     return render_template('user_popup.html', user=user, form=form)
+
+
+@bp.route('/send-message/<receiver>', methods=['GET', 'POST'])
+@login_required
+def send_message(receiver):
+    user = User.query.filter_by(username=receiver).first_or_404()
+    form = MessageForm()
+
+    if form.validate_on_submit():
+        msg = Message(author = current_user, receiver=user,
+                      body=form.message.data)
+        db.session.add(msg)
+        db.session.commit()
+        flash('Message sent successfully!')
+        return redirect(url_for('main.user_profile', username=receiver))
+    
+    return render_template('send_message.html', title='Send message',
+                           form=form, receiver=receiver)
 
