@@ -1,0 +1,26 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+<h1>Your Inbox:</h1>
+{% for post in messages %}
+{% include '_post.html' %} <br>
+{% endfor %}
+
+
+<nav aria-label="Message navigation">
+    <ul class="pagination">
+        <li class="page-item{% if not prev_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ prev_url }}">
+                <span aria-hidden="true">&larr;</span> newer messages
+            </a>
+        </li>
+        <li class="page-item{% if not next_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ next_url }}">
+                Older messages <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+{% endblock %}

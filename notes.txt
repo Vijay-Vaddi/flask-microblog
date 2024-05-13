@@ -329,3 +329,10 @@ Messages and notifications
 when there are two ForeignKeys in a table, 
 have to mention which ForeignKey needs to be used when messages are send and received seperately
 
+----
+now to push notifications, 
+one way is to make ajax calls at an interval requesting changes and updating
+those changes in the page, this can invoke delay. 
+other is to push data from server when there is update, but 
+HTTP does not have any provisions for a server to send data to the client without the client asking
+
