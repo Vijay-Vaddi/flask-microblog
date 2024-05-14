@@ -214,6 +214,7 @@ def send_message(receiver):
         msg = Message(author = current_user, receiver=user,
                       body=form.message.data)
         db.session.add(msg)
+        user.add_notification('unread_message_count', user.new_messages())
         db.session.commit()
         flash('Message sent successfully!')
         return redirect(url_for('main.user_profile', username=receiver))
@@ -226,6 +227,7 @@ def send_message(receiver):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.now(timezone.utc)
+    current_user.add_notification('unread_message_count', 0)
     db.session.commit()
 
     page = request.args.get('page', 1, type=1)
@@ -238,5 +240,7 @@ def messages():
   
     return render_template('messages.html', messages=messages, 
                            next_url=next_url, prev_url=prev_url)
+
+
 
     
