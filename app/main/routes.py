@@ -4,10 +4,11 @@ from flask import redirect, render_template, flash, url_for, \
 from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
                             SearchForm, MessageForm
 from flask_login import current_user, login_required
-from app.models import db, User, Post, Message
+from app.models import db, User, Post, Message, Notification
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
+
 
 
 @bp.before_request
@@ -242,5 +243,15 @@ def messages():
                            next_url=next_url, prev_url=prev_url)
 
 
+@bp.route('/notifications')
+@login_required
+def notifications():
+    since = request.args.get('since', 0.0, type=float)
+    notifications = current_user.notification.filter(
+        Notification.timestamp > since).order_by(Notification.timestamp.asc()) 
 
-    
+    return [{
+        'name': n.name,
+        'data': n.get_data(),
+        'timestamp':n.timestamp
+    } for n in notifications ] 
