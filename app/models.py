@@ -101,7 +101,7 @@ class User(UserMixin, db.Model):
             Message.timestamp > last_read_time).count()
     
     def add_notification(self, name, data):
-        self.notifications.filer_by(name=name).delete()
+        self.notifications.filter_by(name=name).delete()
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
         db.session.add(n)
         return n 
