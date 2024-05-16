@@ -336,3 +336,12 @@ those changes in the page, this can invoke delay.
 other is to push data from server when there is update, but 
 HTTP does not have any provisions for a server to send data to the client without the client asking
 
+----------
+
+Task queues 
+----
+- task queue - provides convenient way for app to request execution of a task by worker process. 
+Worker processes - run independently of the application 
+and can even be located on a different system.
+message queue - the communication between app and worker is done through a message queue. 
+
