@@ -110,6 +110,24 @@ class User(UserMixin, db.Model):
         db.session.add(n)
         return n 
     
+    # helper methods for redis queues
+    # create and launch a task queue
+    def launch_task(self, name, descrition, *args, **kwargs):
+        rq_job = current_app.task_queue.enqueue('app.tasks.'+name, self.id,
+                                                *args, **kwargs)
+        task = Task(id=rq_job.get_id(), name=name, descrition=descrition,
+                    user=self)
+        db.session.add(task)
+        return task
+    
+    # return all running tasks
+    def get_tasks_in_progress(self):
+        return Task.query.filter_by(User=self, complete=False).all()
+    
+    # return particular task, used to generate progress
+    def get_task_in_progress(self, name):
+        return Task.query.filter_by(name=name, user=self, complete=False).first() 
+    
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
@@ -173,10 +191,6 @@ class Message(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now(timezone.utc))
 
-    # author = db.relationship('User', foreign_keys='Message.sender_id', 
-    #                                backref='messages_sent')
-    # receiver = db.relationship('User', foreign_keys='Message.receiver_id',
-    #                                     backref='messages_received')
     def __repr__(self) -> str:
         return f"Message {self.body}"
 
