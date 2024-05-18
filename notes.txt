@@ -345,3 +345,6 @@ Worker processes - run independently of the application
 and can even be located on a different system.
 message queue - the communication between app and worker is done through a message queue. 
 
+--- 
+to get a job instance from the app side, need a task id.
+ 

@@ -1,3 +1,5 @@
+import redis.exceptions
+import rq.exceptions
 from app import db, login
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,7 +9,7 @@ import jwt
 from time import time
 from flask import current_app
 from app.search import add_to_index, query_index, remove_from_index
-import json
+import json, rq, redis
 
 followers = db.Table(
     'followers',
@@ -42,6 +44,8 @@ class User(UserMixin, db.Model):
     # relationship for notifications table
     notifications = db.relationship('Notification', backref='user',
                               lazy='dynamic')
+    
+    tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
     def __repr__(self) -> str:
         return f"{self.username} , {self.email}"
@@ -187,6 +191,24 @@ class Notification(db.Model):
 
     def get_data(self):
         return json.loads(str(self.payload_json))
+
+class Task(db.Model):
+    id = db.Column(db.String(36), primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    description = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    complete = db.Column(db.Boolean, default = False)
+
+    def get_rq_job(self):
+        try:
+            rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
+        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
+            return None
+        return rq_job
+
+    def get_progress(self):
+        job = self.get_rq_job()
+        return job.meta.get('progress', 0) if job is not None else 100
 
 #to hook before_commit, after_commit event handlers to SQLalchemy event listeners
 db.event.listen(db.session, 'before_commit', Post.before_commit)
