@@ -1,17 +1,21 @@
-import time 
+from app import create_app
+from app import db
+from app.models import Task
 from rq import get_current_job
 
-def example(seconds):
+app = create_app()
+app.app_context().push()
+
+def _set_task_progess(progress):
     job = get_current_job()
-
-    print('starting task')
-    for i in range(seconds):
-        job.meta['progress'] = 100.0*i/seconds
+    if job:
+        job.meta['progress'] = progress
         job.save_meta()
-        print(i)
-        time.sleep(1)
-    job.meta['progress']=100
-    job.save_meta()
-    print('task completed')
-
-
+        task = Task.query.get(job.get_id())
+        task.user.add_notification('task_progress', {'task_id':job.get_id(),
+                                                     'progress':progress})
+        
+        if progress >=100:
+            task.complete = True
+        
+        db.session.commit()
