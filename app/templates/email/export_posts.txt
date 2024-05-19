@@ -1,0 +1,8 @@
+Hello {{ user.username }},
+
+Here is the requested data of your entire posts from our site. 
+Thank you the valuable participation. 
+
+Sincerely,
+
+The blog team
