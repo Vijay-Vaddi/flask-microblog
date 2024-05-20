@@ -10,6 +10,8 @@ from time import time
 from flask import current_app
 from app.search import add_to_index, query_index, remove_from_index
 import json, rq, redis
+from flask import url_for
+
 
 followers = db.Table(
     'followers',
@@ -128,6 +130,29 @@ class User(UserMixin, db.Model):
     def get_task_in_progress(self, name):
         return Task.query.filter_by(name=name, user=self, complete=False).first() 
     
+    # Helper methods for API
+    # to_dict: returns user's data in dict format 
+    
+    def to_dict(self, include_email=False):
+        data = {
+            'id': self.id,
+            'username':self.username,
+            'last_seen':self.last_seen.isoformat()+'Z',
+            'about_me':self.about_me,
+            'follower':self.followers.count(),
+            'followed':self.followed.count(),
+            '_links':{
+                'self':url_for('api.get_user', id=self.id),
+                'followers':url_for('api.get_followers', id=self.id),
+                'followers':url_for('api.get_following', id=self.id),
+                'avatar':self.avatar(128),
+            }
+        }
+
+        if include_email:
+            data['email']=self.email
+        return data
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))

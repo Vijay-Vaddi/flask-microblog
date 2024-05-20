@@ -367,3 +367,5 @@ PUT:	/api/users/<id>:	Modify a user.
 add skeleton module 
 add skeleton for errors handling and token/auth system
 
+The first aspect to consider when implementing an API is to decide,
+what the representation of its resources is going to be.
