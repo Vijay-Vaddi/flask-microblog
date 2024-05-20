@@ -22,7 +22,7 @@ def get_following(id):
 
 # add/register new users
 @bp.route('/users', methods=['POST'])
-def create_user(id):
+def create_user():
     pass
 
 # update user info 

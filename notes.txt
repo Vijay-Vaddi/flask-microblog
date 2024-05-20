@@ -365,3 +365,5 @@ POST:	/api/users:     	Register a new user account.
 PUT:	/api/users/<id>:	Modify a user.
 
 add skeleton module 
+add skeleton for errors handling and token/auth system
+
