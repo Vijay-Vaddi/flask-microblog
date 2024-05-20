@@ -25,8 +25,6 @@ def _set_task_progess(progress):
 
 def export(user_id):
     try:
-        # 
-        # 
         _set_task_progess(0)
         user = User.query.get(user_id)
         i = 0

@@ -16,6 +16,14 @@
         </td>
         {% if user == current_user %}
         <td><a href="{{url_for('main.edit_profile')}}">Edit profile</a> </td>
+        <td>
+            {% if not current_user.get_task_in_progress('export_posts)%}
+            <p>
+                <a href="{{url_for('main.export_posts')}}">
+                    {{Export your posts}}
+                </a>
+            </p>
+        </td>
         {% elif not current_user.is_following(user) %}
         <p><a href="{{url_for('main.follow', username=user.username)}}">Follow</a></p>
         {% else %}
