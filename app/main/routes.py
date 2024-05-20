@@ -257,7 +257,7 @@ def notifications():
     } for n in notifications ] 
 
 
-@bp.route('/export_posts/')
+@bp.route('/export_posts')
 @login_required
 def export_posts():
 
@@ -267,4 +267,4 @@ def export_posts():
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
     
-    return redirect(url_for('main.user', username=current_user.username))
+    return redirect(url_for('main.user_profile', username=current_user.username))

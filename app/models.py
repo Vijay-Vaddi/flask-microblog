@@ -112,17 +112,17 @@ class User(UserMixin, db.Model):
     
     # helper methods for redis queues
     # create and launch a task queue
-    def launch_task(self, name, descrition, *args, **kwargs):
+    def launch_task(self, name, description, *args, **kwargs):
         rq_job = current_app.task_queue.enqueue('app.tasks.'+name, self.id,
                                                 *args, **kwargs)
-        task = Task(id=rq_job.get_id(), name=name, descrition=descrition,
+        task = Task(id=rq_job.get_id(), name=name, description=description,
                     user=self)
         db.session.add(task)
         return task
     
     # return all running tasks
     def get_tasks_in_progress(self):
-        return Task.query.filter_by(User=self, complete=False).all()
+        return Task.query.filter_by(user=self, complete=False).all()
     
     # return particular task, used to generate progress
     def get_task_in_progress(self, name):
