@@ -369,3 +369,8 @@ add skeleton for errors handling and token/auth system
 
 The first aspect to consider when implementing an API is to decide,
 what the representation of its resources is going to be.
+
+--- most common api error is 400 bad request
+    This is the error that is used when the client sends a request that has invalid data in it. 
+
+Learn HTTPExceptions 
