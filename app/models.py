@@ -158,7 +158,8 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
         return Task.query.filter_by(name=name, user=self, complete=False).first() 
     
     # Helper methods for API
-    # to_dict: returns user's data in dict format   
+    # to_dict: returns user's data in dict format 
+  
     def to_dict(self, include_email=False):
         data = {
             'id': self.id,

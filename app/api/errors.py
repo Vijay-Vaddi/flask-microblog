@@ -18,5 +18,5 @@ def bad_request(message):
 # to return all errors in json format
 @bp.errorhandler(HTTPException)
 def handle_exception(e):
-    return error_response(e.code)
+    return error_response(e.code, str(e))
 
