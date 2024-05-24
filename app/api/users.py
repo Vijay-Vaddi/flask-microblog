@@ -1,7 +1,8 @@
 from app.api import bp
 from app.models import User
 from app import db
-from flask import jsonify, request, current_app
+from flask import jsonify, request, current_app, url_for
+from app.api.errors import bad_request
 
 # returns a single user
 @bp.route('/users/<int:id>', methods=['GET'])
@@ -38,7 +39,21 @@ def get_following(id):
 # add/register new users
 @bp.route('/users', methods=['POST'])
 def create_user():
-    pass
+    data = request.get_json()
+    if 'username' not in data or 'email' not in data or 'password' not in data:
+        return bad_request('must include username, email and password')
+    if User.query.filter_by(username=data['username']).first():
+        return bad_request('Username taken!! Please try again.')
+    if User.query.filter_by(email=data['email']).first():
+        return bad_request('Email taken!! Please try again.')
+    user = User()
+    user.from_dict(data, new_user=True)
+    db.session.add(user)
+    db.session.commit()
+
+    return user.to_dict(), 201, {'Location': url_for('api.get_user', id=user.id)}
+
+
 
 # update user info 
 @bp.route('/users/<int:id>', methods=['PUT'])

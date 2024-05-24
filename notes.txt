@@ -374,3 +374,7 @@ what the representation of its resources is going to be.
     This is the error that is used when the client sends a request that has invalid data in it. 
 
 Learn HTTPExceptions 
+
+---
+Registering users 
+
