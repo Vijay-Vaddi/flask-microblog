@@ -377,4 +377,12 @@ Learn HTTPExceptions
 
 ---
 Registering users 
+----
+the HTTP protocol requires that a 201 response includes a 
+Location header that is set to the URL of the new resource
+hence user.to_dict(), 201, {'Location': url_for('api.get_user', id=user.id)}
+
+edititing users 
+---
+
 

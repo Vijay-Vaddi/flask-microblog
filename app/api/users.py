@@ -53,11 +53,20 @@ def create_user():
 
     return user.to_dict(), 201, {'Location': url_for('api.get_user', id=user.id)}
 
-
-
 # update user info 
 @bp.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
-    pass
+    user = User.query.get_or_404(id)
+    data = request.get_json()
 
-
+    if 'username' in data and data['username']!=user.username \
+          and User.query.filter_by(username=data['username']).first():
+        return bad_request('Username taken!! Please try again.')
+    
+    if 'email' in data and data['email']!=user.email \
+          and User.query.filter_by(email=data['email']):
+        return bad_request('Email taken!! Please try again.')
+    
+    user.from_dict(data, new_user=False)
+    db.session.commit()
+    return user.to_dict()
