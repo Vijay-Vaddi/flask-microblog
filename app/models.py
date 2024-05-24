@@ -1,16 +1,17 @@
 import redis.exceptions
 import rq.exceptions
 from app import db, login
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
-import jwt
+import jwt, secrets
 from time import time
 from flask import current_app
 from app.search import add_to_index, query_index, remove_from_index
 import json, rq, redis
 from flask import url_for
+
 
 # for collections of resources
 class PaginatedAPIMixin(object):
@@ -75,6 +76,9 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
                               lazy='dynamic')
     
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
+
+    token = db.Column(db.String(32), index=True, unique=True)
+    token_expiration = db.Column(db.DateTime)
 
     def __repr__(self) -> str:
         return f"{self.username} , {self.email}"
@@ -186,6 +190,28 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
                 setattr(self, field, data[field])
         if new_user and 'password' in data:
             self.set_password(data['password'])
+
+    # for API token auth
+    def get_token(self, expires_in=3600):
+        now = datetime.now(timezone.utc)
+        if self.token and self.token_expiration.replace(
+                tzinfo=timezone.utc) > now + timedelta(seconds=60):
+            return self.token
+        self.token = secrets.token_hex(16)
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.add(self)
+        return self.token
+    
+    def revoke_token(self):
+        self.token_expiration = datetime.now(timezone.utc) - timedelta(seconds=1)
+
+    @staticmethod
+    def check_token(token):
+        user = User.query.filter_by(token=token).first()
+        if user is None or user.token_expiration.replace(
+                tzinfo=timezone.now) < datetime.now(timezone.utc):
+            return None
+        return user
 
 @login.user_loader
 def load_user(id):

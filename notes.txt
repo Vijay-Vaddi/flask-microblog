@@ -385,4 +385,21 @@ hence user.to_dict(), 201, {'Location': url_for('api.get_user', id=user.id)}
 edititing users 
 ---
 
+API Authentication
+-----
+@login_required has some issues for AuthZ and AuthN for api endpoints
+    since it directs non authorized user to login page, 
+    and in api, there;s no concept of html or login page, 
+    if client requests with invalid or missing creds, server has to refuse 
+    with 401 status code, and server cant assume api client is a browser. 
+
+also if username and pass is passed with request to api endpoints, 
+it opens a security risk vulnarable to attackers. hence tokens mechanism.  
+
+Using API token Authentication. 
+    get a token with user creds, valid temporarily. 
+    then send request passing the token. when token expires, request new token.
+    benefits, tokens have expiration, so attack is limited.  
+
+
 
