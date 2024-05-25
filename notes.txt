@@ -416,3 +416,7 @@ flask-httpauth - to simplify interactions between client and server
     verify using @token_auth.verify_token decorator functions
 
 to protect api routes, add @token.login_required decorators 
+-------
+Revoking token 
+    send DELETE request on tokens with bearer token in authorization field
+    call token_auth.current_user().revoke_token(), return 204 success but empty body   

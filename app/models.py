@@ -209,7 +209,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     def check_token(token):
         user = User.query.filter_by(token=token).first()
         if user is None or user.token_expiration.replace(
-                tzinfo=timezone.now) < datetime.now(timezone.utc):
+                tzinfo=timezone.utc) < datetime.now(timezone.utc):
             return None
         return user
 
