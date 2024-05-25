@@ -399,7 +399,15 @@ it opens a security risk vulnarable to attackers. hence tokens mechanism.
 Using API token Authentication. 
     get a token with user creds, valid temporarily. 
     then send request passing the token. when token expires, request new token.
-    benefits, tokens have expiration, so attack is limited.  
+    benefits, tokens have expiration, so attack is limited. 
 
+flask-httpauth - to simplify interactions between client and server 
+    when a token Authentication is used. 
+    learn - http-basic Authentication
+    client sends username and pass in authorization header, 
+    app needs to provide two functions, one that checks creds and 
+        one that sends error if invalid
+        these functions are Registered using flask-httpauth decorators 
 
+        The authenticated user will be available as basic_auth.current_user()
 
