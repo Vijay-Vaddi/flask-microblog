@@ -420,3 +420,14 @@ to protect api routes, add @token.login_required decorators
 Revoking token 
     send DELETE request on tokens with bearer token in authorization field
     call token_auth.current_user().revoke_token(), return 204 success but empty body   
+
+Custom 404:
+content negotiation : htmp supports a mechanism where client and server can agree on 
+    the best format for a response, called 'content negotiation'.
+    client needs to send Accept header showing format preference. 
+    server looks at best format it supports among client preference. 
+
+    --> to do this, modify global app error handlers to use content negotiation
+    as per client preference. done using request.accept_mimetypes
+
+    
