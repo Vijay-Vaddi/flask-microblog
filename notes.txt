@@ -411,3 +411,6 @@ flask-httpauth - to simplify interactions between client and server
 
         The authenticated user will be available as basic_auth.current_user()
 
+@basic_auth.login_required
+    verifies if the user is valid via verify_password decorator function
+    
