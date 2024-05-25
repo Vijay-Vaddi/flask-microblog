@@ -413,4 +413,6 @@ flask-httpauth - to simplify interactions between client and server
 
 @basic_auth.login_required
     verifies if the user is valid via verify_password decorator function
-    
+    verify using @token_auth.verify_token decorator functions
+
+to protect api routes, add @token.login_required decorators 
