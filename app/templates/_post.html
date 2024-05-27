@@ -14,7 +14,7 @@
             {{ _( '%(username)s says %(when)s', 
                 username=user_link, when=moment(post.timestamp).fromNow() )}} 
             {% if post.author == current_user %}
-                <span><a href="{{url_for('main.edit_post', id=post.id)}}">Button here</a></span>
+            <a href="{{url_for('main.edit_post', id=post.id)}}"><i class="fas fa-edit"></i></a>
             {% endif %}
                 <br>
             <span id="post{{post.id}}">{{ post.body }}</span>
@@ -31,3 +31,4 @@
         </td>
     </tr>
 </table>
+

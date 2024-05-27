@@ -5,16 +5,40 @@
 
 <h1>Hello there {{ current_user.username}}</h1>
 {% if form %}
-<form action="" method="POST">
-    {{form.hidden_tag()}}
-    {{form.post.label()}}<br>
-    {{form.post(cols=35, rows=3)}}
-    {% for error in form.post.errors%}
-    <span style="color: red;">{{error}}</span>
-    {% endfor%}<br>
-    {{form.submit()}}
-</form>
-{%endif%}
+<section style="color: black;">
+    <div class="container ">
+      <div class="row d-flex">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+          <div class="card">
+           <form action="" method="POST">
+            {{form.hidden_tag()}}
+            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+              <div class="d-flex flex-start w-100">
+                <img class="rounded-circle shadow-1-strong me-3"
+                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                  height="40" />
+                <div data-mdb-input-init class="form-outline w-100">
+                    {{form.post(class="form-control", cols='35', rows=4)}}
+                  
+                  {{form.post.label(class="form-label")}}  
+                   </div>
+              </div>
+              {% for error in form.post.errors%}
+                <span style="color: red;">{{error}}</span>
+            {% endfor%}<br>
+              <div class="float-end mt-2 pt-1">
+                {{form.submit(class="btn btn-primary btn-sm")}}
+              </div>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {%endif%}
+
+
 
 {% for post in posts %}
 <div>
@@ -22,19 +46,22 @@
 </div>
 {% endfor%}
 <!-- pagination -->
-<nav aria-label="Post navigation">
-    <ul class="pagination">
-        <li class="page-item{% if not prev_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ prev_url }}">
-                <span aria-hidden="true">&larr;</span> Newer posts
-            </a>
-        </li>
-        <li class="page-item{% if not next_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ next_url }}">
-                Older posts <span aria-hidden="true">&rarr;</span>
-            </a>
-        </li>
+<nav aria-label="Page navigation example" >
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item {% if not prev_url %} disabled{% endif %} "><a class="page-link" href="{{ prev_url }}">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item {% if not next_url %} disabled{% endif %}">
+        <a class="page-link " href="{{ next_url }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
     </ul>
-</nav>
+  </nav>
 
 {% endblock %}

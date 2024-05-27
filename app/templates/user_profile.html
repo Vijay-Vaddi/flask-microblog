@@ -1,63 +1,129 @@
 {% extends "base.html" %}
 
 {%block content%}
-<table>
-    <tr valign="top">
-        <td><img src="{{user.avatar(128)}}"></td>
-        <td>
-            <h1>{{user.username}}</h1>
-            {% if user.about_me %}
-            <p>About me: {{user.about_me}}</p>
-            {%endif%}
-            {% if user.last_seen %}
-            <p>Last seen on: {{moment(user.last_seen).format('LLL')}}</p>
-            <p> {{user.followers.count()}} followers, {{user.followed.count()}} following </p>
-            {%endif%}
-        </td>
-        {% if user == current_user %}
-        <td><a href="{{url_for('main.edit_profile')}}">Edit profile</a> </td>
-        
-        {% elif not current_user.is_following(user) %}
-        <p><a href="{{url_for('main.follow', username=user.username)}}">Follow</a></p>
-        {% else %}
-        <p><a href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a></p>
-        {%endif%}
-        {% if user!=current_user %}
-        <p><a href="{{url_for('main.send_message', receiver=user.username)}}">Send Message</a></p>
-        {% endif %}
-        
-            {% if not current_user.get_task_in_progress('export_posts')%}
-            <p>
-                <a href="{{ url_for('main.export_posts') }}">
-                    Export your posts
-                </a>
-            </p>
-            {%endif%}
-        
-    </tr>
-</table>
-{% if current_user.is_authenticated %}
-<P>Hello {{current_user.username}}</P>
-<p>This is your email {{current_user.email}}</p>
-{%endif%}
 
-{% for post in posts%}
-    {% include "_post.html" %}
-{%endfor%}
-<!-- pagination -->
-<nav aria-label="Post navigation">
-    <ul class="pagination">
-        <li class="page-item {% if not prev_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ prev_url }}">
-                <span aria-hidden="true">&larr;</span> Newer posts
-            </a>
-        </li>
-        <li class="page-item {% if not next_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ next_url }}">
-                Older posts <span aria-hidden="true">&rarr;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center">
+        <div class="col col-lg-9 col-xl-8">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #424242; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <!-- src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" -->
+                <img src="../static/images/Default_pfp.svg.png"
+                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                  style="width: 150px; z-index: 1">
+                    {% if user == current_user %}
+                    <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
+                    {% elif user.last_seen %}
+                    <p class="text-body" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
+                    {%endif%}
+              </div>
+              
+              <div class="ms-3" style="margin-top: 130px;">
+                {% if current_user.is_authenticated %}
+                    <h5>Hello {{current_user.username}}</h5>
+                    <p>Email {{current_user.email}}</p>
+                
+                {% else %}
+                <h5>{{user.username}}</h5>
+                <p>New York</p>
+                {%endif%}
+              </div>
+            </div>
+            <!-- post, followers -->
+            <div class="p-4 text-black bg-body-tertiary">
+              <div class="d-flex justify-content-end text-center py-1 text-body">
+                <div>
+                  <p class="mb-1 h5">{{user.post.count()}}</p>
+                  <p class="small text-muted mb-0">Posts</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5">{{user.followers.count()}}</p>
+                  <p class="small text-muted mb-0">Followers</p>
+                </div>
+                <div>
+                  <p class="mb-1 h5">{{user.followed.count()}}</p>
+                  <p class="small text-muted mb-0">Following</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="d-flex pt-1">
+                {% if user!=current_user %}
+                {% if not current_user.is_following(user) %}
+                <a  class="btn btn-primary flex-grow-1" 
+                            href="{{url_for('main.follow', username=user.username)}}">Follow</a>
+                {% else %}
+                <a  class="btn btn-primary flex-grow-1" 
+                            href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a>
+                {% endif %}
+                {% endif %}
 
+                {% if user!=current_user %}
+                <a class="btn btn-primary flex-grow-1" href="{{url_for('main.send_message', receiver=user.username)}}">Message</a>
+                        
+                {% endif %}         
+            </div>
+
+            <div class="card-body p-4 text-black">
+                <!-- about me -->
+                <div class="mb-5  text-body">
+                  <p class="lead fw-normal mb-1">About</p>
+                  
+                  <div class="p-4 bg-body-tertiary">
+                    {%if user.about_me %}
+                    <p class="font-italic mb-0">{{user.about_me}}</p>
+                    {%endif%}
+                    <p class="font-italic mb-1">Web Developer</p>
+                    <p class="font-italic mb-1">Lives in New York</p>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+                  <p class="lead fw-normal mb-0">Recent Posts</p>
+                  <!-- <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p> -->
+                </div>
+                {% for post in posts%}
+                    {% include "_post.html" %}
+                {%endfor%}
+
+                <!-- only for sample image posts -->
+                <div class="row g-2">
+                  <div class="col">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp" alt="image 1"
+                      class="w-100 rounded-3">
+                  </div>
+                  <div class="col">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp" alt="image 1"
+                      class="w-100 rounded-3">
+                  </div>
+                </div>
+
+                <!-- pagination -->
+                <nav aria-label="Page navigation example" >
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item {% if not prev_url %} disabled{% endif %} "><a class="page-link" href="{{ prev_url }}">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item {% if not next_url %} disabled{% endif %}">
+                        <a class="page-link " href="{{ next_url }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock %}
