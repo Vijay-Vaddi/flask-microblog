@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {%block content%}
-
 <section class="h-100 gradient-custom-2">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center">
@@ -15,8 +14,17 @@
                   style="width: 150px; z-index: 1">
                     {% if user == current_user %}
                     <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
+
                     {% elif user.last_seen %}
                     <p class="text-body" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
+                    {%endif%}
+
+                    {% if not current_user.get_task_in_progress('export_posts') %}
+                    <p>
+                    <a href="{{ url_for('main.export_posts') }}">
+                         Export your posts 
+                    </a>
+                    </p>
                     {%endif%}
               </div>
               

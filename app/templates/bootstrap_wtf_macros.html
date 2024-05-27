@@ -21,7 +21,7 @@
 {%- elif field.type == 'SubmitField' %}
   {{ field(class='btn btn-primary mb-3') }}
 {%- else %}
-<div class="mb-3">
+<div class="form-outline mb-4" data-mdb-input-init>
     {{field.label(class='form-label')}}
     {%- if autofocus %}
     {{field(class='form-control' + ('is-invalid' if field.errors else ''), autofocus=True ) }}
@@ -37,7 +37,7 @@
 
 
 {% macro quick_form(form, action="", method="POST", id="", novalidate=False) %}
-<form novalidate 
+<form style="width: 23rem;" novalidate 
     {%- if novalidate %} novlidate {% endif -%} 
     {%- if action!=None %} action="{{action}}" {% endif -%} 
     {%- if method %} method="{{method}}" {% endif -%}
