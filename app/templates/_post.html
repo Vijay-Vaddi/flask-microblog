@@ -11,7 +11,7 @@
                 {{ post.author.username }}
             </a>
             {% endset %}
-            {{ _( '%(username)s says %(when)s', 
+            {{ _( '%(username)s shared publicly %(when)s', 
                 username=user_link, when=moment(post.timestamp).fromNow() )}} 
             {% if post.author == current_user %}
             <a href="{{url_for('main.edit_post', id=post.id)}}"><i class="fas fa-edit"></i></a>

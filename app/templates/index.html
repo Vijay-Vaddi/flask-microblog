@@ -6,8 +6,8 @@
 <h1>Hello there {{ current_user.username}}</h1>
 {% if form %}
 <section style="color: black;">
-    <div class="container ">
-      <div class="row d-flex">
+    <div class="container my-5 py-2">
+      <div class="row d-flex justify-content-center">
         <div class="col-md-12 col-lg-10 col-xl-8">
           <div class="card">
            <form action="" method="POST">
@@ -39,12 +39,11 @@
   {%endif%}
 
 
-
+<section style="background-color:whitesmoke ">
 {% for post in posts %}
-<div>
-    {% include "_post.html"%}
-</div>
+    {% include "_post1.html"%}
 {% endfor%}
+</section>
 <!-- pagination -->
 <nav aria-label="Page navigation example" >
     <ul class="pagination justify-content-center">
