@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block content %} 
 
-
-<h1>Hello there {{ current_user.username}}</h1>
-{% if form %}
-<section style="color: black;">
-    <div class="container my-5 py-2">
-      <div class="row d-flex justify-content-center">
-        <div class="col-md-12 col-lg-10 col-xl-8">
-          <div class="card">
-           <form action="" method="POST">
+<section style="background-color:whitesmoke ">
+  <div class="container my-5 py-2">
+    <div class="row d-flex justify-content-center">
+      <!-- write post  -->
+      {% if form %}
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div>
+          <h1>Hello there {{ current_user.username}}</h1>
+        </div>
+        <div class="card">
+          <form action="" method="POST">
             {{form.hidden_tag()}}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
@@ -18,49 +20,55 @@
                   src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
                   height="40" />
                 <div data-mdb-input-init class="form-outline w-100">
-                    {{form.post(class="form-control", cols='35', rows=4)}}
-                  
-                  {{form.post.label(class="form-label")}}  
-                   </div>
+                  {{form.post(class="form-control", cols='35', rows=4)}}
+
+                  {{form.post.label(class="form-label")}}
+                </div>
               </div>
               {% for error in form.post.errors%}
-                <span style="color: red;">{{error}}</span>
-            {% endfor%}<br>
+              <span style="color: red;">{{error}}</span>
+              {% endfor%}
               <div class="float-end mt-2 pt-1">
-                {{form.submit(class="btn btn-primary btn-sm")}}
+                {{form.submit(class="btn btn-primary ")}}
               </div>
             </div>
-        </form>
-          </div>
+          </form>
         </div>
       </div>
+      {%endif%}
+      <!-- posts feed -->
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        {% if page_name == 'index' %}
+        <h4 class="mb-3">Your Feed</h4>
+        {% elif page_name == 'explore' %}
+        <h2 class="mb-3">Public Feed</h2>
+        {%endif%}
+        {% for post in posts %}
+        {% include "_post1.html"%}
+        {% endfor%}
+      </div>
     </div>
-  </section>
-  {%endif%}
+  </div>
 
-
-<section style="background-color:whitesmoke ">
-{% for post in posts %}
-    {% include "_post1.html"%}
-{% endfor%}
 </section>
 <!-- pagination -->
-<nav aria-label="Page navigation example" >
-    <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item {% if not prev_url %} disabled{% endif %} "><a class="page-link" href="{{ prev_url }}">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item {% if not next_url %} disabled{% endif %}">
-        <a class="page-link " href="{{ next_url }}" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item {% if not prev_url %} disabled{% endif %} "><a class="page-link" href="{{ prev_url }}">1</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item {% if not next_url %} disabled{% endif %}">
+      <a class="page-link " href="{{ next_url }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
 {% endblock %}

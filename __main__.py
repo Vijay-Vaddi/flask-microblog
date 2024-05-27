@@ -1,5 +1,6 @@
 from app import create_app, db
 from app.models import User, Post, Message, Notification, Task
+from flask import request
 
 app = create_app()
 
@@ -7,7 +8,6 @@ app = create_app()
 def make_shell_context():
     return {'db': db, 'User':User, 'Post':Post, 
             'Message':Message, 'Notification':Notification, 'Task':Task }
-
 
 if __name__ == "__main__":
     app.run(debug=True)

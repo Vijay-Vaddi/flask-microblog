@@ -93,8 +93,11 @@ def create_app(config_class=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info('Microblog startup')
     
-    return app
     
+    return app
+
+
+
 ''' imported after creating app to avoid common 
 flask problem of circular dependencies''' 
 from app import models
