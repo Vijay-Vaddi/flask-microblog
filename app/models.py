@@ -55,7 +55,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     post = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default = datetime.now(timezone.utc))
-    profile_pic = db.Column(db.String(64), nullable = True, default='default_prof_pic.png')
+    profile_pic = db.Column(db.String(64), nullable = False, default='default_prof_pic.png')
 
     # relationships for follow table -exists only in model space
     followed = db.relationship(

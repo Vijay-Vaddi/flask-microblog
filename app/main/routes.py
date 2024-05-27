@@ -8,6 +8,7 @@ from app.models import db, User, Post, Message, Notification
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
+from app.main.picture_handler import add_profile_pic
 
 
 
@@ -80,6 +81,11 @@ def edit_profile():
 
     if form.validate_on_submit():
 
+        if form.profile_pic.data:
+            username=current_user.username
+            pic = add_profile_pic(form.profile_pic.data, username)
+            current_user.profile_pic = pic 
+            
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
