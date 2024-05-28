@@ -9,7 +9,7 @@
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #424242; height:200px;">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
                 <!-- src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" -->
-                <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
+                <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                   style="width: 150px; z-index: 1">
                     {% if user == current_user %}
@@ -18,20 +18,20 @@
                     {% elif user.last_seen %}
                     <p class="text-body" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
                     {%endif%}
-
-                    {% if not current_user.get_task_in_progress('export_posts') %}
-                    <p>
-                    <a href="{{ url_for('main.export_posts') }}">
-                         Export your posts 
+                    {% if user==current_user and current_user.post.count()>=1 and not current_user.get_task_in_progress('export_posts') %}
+                    <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{ url_for('main.export_posts') }}">
+                         Export posts 
                     </a>
-                    </p>
+                    
                     {%endif%}
+
+                    
               </div>
               
               <div class="ms-3" style="margin-top: 130px;">
                 {% if current_user.is_authenticated %}
-                    <h5>Hello {{current_user.username}}</h5>
-                    <p>Email {{current_user.email}}</p>
+                    <h5>Hello {{user.username}}</h5>
+                    <p>Email {{user.email}}</p>
                 
                 {% else %}
                 <h5>{{user.username}}</h5>

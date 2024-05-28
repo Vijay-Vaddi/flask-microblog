@@ -144,8 +144,6 @@ def explore():
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
 
-    print(posts.items)
-
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items,
@@ -194,15 +192,17 @@ def edit_post(id):
 def delete_post(id):
     
     post = Post.query.get(id) 
-    form = Postform()
-    if form.validate_on_submit():
-        # test driven development,
-        post.body = form.post.data 
-        db.session.commit()
-        flash(_('Post edited submitted'))
-        return redirect(url_for('main.index'))
-    form.post.data = post
-    return render_template('edit_post.html', form=form)
+    db.session.delete(post)
+    db.session.commit()
+
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_posts().paginate(
+        page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
+
+    return render_template('index.html', posts=posts, next_url=next_url,
+                           prev_url=prev_url)
 
 
 @bp.route('/user-profile/<username>/popup')
