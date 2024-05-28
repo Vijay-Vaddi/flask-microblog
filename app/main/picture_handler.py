@@ -5,12 +5,13 @@ from PIL import Image
 
 def add_profile_pic(pic_upload, username):
     filename = pic_upload.filename
+    print(filename)
     extension = filename.split('.')[-1]
     saved_name = str(username)+'.'+extension
 
-    file_path = os.path.join(current_app.root_path, 'static/profile_pictures', 
+    file_path = os.path.join(current_app.root_path, 'static/profile_pictures/', 
                              saved_name)
-    
+    print(file_path)
     output_size = (150,150)
 
     img = Image.open(pic_upload)

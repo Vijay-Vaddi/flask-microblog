@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.form import _Auto
-from flask_wtf.file import FileAllowed
-from wtforms import StringField, SubmitField, TextAreaField, FileField
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Length
 from app.models import User
 from flask_babel import _, lazy_gettext as _l

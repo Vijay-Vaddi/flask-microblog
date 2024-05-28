@@ -80,12 +80,14 @@ def edit_profile():
     form = UpdateUserProfileForm(current_user.username)
 
     if form.validate_on_submit():
-
+        print('inside valid')
         if form.profile_pic.data:
+            print('inside prof pic if')
             username=current_user.username
             pic = add_profile_pic(form.profile_pic.data, username)
             current_user.profile_pic = pic 
-            
+            print(current_user.profile_pic)
+
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
