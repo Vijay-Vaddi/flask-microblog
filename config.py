@@ -13,7 +13,7 @@ class Config:
     MAIL_PORT = 587 or int(os.environ.get('MAIL_PORT') or 25)
     MAIL_USE_TLS = 1 or os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') 
     ADMINS = ['vijayzvaddi@gmail.com']
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     POSTS_PER_PAGE = 5

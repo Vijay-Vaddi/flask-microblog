@@ -5,15 +5,35 @@
 
 <h1>Hello there {{ current_user.username}}</h1>
 {% if form %}
-<form action="" method="POST">
-    {{form.hidden_tag()}}
-    {{form.post.label()}}<br>
-    {{form.post(cols=35, rows=3)}}
-    {% for error in form.post.errors%}
-    <span style="color: red;">{{error}}</span>
-    {% endfor%}<br>
-    {{form.submit()}}
-</form>
+<div class="container my-5 py-2">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card">
+                <form action="" method="POST">
+                    {{form.hidden_tag()}}
+                    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                        <div class="d-flex flex-start w-100">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                                src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
+                                alt="avatar" width="40" height="40" />
+                            <div data-mdb-input-init class="form-outline w-100">
+                                {{form.post(class="form-control", cols='35', rows=4)}}
+
+                                {{form.post.label(class="form-label")}}
+                            </div>
+                        </div>
+                        {% for error in form.post.errors%}
+                        <span style="color: red;">{{error}}</span>
+                        {% endfor%}
+                        <div class="float-end mt-2 pt-1">
+                            {{form.submit(class="btn btn-primary ")}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {%endif%}
 
 {% endblock %}

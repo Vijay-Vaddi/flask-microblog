@@ -184,6 +184,7 @@ def edit_post(id):
         flash(_('Post edited submitted'))
         return redirect(url_for('main.index'))
     form.post.data = post
+    form.post.label.text= 'Edit your post'
     return render_template('edit_post.html', form=form)
 
 
@@ -268,11 +269,13 @@ def notifications():
 @bp.route('/export_posts')
 @login_required
 def export_posts():
-
+    print('inside export')
     if current_user.get_task_in_progress('export_posts'):
+        print('inside if')
         flash('Export already in progress')
     else:
+        print('inside else')
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
-    
+    print('notinng')
     return redirect(url_for('main.user_profile', username=current_user.username))

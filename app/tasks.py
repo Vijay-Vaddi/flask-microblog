@@ -23,14 +23,14 @@ def _set_task_progess(progress):
         
         db.session.commit()
 
-def export(user_id):
+def export_posts(user_id):
     try:
         _set_task_progess(0)
         user = User.query.get(user_id)
         i = 0
         data = []
-        total_posts = user.posts.count()
-        for post in user.posts.order_by(Post.timestamp.asc()):
+        total_posts = user.post.count()
+        for post in user.post.order_by(Post.timestamp.asc()):
             data.append({'body':post.body, 'timestamp':post.timestamp.isoformat()+'z'})
             time.sleep(5)
             i=i+1
@@ -43,7 +43,7 @@ def export(user_id):
                    attachments=[('posts.json', 'application/json', json.dumps({'posts':data}, indent=4))], sync=True)                    
     except:
         _set_task_progess(100)
-        app.logger.error('Unhandled exception', exc_info=sys.exec_info())
+        app.logger.error('Unhandled exception', exc_info=sys.exc_info())
         
     finally:
         _set_task_progess(100)

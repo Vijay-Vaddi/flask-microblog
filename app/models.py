@@ -147,6 +147,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     # helper methods for redis queues
     # create and launch a task queue
     def launch_task(self, name, description, *args, **kwargs):
+        print('inside launch tasks')
         rq_job = current_app.task_queue.enqueue('app.tasks.'+name, self.id,
                                                 *args, **kwargs)
         task = Task(id=rq_job.get_id(), name=name, description=description,
@@ -156,10 +157,12 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     
     # return all running tasks
     def get_tasks_in_progress(self):
+        print('inside get tasks')
         return Task.query.filter_by(user=self, complete=False).all()
     
     # return particular task, used to generate progress
     def get_task_in_progress(self, name):
+        print('inside get single task')
         return Task.query.filter_by(name=name, user=self, complete=False).first() 
     
     # Helper methods for API
