@@ -57,15 +57,16 @@ def register():
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    # redirect if user is already logged in 
     if current_user.is_authenticated:
         redirect(url_for('main.index'))
-    
+        
     form = ResetPasswordRequestForm()
-    
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
+        # SECURITY feature: ignore if user not found to not guess if a user is member or not. 
         flash(_('Please check your email for further instructions'))
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password_request.html', form=form, title='Reset Password')

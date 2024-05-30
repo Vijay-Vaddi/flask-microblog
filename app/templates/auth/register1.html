@@ -44,7 +44,7 @@
                         {{form.password(class="form-control form-control-lg")}}<br>
                         {{form.password.label(class="form-label")}}
                             {% for error in form.password.errors %}
-                            <span style="color: red;">[{{ error }}]</span><br>
+                            <span style="color: red;">[{{ error | safe }}]</span>
                             {% endfor %}                      
                         </div>
                     </div>
