@@ -2,11 +2,20 @@
 
 {% block content %}
 
-<h1>Your Inbox:</h1>
-{% for post in messages %}
-{% include '_post1.html' %} <br>
-{% endfor %}
 
+<section style="background-color:whitesmoke ">
+    <div class="container my-5 py-2">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <h4 class="mb-3">Your Inbox</h4>
+
+                {% for post in messages %}
+                {% include '_post1.html' %} <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
 
 <nav aria-label="Message navigation">
     <ul class="pagination">

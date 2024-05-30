@@ -51,7 +51,7 @@ def index():
     
     return render_template("index.html", title='Home', 
                            posts=posts.items, form=form, 
-                           next_url=next_url, prev_url=prev_url, page=page, page_name='index')
+                           next_url=next_url, prev_url=prev_url, page=page)
 
 
 @bp.route('/user-profile/<username>')
@@ -147,7 +147,7 @@ def explore():
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, page_name='explore') 
+                           next_url=next_url, prev_url=prev_url) 
 
 
 @bp.route('/search', methods=['GET'])
@@ -185,7 +185,7 @@ def edit_post(id):
         return redirect(url_for('main.index'))
     form.post.data = post
     form.post.label.text= 'Edit your post'
-    return render_template('edit_post.html', form=form)
+    return render_template('edit_post.html', form=form, title='Edit post')
 
 
 @bp.route('/delete-post/<id>', methods=['POST', 'GET'])
@@ -211,7 +211,7 @@ def delete_post(id):
 def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
     form = EmptyForm()
-    return render_template('user_popup.html', user=user, form=form)
+    return render_template('user_popup.html', user=user, form=form, title='user profile')
 
 
 @bp.route('/send-message/<receiver>', methods=['GET', 'POST'])
@@ -249,7 +249,7 @@ def messages():
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
   
     return render_template('messages.html', messages=messages, 
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url, title='inbox')
 
 
 @bp.route('/notifications')

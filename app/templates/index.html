@@ -35,12 +35,14 @@
           </form>
         </div>
       </div>
+      
       {%endif%}
+      <div><br></div>
       <!-- posts feed -->
       <div class="col-md-12 col-lg-10 col-xl-8">
-        {% if page_name == 'index' %}
+        {% if title == 'Home' %}
         <h4 class="mb-3">Your Feed</h4>
-        {% elif page_name == 'explore' %}
+        {% elif title == 'Explore' %}
         <h2 class="mb-3">Public Feed</h2>
         {%endif%}
         {% for post in posts %}
