@@ -5,8 +5,10 @@ bcc==0.1.10
 blinker==1.8.2
 certifi==2024.2.2
 click==8.1.7
+dnspython==2.6.1
 elastic-transport==8.13.1
 elasticsearch==8.13.2
+email_validator==2.1.1
 Flask==3.0.3
 flask-babel==4.0.0
 Flask-HTTPAuth==4.8.0
@@ -17,6 +19,7 @@ Flask-Moment==1.0.6
 Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.1
 greenlet==3.0.3
+idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
 langdetect==1.0.9
