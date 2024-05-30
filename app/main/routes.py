@@ -43,15 +43,16 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
-    
+    total_pages=posts.pages
+
     next_url = url_for('main.index', page=posts.next_num) \
                         if posts.has_next else None
     prev_url = url_for('main.index', page=posts.prev_num) \
                         if posts.has_prev else None
     
-    return render_template("index.html", title='Home', 
-                           posts=posts.items, form=form, 
-                           next_url=next_url, prev_url=prev_url, page=page)
+    return render_template("index.html", title='Home', page=page, max=max, min=min,
+                           posts=posts.items, form=form, total_pages=total_pages, 
+                           next_url=next_url, prev_url=prev_url)
 
 
 @bp.route('/user-profile/<username>')
@@ -143,32 +144,31 @@ def explore():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    total_pages=posts.pages
 
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
-    return render_template('index.html', title='Explore', posts=posts.items,
-                           next_url=next_url, prev_url=prev_url) 
+    return render_template('index.html', title='Explore', posts=posts.items, 
+                           max=max, min=min, next_url=next_url, prev_url=prev_url, 
+                           total_pages=total_pages, page=page) 
 
 
 @bp.route('/search', methods=['GET'])
 @login_required
 def search():
-    print('inside search')
-
     if not g.search_form.validate():
-        print('validate')
         return redirect(url_for('main.explore'))
         
-
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(g.search_form.query.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('main.search', query=g.search_form.query.data, page=page+1)\
         if total > page*current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('main.search', query=g.search_form.query.data, page=page-1)\
         if page > 1 else None
-    print('after')
+    total_pages=total/current_app.config['POSTS_PER_PAGE']
     return render_template('search.html', title=_('search'), posts=posts,
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url, total_pages=total_pages,
+                           min=min, max=max, page=page)
 
 
 @bp.route('/edit-post/<id>', methods=['POST', 'GET'])

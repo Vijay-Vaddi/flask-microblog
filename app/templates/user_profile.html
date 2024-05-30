@@ -11,7 +11,7 @@
                 <!-- src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" -->
                 <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                  style="width: 150px; z-index: 1">
+                  style="width: 150px; z-index: 1; height: 150px;">
                     {% if user == current_user %}
                     <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
 
