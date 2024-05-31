@@ -56,28 +56,7 @@
 </section>
 
 <!-- pagination -->
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item {% if not prev_url %} disabled{% endif %} ">
-      <a class="page-link" href="{{ prev_url }}">
-        <span aria-hidden="true">&laquo; Prev</span>
-      </a>
-    </li>
-    {% set start = max(1, page-2) %}
-    {% set end = min(total_pages, page+2) %}
 
-    {% for page_num in range(start, end+1) %}
-    <li class="page-item {%if page_num == page %} active {% endif %} ">
-      <a class="page-link" href="{{url_for('main.index', page=page_num)}}">{{page_num}}</a>
-    </li>
-    {%endfor%}
-    
-    <li class="page-item {% if not next_url %} disabled{% endif %}">
-      <a class="page-link " href="{{ next_url }}" aria-label="Next">
-        <span aria-hidden="true">&raquo; Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+{% include "pagination.html" %}
 
 {% endblock %}

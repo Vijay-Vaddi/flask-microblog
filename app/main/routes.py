@@ -11,7 +11,6 @@ from langdetect import detect
 from app.main.picture_handler import add_profile_pic
 
 
-
 @bp.before_request
 def before_request():
     if current_user.is_authenticated:
@@ -57,21 +56,21 @@ def index():
 
 @bp.route('/user-profile/<username>')
 @login_required
-def user_profile(username): #=current_user.username
+def user_profile(username): 
 
-    print(current_user)
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     posts = user.post.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
-    
+    total_pages=posts.pages    
     next_url = url_for('main.user_profile', username=username, page=posts.next_num) \
                                     if posts.has_next else None
     prev_url = url_for('main.user_profile', username=username, page=posts.prev_num) \
                                     if posts.has_prev else None
     
-    return render_template('user_profile.html', user=user, posts=posts,
-                           next_url=next_url, prev_url=prev_url)
+    return render_template('user_profile.html', user=user, posts=posts, title='User Profile',
+                           next_url=next_url, prev_url=prev_url, page=page,
+                           total_pages=total_pages, min=min, max=max)
 
 
 @bp.route('/edit-profile', methods=['GET', 'POST'])
@@ -245,10 +244,12 @@ def messages():
         Message.timestamp.desc()).paginate(page=page, 
                                     per_page=current_app.config['POSTS_PER_PAGE'], 
                                     error_out=False)
+    total_pages=messages.pages
     next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
   
-    return render_template('messages.html', messages=messages, 
+    return render_template('messages.html', messages=messages, page=page, 
+                           total_pages=total_pages, min=min, max=max,
                            next_url=next_url, prev_url=prev_url, title='inbox')
 
 
