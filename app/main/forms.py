@@ -10,7 +10,7 @@ from flask import request
 class UpdateUserProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'), validators=[Length(min=0, max=140)])
-    profile_pic = FileField('Upload profile picture', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'])])
+    profile_pic = FileField('Profile picture', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'])])
     submit = SubmitField(_l('Save Changes'))
 
     def __init__(self, original_username, *args, **kwargs):
@@ -27,6 +27,7 @@ class UpdateUserProfileForm(FlaskForm):
 class Postform(FlaskForm):
     post = TextAreaField(_l('Write your post here'), 
                          validators=[DataRequired(), Length(min=1, max=280)])
+    post_image = FileField('', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'])])
     submit = SubmitField(_l('Post'))
 
 class SearchForm(FlaskForm):

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %} 
+{% block content %}
 
 <section style="background-color:whitesmoke ">
   <div class="container my-5 py-2">
@@ -17,25 +17,35 @@
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
                 <img class="rounded-circle shadow-1-strong me-3"
-                  src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}" alt="avatar" width="40"
-                  height="40" />
+                  src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}" alt="avatar"
+                  width="40" height="40" />
                 <div data-mdb-input-init class="form-outline w-100">
                   {{form.post(class="form-control", cols='35', rows=4)}}
 
                   {{form.post.label(class="form-label")}}
                 </div>
+                {% for error in form.post.errors%}
+                <span style="color: red;">{{error}}</span>
+                {% endfor%}
               </div>
-              {% for error in form.post.errors%}
-              <span style="color: red;">{{error}}</span>
-              {% endfor%}
-              <div class="float-end mt-2 pt-1">
-                {{form.submit(class="btn btn-primary ")}}
+              <!-- image upload section -->
+              <div class="row justify-content-evenly" style="padding-top: 5px;">
+                <div class="col-sm-5">
+                  {{form.post_image(class="form-control", cols='35', rows=4)}}
+                  
+                  {% for error in form.post_image.errors%}
+                  <span style="color: red;">{{error}}</span>
+                  {% endfor%}
+                </div>
+                <div class="col-sm-5 mt-2 pt-1">
+                  {{form.submit(class="btn btn-primary float-end")}}
+                </div>
               </div>
             </div>
           </form>
         </div>
       </div>
-      
+
       {%endif%}
       <div><br></div>
       <!-- posts feed -->
