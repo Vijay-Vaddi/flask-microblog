@@ -4,12 +4,12 @@ from flask import current_app
 from PIL import Image
 from flask_login import current_user
 
-def add_pic(pic_upload, user, post=None):
+def add_pic(pic_upload, post=None):
     filename = pic_upload.filename
     extension = filename.split('.')[-1]
 
     img = Image.open(pic_upload)
-    
+
     if post:
         # if called from post, mk username dir, save with post id
         saved_name = str(post.author.username)+str(post.id) +'.'+extension

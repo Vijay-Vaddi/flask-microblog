@@ -39,8 +39,7 @@ def index():
         db.session.commit()
 
         if form.post_image.data:
-            post_image = add_pic(form.post_image.data, current_user,
-                                 post=post)
+            post_image = add_pic(form.post_image.data, post=post)
             post.post_image=post_image
             db.session.add(post)
             db.session.commit()
@@ -184,11 +183,18 @@ def edit_post(id):
     if form.validate_on_submit():
         # test driven development,
         post.body = form.post.data 
+
+        if form.post_image.data:
+            post_image = add_pic(form.post_image.data, post=post)
+            post.post_image=post_image
+            db.session.add(post)
+
         db.session.commit()
         flash(_('Post edited submitted'))
         return redirect(url_for('main.index'))
     form.post.data = post
     form.post.label.text= 'Edit your post'
+    form.post_image.data=post.post_image
     return render_template('edit_post.html', form=form, title='Edit post')
 
 

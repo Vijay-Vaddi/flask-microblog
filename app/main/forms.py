@@ -27,7 +27,7 @@ class UpdateUserProfileForm(FlaskForm):
 class Postform(FlaskForm):
     post = TextAreaField(_l('Write your post here'), 
                          validators=[DataRequired(), Length(min=1, max=280)])
-    post_image = FileField('', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'])])
+    post_image = FileField('', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif','webp'])])
     submit = SubmitField(_l('Post'))
 
 class SearchForm(FlaskForm):

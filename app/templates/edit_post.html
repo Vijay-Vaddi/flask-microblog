@@ -9,7 +9,7 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-12 col-lg-10 col-xl-8">
             <div class="card">
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     {{form.hidden_tag()}}
                     <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
                         <div class="d-flex flex-start w-100">
@@ -25,9 +25,19 @@
                         {% for error in form.post.errors%}
                         <span style="color: red;">{{error}}</span>
                         {% endfor%}
-                        <div class="float-end mt-2 pt-1">
-                            {{form.submit(class="btn btn-primary ")}}
-                        </div>
+                        <!-- upload image section -->
+                        <div class="row justify-content-evenly" style="padding-top: 5px;">
+                            <div class="col-sm-5">
+                              {{form.post_image(class="form-control", cols='35', rows=4)}}
+                              
+                              {% for error in form.post_image.errors%}
+                              <span style="color: red;">{{error}}</span>
+                              {% endfor%}
+                            </div>
+                            <div class="col-sm-5 mt-2 pt-1">
+                              {{form.submit(class="btn btn-primary float-end")}}
+                            </div>
+                          </div>
                     </div>
                 </form>
             </div>
