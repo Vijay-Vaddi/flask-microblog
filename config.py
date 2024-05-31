@@ -22,4 +22,5 @@ class Config:
     ELASTICSEARCH_URL=os.environ.get('ELASTICSEARCH_URL')
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_FOLDER= os.path.join(basedir,'app/static/posts_images')
+    PROFILE_PIC_FOLDER=os.path.join(basedir,'app/static/profile_pictures')
 

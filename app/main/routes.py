@@ -8,7 +8,7 @@ from app.models import db, User, Post, Message, Notification
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
-from app.main.picture_handler import add_profile_pic
+from app.main.picture_handler import add_pic
 
 
 @bp.before_request
@@ -26,16 +26,25 @@ def before_request():
 def index():
     
     form = Postform()
-
     if form.validate_on_submit():
         try:
             language = detect(form.post.data)
         except:
             language=''
+    
         post = Post(body=form.post.data, author=current_user, 
                     language=language)
+        # save first to generate post.id 
         db.session.add(post)
         db.session.commit()
+
+        if form.post_image.data:
+            post_image = add_pic(form.post_image.data, current_user,
+                                 post=post)
+            post.post_image=post_image
+            db.session.add(post)
+            db.session.commit()
+
         flash(_('Post submitted'))
         return redirect(url_for('main.index'))
     
@@ -80,13 +89,9 @@ def edit_profile():
     form = UpdateUserProfileForm(current_user.username)
 
     if form.validate_on_submit():
-        print('inside valid')
         if form.profile_pic.data:
-            print('inside prof pic if')
-            username=current_user.username
-            pic = add_profile_pic(form.profile_pic.data, username)
+            pic = add_pic(form.profile_pic.data)
             current_user.profile_pic = pic 
-            print(current_user.profile_pic)
 
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data

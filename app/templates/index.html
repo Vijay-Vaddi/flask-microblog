@@ -12,7 +12,7 @@
           <h1>Hello there {{ current_user.username}}</h1>
         </div>
         <div class="card">
-          <form action="" method="POST">
+          <form action="" method="POST" enctype="multipart/form-data">
             {{form.hidden_tag()}}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
