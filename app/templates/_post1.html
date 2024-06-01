@@ -13,14 +13,15 @@
                     <h6 class="fw-bold text-primary mb-1">{{ post.author.username }}</h6>
                 </a>
                 {% endset %}
-                <!-- <a href="#"><h6 class="fw-bold text-primary mb-1">Lilly Colson</h6></a> -->
                 <p class="text-muted small mb-0">
                     {%if title == 'inbox'%}
-                    {{ _( '%(username)s sent %(when)s',
-                    username=user_link, when=moment(post.timestamp).fromNow() )}}    
+                    {{user_link}} sent {{ moment(post.timestamp).fromNow() }}
+                    <!-- {{ _( '%(username)s sent %(when)s',
+                    username=user_link, when=moment(post.timestamp).fromNow() )}}     -->
                     {% else %}
-                    {{ _( '%(username)s shared publicly %(when)s',
-                    username=user_link, when=moment(post.timestamp).fromNow() )}}
+                    {{user_link}} said {{ moment(post.timestamp).fromNow() }}
+                    <!-- {{ _( '%(username)s shared publicly %(when)s',
+                    username=user_link, when=moment(post.timestamp).fromNow() )}} -->
                     {% endif %}
                 </p>
             </div>
