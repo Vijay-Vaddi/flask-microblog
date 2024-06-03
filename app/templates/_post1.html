@@ -15,11 +15,12 @@
                 {% endset %}
                 <p class="text-muted small mb-0">
                     {%if title == 'inbox'%}
-                    {{user_link}} sent {{ moment(post.timestamp).fromNow() }}
+                    <!-- moment(user.last_seen).format('LLL') -->
+                    {{user_link}} sent {{ moment(post.timestamp).fromNow().format('LLL') }}
                     <!-- {{ _( '%(username)s sent %(when)s',
                     username=user_link, when=moment(post.timestamp).fromNow() )}}     -->
                     {% else %}
-                    {{user_link}} said {{ moment(post.timestamp).fromNow() }}
+                    {{user_link}} said {{ moment(post.timestamp).fromNow().format('LLL')}}
                     <!-- {{ _( '%(username)s shared publicly %(when)s',
                     username=user_link, when=moment(post.timestamp).fromNow() )}} -->
                     {% endif %}

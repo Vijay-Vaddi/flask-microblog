@@ -54,7 +54,8 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     post = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default = datetime.now(timezone.utc))
+    last_seen = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
     profile_pic = db.Column(db.String(64), nullable = False, default='default_prof_pic.png')
 
     # relationships for follow table -exists only in model space
@@ -140,6 +141,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     
     def add_notification(self, name, data):
         self.notifications.filter_by(name=name).delete()
+        print(json.dumps(data))
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
         db.session.add(n)
         return n 
@@ -265,7 +267,7 @@ class SearchableMixin(object):
 class Post(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.String(280))
-    timestamp = db.Column(db.DateTime, index=True, default = datetime.now(timezone.utc))
+    timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc)   )
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     language = db.Column(db.String(5))
     post_image = db.Column(db.String(128))
@@ -279,7 +281,7 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.now(timezone.utc))
+    timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc))
 
     def __repr__(self) -> str:
         return f"Message {self.body}"

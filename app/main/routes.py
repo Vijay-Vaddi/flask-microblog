@@ -241,14 +241,16 @@ def send_message(receiver):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.now(timezone.utc)
+    print('adding 0')
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
-
+    
     page = request.args.get('page', 1, type=1)
     messages = current_user.messages_received.order_by(
         Message.timestamp.desc()).paginate(page=page, 
                                     per_page=current_app.config['POSTS_PER_PAGE'], 
                                     error_out=False)
+    print('after messages')
     total_pages=messages.pages
     next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
@@ -262,9 +264,14 @@ def messages():
 @login_required
 def notifications():
     since = request.args.get('since', 0.0, type=float)
+    print(since)
     notifications = current_user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc()) 
+    
 
+    print([{'name': n.name,
+        'data': n.get_data(),
+        'timestamp':n.timestamp } for n in notifications])
     return [{
         'name': n.name,
         'data': n.get_data(),
