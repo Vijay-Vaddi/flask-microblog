@@ -57,6 +57,7 @@ def index():
     prev_url = url_for('main.index', page=posts.prev_num) \
                         if posts.has_prev else None
     
+
     return render_template("index.html", title='Home', page=page, max=max, min=min,
                            posts=posts.items, form=form, total_pages=total_pages, 
                            next_url=next_url, prev_url=prev_url)
@@ -241,7 +242,6 @@ def send_message(receiver):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.now(timezone.utc)
-    print('adding 0')
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     
@@ -250,7 +250,6 @@ def messages():
         Message.timestamp.desc()).paginate(page=page, 
                                     per_page=current_app.config['POSTS_PER_PAGE'], 
                                     error_out=False)
-    print('after messages')
     total_pages=messages.pages
     next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
@@ -264,14 +263,9 @@ def messages():
 @login_required
 def notifications():
     since = request.args.get('since', 0.0, type=float)
-    print(since)
     notifications = current_user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc()) 
     
-
-    print([{'name': n.name,
-        'data': n.get_data(),
-        'timestamp':n.timestamp } for n in notifications])
     return [{
         'name': n.name,
         'data': n.get_data(),
@@ -281,14 +275,10 @@ def notifications():
 
 @bp.route('/export_posts')
 @login_required
-def export_posts():
-    print('inside export')
+def export_posts():   
     if current_user.get_task_in_progress('export_posts'):
-        print('inside if')
         flash('Export already in progress')
     else:
-        print('inside else')
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
-    print('notinng')
     return redirect(url_for('main.user_profile', username=current_user.username))

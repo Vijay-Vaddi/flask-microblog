@@ -60,7 +60,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('main.messages')}}">Messages
               {% set new_messages_count = current_user.new_messages() %}
-              <span id="message_count" class="badge" style="visibility: {% if new_messages_connt%}visible
+              <span id="message_count" class="badge" style="color: rgb(88, 60, 211); visibility: {% if new_messages_connt%}visible
             {%else%}hidden {%endif%};">
                 {{new_messages_count}}</span></a>
 
@@ -178,7 +178,9 @@
     {% if current_user.is_authenticated %}
     function initialize_notifications() {
       let since = 0.0;
-      setInterval(async function () {
+
+      // fetches notifications
+      async function fetchNotifications() {
         const response = await fetch("{{url_for('main.notifications') }}?since=" + since);
         const notifications = await response.json();
         for (let i = 0; i <= notifications.length; i++) {
@@ -191,11 +193,13 @@
               break;
           }
           since = notifications[i].timestamp;
-
         }
-
-      }, 10000);
+      }
+      // initial call to set notifications when any page is rendered
+      fetchNotifications();
+      setInterval(fetchNotifications, 10000); // call every 10 seconds
     }
+
     document.addEventListener('DOMContentLoaded', initialize_notifications);
     {% endif %}
 

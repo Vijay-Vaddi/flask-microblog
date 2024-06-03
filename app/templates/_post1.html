@@ -13,20 +13,18 @@
                     <h6 class="fw-bold text-primary mb-1">{{ post.author.username }}</h6>
                 </a>
                 {% endset %}
+                <!-- set time -->
                 <p class="text-muted small mb-0">
                     {%if title == 'inbox'%}
-                    <!-- moment(user.last_seen).format('LLL') -->
                     {{user_link}} sent {{ moment(post.timestamp).fromNow().format('LLL') }}
-                    <!-- {{ _( '%(username)s sent %(when)s',
-                    username=user_link, when=moment(post.timestamp).fromNow() )}}     -->
+                    
                     {% else %}
                     {{user_link}} said {{ moment(post.timestamp).fromNow().format('LLL')}}
-                    <!-- {{ _( '%(username)s shared publicly %(when)s',
-                    username=user_link, when=moment(post.timestamp).fromNow() )}} -->
                     {% endif %}
                 </p>
             </div>
         </div>
+
         <!-- post text body -->
         <p class="mt-3 mb-4 pb-2">
             <span id="post{{post.id}}">{{ post.body }}
@@ -36,10 +34,9 @@
         <img src="{{url_for('static', filename='posts_images/'+post.author.username+'/'+post.post_image)}}" 
                                 class="card-img-top" alt="Fissure in Sandstone"/>
         {%endif%}
+
         <!-- edit, delete, reply buttons -->
-        
-        {% if title == 'inbox' %}
-        
+        {% if title == 'inbox' %}    
         <div class="float-end mt-2 pt-1">
         <a href="{{url_for('main.send_message', receiver=post.author.username)}}"><button class="btn btn-primary">Reply</button></a>    
         </div>
@@ -50,9 +47,9 @@
                 <i class="fas fa-edit me-2"></i>
                 <p class="mb-0">Edit</p>
             </a>
-            <button class="btn-link-style d-flex align-items-center me-3" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
+            <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))" class="btn-link-style d-flex align-items-center me-3" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
                 <i class="fas fa-trash me-2"></i>
-                <p class="mb-0">Delete</p>
+                <p class="mb-0" >Delete</p>
             </button>
             <!-- for translation -->
             {% if post.language and post.language !=g.locale %}
