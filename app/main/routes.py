@@ -170,7 +170,8 @@ def search():
         if total > page*current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('main.search', query=g.search_form.query.data, page=page-1)\
         if page > 1 else None
-    total_pages=total/current_app.config['POSTS_PER_PAGE']
+    
+    total_pages=total//current_app.config['POSTS_PER_PAGE']
     return render_template('search.html', title=_('search'), posts=posts,
                            next_url=next_url, prev_url=prev_url, total_pages=total_pages,
                            min=min, max=max, page=page)
@@ -277,12 +278,15 @@ def notifications():
 @bp.route('/export_posts')
 @login_required
 def export_posts():   
+    print('inside export')
     if current_user.get_task_in_progress('export_posts'):
         flash('Export already in progress')
     else:
+        print('inside else')
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
     return redirect(url_for('main.user_profile', username=current_user.username))
+
 
 @bp.route('/translate', methods=['GET', 'POST'])
 @login_required
