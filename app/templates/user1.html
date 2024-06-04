@@ -5,6 +5,7 @@
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center">
         <div class="col col-lg-9 col-xl-8">
+            <!-- make new col for image -->
           <div class="card">
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #424242; height:200px;">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
@@ -13,7 +14,6 @@
                   style="width: 150px; z-index: 1; height: 150px;">
                     {% if user == current_user %}
                     <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
-
                     {% elif user.last_seen %}
                     <p class="text-body" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
                     {%endif%}
@@ -27,12 +27,13 @@
                 {% if user == current_user %}
                     <h5>Hello {{user.username}}</h5>
                     <p>Email {{user.email}}</p>
-                        {% else %}
+                {% else %}
                 <h5>{{user.username}}</h5>
                 {%endif%}
               </div>
             </div>
-            <!-- post, followers -->
+
+            <!-- make new col post, followers -->
             <div class="p-4 text-black bg-body-tertiary">
               <div class="d-flex justify-content-end text-center py-1 text-body">
                 <div>
@@ -49,7 +50,7 @@
                 </div>
               </div>
             </div>
-            
+            <!-- make new column -->
             <div class="d-flex pt-1">
                 {% if user!=current_user %}
                 {% if not current_user.is_following(user) %}
@@ -66,12 +67,10 @@
                         
                 {% endif %}         
             </div>
-
+            <!-- make new col about me -->
             <div class="card-body p-4 text-black">
-                <!-- about me -->
                 <div class="mb-5  text-body">
                   <p class="lead fw-normal mb-1">About</p>
-                  
                   <div class="p-4 bg-body-tertiary">
                     {%if user.about_me %}
                     <p class="font-italic mb-0">{{user.about_me}}</p>
@@ -83,21 +82,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4 text-body">
                   <p class="lead fw-normal mb-0">Recent Posts</p>
-
                 </div>
-              
-
-                <!-- only for sample image posts -->
-                <!-- <div class="row g-2">
-                  <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp" alt="image 1"
-                      class="w-100 rounded-3">
-                  </div>
-                  <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp" alt="image 1"
-                      class="w-100 rounded-3">
-                  </div>
-                </div> -->
                 {% for post in posts %}
                   {% include "_post1.html"%}
                 <br>
@@ -105,11 +90,8 @@
 
                  <!-- pagination -->
                 {% include 'pagination.html' %}
-               
-                
-
               </div>
-            </div>
+         </div>
           </div>
         </div>
       </div>

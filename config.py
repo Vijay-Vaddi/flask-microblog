@@ -18,7 +18,7 @@ class Config:
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     POSTS_PER_PAGE = 5
     LANGUAGES = ['en', 'es']
-    MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')  
+    MS_TRANSLATOR_KEY = '' or os.environ.get('MS_TRANSLATOR_KEY')  
     ELASTICSEARCH_URL=os.environ.get('ELASTICSEARCH_URL')
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_FOLDER= os.path.join(basedir,'app/static/posts_images')

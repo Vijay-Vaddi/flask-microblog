@@ -4,6 +4,7 @@ BareNecessities==0.2.8
 bcc==0.1.10
 blinker==1.8.2
 certifi==2024.2.2
+charset-normalizer==3.3.2
 click==8.1.7
 dnspython==2.6.1
 elastic-transport==8.13.1
@@ -33,6 +34,7 @@ PyJWT==2.8.0
 python-dotenv==1.0.1
 pytz==2024.1
 redis==5.0.4
+requests==2.32.3
 rq==1.16.2
 setuptools==70.0.0
 six==1.16.0

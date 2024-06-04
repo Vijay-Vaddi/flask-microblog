@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
 from app.main.picture_handler import add_pic
+from app.translate import translate
 
 
 @bp.before_request
@@ -282,3 +283,12 @@ def export_posts():
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
     return redirect(url_for('main.user_profile', username=current_user.username))
+
+@bp.route('/translate', methods=['GET', 'POST'])
+@login_required
+def translate_text():
+    data = request.get_json()
+    return {'text': translate(
+        data['text'], data['source_language'],
+        data['dest_language']
+    )}
