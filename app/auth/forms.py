@@ -22,21 +22,24 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField(_l('Register')) 
 
     def validate_username(self, username):
-        errors = []
-        username = username.data
+        username_allowed_chars = re.compile(r'^[a-zA-Z0-9_@]+$')
+        username=username.data
+        errors =[]
+        
         user = User.query.filter_by(username=username).first()
 
         if user is not None:
             errors.append(_('Username is already taken!!'))
-        if len(username) < 5:
-            errors.append(f"Username must be at least 5 characters long.")
-        if not re.search(r'[A-Za-z]', username):
-            errors.append('Must contain at least one letter.')
-        if not re.search(r'[0-9]', username):
-            errors.append('Must contain at least one number.')
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', username):
-            errors.append('Must contain at least one special character.')
+
+        if len(username) > 16:
+            errors.append(f"Length must not exceed 16 characters!!")
+
+        if ' ' in username:
+            errors.append(f"Can not contain empty spaces!")
         
+        if not username_allowed_chars.match(username):
+            errors.append(f"Only alphanumericals and _ @ are allowed!")
+
         if errors:
             raise ValidationError('<br>'.join(errors))
     

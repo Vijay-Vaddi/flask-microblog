@@ -19,12 +19,26 @@ class UpdateUserProfileForm(FlaskForm):
         self.original_username = original_username
     
     def validate_username(self, username):
-        if username.data != self.original_username:
-            user = User.query.filter_by(username=username.data).first()
+        username_allowed_chars = re.compile(r'^[a-zA-Z0-9_@]+$')
+        username=username.data
+        errors =[]
+        
+        if username != self.original_username:
+            user = User.query.filter_by(username=username).first()
             if user is not None:
                 raise ValidationError(_("Username taken. Please use a different username"))
         
+        if len(username) > 16:
+            errors.append(f"Length must not exceed 16 characters!!")
+
+        if ' ' in username:
+            errors.append(f"Can not contain empty spaces!")
         
+        if not username_allowed_chars.match(username):
+            errors.append(f"Only alphanumericals and _ @ are allowed!")
+
+        if errors:
+            raise ValidationError('<br>'.join(errors))
 
 class Postform(FlaskForm):
     post = TextAreaField(_l('Write your post here'), 
