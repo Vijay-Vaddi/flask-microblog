@@ -82,6 +82,8 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
 
+    pwd_reset_token_version = db.Column(db.Integer, default = 0)
+
     def __repr__(self) -> str:
         return f"{self.username} , {self.email}"
     
@@ -120,17 +122,19 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
 
     def get_reset_password_token(self, expiration=600):
         return jwt.encode(
-            {'reset-password':self.id, 'exp':time()+expiration}, 
+            {'reset-password':self.id, 
+             'version':self.pwd_reset_token_version,
+             'exp':time()+expiration}, 
             current_app.config['SECRET_KEY'], algorithm='HS256')
-
+    
     @staticmethod
     def verify_reset_password_token(token):
         # no need for self since user is trying to reset password
         try:
-            id = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])['reset-password']
+            token_data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         except:
             return None
-        return User.query.get(id)
+        return User.query.get(token_data['reset-password']), token_data['version']
     
     def new_messages(self):
         last_read_time = self.last_message_read_time or datetime(1900,1,1)

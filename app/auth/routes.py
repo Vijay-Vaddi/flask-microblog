@@ -76,15 +76,19 @@ def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
-    user = User.verify_reset_password_token(token)
-    if not user:
+    user, version = User.verify_reset_password_token(token)
+    print(user, version, user.pwd_reset_token_version)
+    if not user or version != user.pwd_reset_token_version:
         return redirect(url_for('main.index'))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
+        user.pwd_reset_token_version= user.pwd_reset_token_version+1     
         db.session.commit()
         
         flash(_('Password has been reset'))
+        # add login to revoke token
+
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)

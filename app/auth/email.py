@@ -3,7 +3,7 @@ from app.email import send_email
 
 
 def send_password_reset_email(user):
-    print('inside pass reset email')
+    
     token = user.get_reset_password_token()
     send_email('[flask-blog] reset your password',
                sender=current_app.config['ADMINS'][0], 
