@@ -6,6 +6,7 @@ from wtforms.validators import ValidationError, DataRequired, Length
 from app.models import User
 from flask_babel import _, lazy_gettext as _l
 from flask import request
+import re
 
 class UpdateUserProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
@@ -19,10 +20,11 @@ class UpdateUserProfileForm(FlaskForm):
     
     def validate_username(self, username):
         if username.data != self.original_username:
-            user = User.query.filter_by(username=username)
-
+            user = User.query.filter_by(username=username.data).first()
             if user is not None:
                 raise ValidationError(_("Username taken. Please use a different username"))
+        
+        
 
 class Postform(FlaskForm):
     post = TextAreaField(_l('Write your post here'), 

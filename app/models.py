@@ -119,7 +119,6 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
         return followed_posts.union(self.post).order_by(Post.timestamp.desc())
 
     def get_reset_password_token(self, expiration=600):
-        print('inside user model')
         return jwt.encode(
             {'reset-password':self.id, 'exp':time()+expiration}, 
             current_app.config['SECRET_KEY'], algorithm='HS256')

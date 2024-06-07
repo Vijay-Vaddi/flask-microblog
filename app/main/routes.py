@@ -291,6 +291,7 @@ def export_posts():
 @bp.route('/translate', methods=['GET', 'POST'])
 @login_required
 def translate_text():
+    print('insid ')
     data = request.get_json()
     return {'text': translate(
         data['text'], data['source_language'],

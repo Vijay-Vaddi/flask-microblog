@@ -29,7 +29,8 @@
         <p class="mt-3 mb-4 pb-2">
             <span id="post{{post.id}}">{{ post.body }}
             </span>
-            <span style="display: block;" id ="translation{{post.id}}" ></span>
+            <div><span id ="translation{{post.id}}" ></span></div>
+            
         </p>
         {% if post.post_image %}
         <img src="{{url_for('static', filename='posts_images/'+post.author.username+'/'+post.post_image)}}" 
@@ -67,9 +68,10 @@
                 </button>
             </div>    
             </div>
+        
             {%endif%}
                <!-- tranlate -->
-            {%if  post.language and post.language !=g.locale and post.author != current_user %}
+               {%if  post.language and post.language !=g.locale %}
                <div class="d-inline-flex">
                <div class="col d-flex">
                 <span id="">
@@ -79,6 +81,7 @@
                         '{{post.language}}',
                         '{{g.locale}}')" 
                         class="d-flex align-items-center me-3"><i class="fa fa-language me-2" aria-hidden="true"></i>
+                       
                         <p class="mb-0">{{_('Translate')}}</p>
                     </a></span>
                 </div>
