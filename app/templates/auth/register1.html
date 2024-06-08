@@ -22,7 +22,7 @@
                         {{form.username(class="form-control form-control-lg")}}<br>
                         {{form.username.label(class="form-label")}}
                             {% for error in form.username.errors %}
-                            <span style="color: red;">[{{ error }}]</span><br>
+                            <span style="color: red;">[{{ error | safe }}]</span><br>
                             {% endfor %} 
                       </div>
                     </div>

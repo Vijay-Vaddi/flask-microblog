@@ -243,22 +243,34 @@ def send_message(receiver):
 @bp.route('/messages')
 @login_required
 def messages():
+    sent = request.args.get('sent', False, type=bool)
+
     current_user.last_message_read_time = datetime.now(timezone.utc)
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     
-    page = request.args.get('page', 1, type=1)
-    messages = current_user.messages_received.order_by(
-        Message.timestamp.desc()).paginate(page=page, 
-                                    per_page=current_app.config['POSTS_PER_PAGE'], 
-                                    error_out=False)
+    page = request.args.get('page', 1, type=int)
+
+    if sent: 
+        messages = current_user.messages_sent.order_by(
+            Message.timestamp.desc()).paginate(page=page, 
+                                        per_page=current_app.config['POSTS_PER_PAGE'], 
+                                        error_out=False)
+        title = 'sent'
+    else:
+        messages = current_user.messages_received.order_by(
+            Message.timestamp.desc()).paginate(page=page, 
+                                        per_page=current_app.config['POSTS_PER_PAGE'], 
+                                        error_out=False)
+        title = 'inbox'
+
     total_pages=messages.pages
     next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
   
     return render_template('messages.html', messages=messages, page=page, 
                            total_pages=total_pages, min=min, max=max,
-                           next_url=next_url, prev_url=prev_url, title='inbox')
+                           next_url=next_url, prev_url=prev_url, title=title)
 
 
 @bp.route('/notifications')
