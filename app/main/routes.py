@@ -78,7 +78,7 @@ def user_profile(username):
     prev_url = url_for('main.user_profile', username=username, page=posts.prev_num) \
                                     if posts.has_prev else None
     
-    return render_template('user_profile.html', user=user, posts=posts, title='User Profile',
+    return render_template('user_profile1.html', user=user, posts=posts, title='User Profile',
                            next_url=next_url, prev_url=prev_url, page=page,
                            total_pages=total_pages, min=min, max=max)
 
