@@ -51,7 +51,7 @@
             </div>
             {%endif%}
             <!-- edit and delete -->
-            {% if post.author == current_user and title !='sent' %}
+            {% if post.author == current_user%}
             <div class="d-inline-flex">
             <div class="col">
             <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init class="d-flex align-items-center me-3">
@@ -102,8 +102,13 @@
     </div>
     <div class="modal-body">Are you sure?!!!</div>
     <div class="modal-footer">
+        {% if title == 'sent' %}
+        {% set item = 'message' -%}
+        {%else%}
+        {% set item = 'post' -%}
+        {% endif %}    
         <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
-        <a href="{{url_for('main.delete_post', id=post.id, next=request.url)}}" class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
+        <a href="{{url_for('main.delete_post', id=post.id, next=request.url, item=item)}}" class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
     </div>
     </div>
 </div>

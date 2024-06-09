@@ -16,9 +16,10 @@
             {{form.hidden_tag()}}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
+                <a href="{{url_for('main.user_profile', username=current_user.username)}}">
                 <img class="rounded-circle shadow-1-strong me-3"
                   src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}" alt="avatar"
-                  width="40" height="40" />
+                  width="40" height="40" /></a>
                 <div data-mdb-input-init class="form-outline w-100">
                   {{form.post(class="form-control", cols='35', rows=4)}}
 

@@ -209,9 +209,14 @@ def edit_post(id):
 @bp.route('/delete-post/<id>', methods=['POST', 'GET'])
 @login_required
 def delete_post(id):
+    # 
+    item = request.args.get('item')
+    if item == 'post':
+        del_item = Post.query.get(id) 
+    elif item == 'message':
+        del_item = Message.query.get(id)
     
-    post = Post.query.get(id) 
-    db.session.delete(post)
+    db.session.delete(del_item)
     db.session.commit()
     next_url=request.args.get('next')
     return redirect(next_url)
