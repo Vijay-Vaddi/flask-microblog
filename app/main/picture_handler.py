@@ -16,7 +16,6 @@ def add_pic(pic_upload, post=None):
         userdir = os.path.join(current_app.config['POSTS_FOLDER'], post.author.username)
         os.makedirs(userdir, exist_ok=True)
         file_path = os.path.join(userdir,saved_name)
-        img = img.convert("RGB")
     else:
         # else save in prof pic folder
         saved_name = str(current_user.username)+'.'+extension
@@ -24,7 +23,12 @@ def add_pic(pic_upload, post=None):
                              saved_name)
         output_size = (150,150)
         img.thumbnail(output_size)
-
-    img.save(file_path)
+    
+    # to save gifs
+    if extension == 'gif':
+        img.save(file_path, save_all=True, loop=0, duration=100)
+    else:
+        img = img.convert("RGB")
+        img.save(file_path)
 
     return saved_name
