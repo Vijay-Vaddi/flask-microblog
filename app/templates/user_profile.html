@@ -1,117 +1,140 @@
 {% extends "base.html" %}
+{% import 'bootstrap_wtf_macros.html' as wtf %}
 
 {%block content%}
-<section class="h-100 gradient-custom-2">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center">
-        <div class="col col-lg-9 col-xl-8">
-          <div class="card">
-            <div class="rounded-top text-white d-flex flex-row" style="background-color: #424242; height:200px;">
-              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
-                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                  style="width: 150px; z-index: 1; height: 150px;">
-                    {% if user == current_user %}
-                    <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
+<section class="h-100 d-flex justify-content-center gradient-custom-2 ">
+    <div class="container w-85 w-sm-95 w-md-95 mx-auto py-5 h-100">
+      <div class="card">
+      <div class="card-body p-4 text-black">
+        <div class="row">
+          <!-- profile pic -->
+          <div class="col-auto">
+            <div class="d-inline-flex">
+            <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
+            alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
+            style="width: 150px; z-index: 1; height: 150px;">
+          </div>
+          </div>
+        
+          <!-- greetings and email -->
+          <div class="col align-self-end"">
+            <!-- <div class="d-inline-flex"> -->
+              {% if user == current_user %}
+                  <h5 class="d-flex">Hello {{user.username}}</h5>
+                  <p>Email {{user.email}}</p>
+                      {% else %}
+              <h5>{{user.username}}</h5>
+              {%endif%}
+            <!-- </div> -->
+          </div>  
+        </div>
 
-                    {% elif user.last_seen %}
-                    <p class="text-body" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
-                    {%endif%}
-                    {% if user==current_user and current_user.post.count()>=1 and not current_user.get_task_in_progress('export_posts') %}
-                    <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{ url_for('main.export_posts') }}">
-                         Export posts 
-                    </a>
-                    {%endif%}
+       <!-- last seen edit prof and export posts -->
+        <div class="row d-flex">
+          <div class="col">
+            <div class="d-inline-flex flex-column">
+            {% if user == current_user %}
+              <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
+              {% elif user.last_seen %}
+              <p class="text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
+              {%endif%}
+              {% if user==current_user and current_user.post.count()>=1 and not current_user.get_task_in_progress('export_posts') %}
+              <a class="btn btn-outline-dark text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{ url_for('main.export_posts') }}">
+                    Export posts </a>
+              {%endif%}
+          </div>
+        </div>
+          <!-- post, followers , following count -->
+          <div class="col p-4 text-black bg-body-tertiary">
+            <div class="d-flex text-center py-1 text-body">
+              <div>
+                <p class="mb-1 h5">{{user.post.count()}}</p>
+                <p class="small text-muted mb-0">Posts</p>
               </div>
-              <div class="ms-3" style="margin-top: 130px;">
-                {% if user == current_user %}
-                    <h5>Hello {{user.username}}</h5>
-                    <p>Email {{user.email}}</p>
-                        {% else %}
-                <h5>{{user.username}}</h5>
-                {%endif%}
+              <div class="px-3">
+                <p class="mb-1 h5">{{user.followers.count()}}</p>
+                <p class="small text-muted mb-0">Followers</p>
               </div>
-            </div>
-            <!-- post, followers -->
-            <div class="p-4 text-black bg-body-tertiary">
-              <div class="d-flex justify-content-end text-center py-1 text-body">
-                <div>
-                  <p class="mb-1 h5">{{user.post.count()}}</p>
-                  <p class="small text-muted mb-0">Posts</p>
-                </div>
-                <div class="px-3">
-                  <p class="mb-1 h5">{{user.followers.count()}}</p>
-                  <p class="small text-muted mb-0">Followers</p>
-                </div>
-                <div>
-                  <p class="mb-1 h5">{{user.followed.count()}}</p>
-                  <p class="small text-muted mb-0">Following</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="d-flex pt-1">
-                {% if user!=current_user %}
-                {% if not current_user.is_following(user) %}
-                <a  class="btn btn-primary flex-grow-1" 
-                            href="{{url_for('main.follow', username=user.username)}}">Follow</a>
-                {% else %}
-                <a  class="btn btn-primary flex-grow-1" 
-                            href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a>
-                {% endif %}
-                {% endif %}
-
-                {% if user!=current_user %}
-                <a class="btn btn-primary flex-grow-1" href="{{url_for('main.send_message', receiver=user.username)}}">Message</a>
-                        
-                {% endif %}         
-            </div>
-
-            <div class="card-body p-4 text-black">
-                <!-- about me -->
-                <div class="mb-5  text-body">
-                  <p class="lead fw-normal mb-1">About</p>
-                  
-                  <div class="p-4 bg-body-tertiary">
-                    {%if user.about_me %}
-                    <p class="font-italic mb-0">{{user.about_me}}</p>
-                    {%endif%}
-                    <p class="font-italic mb-1">Web Developer</p>
-                    <p class="font-italic mb-1">Lives in New York</p>
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mb-4 text-body">
-                  <p class="lead fw-normal mb-0">Recent Posts</p>
-
-                </div>
-              
-
-                <!-- only for sample image posts -->
-                <!-- <div class="row g-2">
-                  <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp" alt="image 1"
-                      class="w-100 rounded-3">
-                  </div>
-                  <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp" alt="image 1"
-                      class="w-100 rounded-3">
-                  </div>
-                </div> -->
-                {% for post in posts %}
-                  {% include "_post1.html"%}
-                <br>
-                {% endfor%}
-
-                 <!-- pagination -->
-                {% include 'pagination.html' %}
-               
-                
-
+              <div>
+                <p class="mb-1 h5">{{user.followed.count()}}</p>
+                <p class="small text-muted mb-0">Following</p>
               </div>
             </div>
           </div>
         </div>
+        <!-- follow/unfollow and message -->
+        <div class="row ">
+          <div class="col d-flex pt-1">
+            {% if user!=current_user %}
+                  {% if not current_user.is_following(user) %}
+                  <a  class="btn btn-primary flex-grow-1" 
+                              href="{{url_for('main.follow', username=user.username)}}">Follow</a>
+                  {% else %}
+                  <a  class="btn btn-primary flex-grow-1" 
+                              href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a>
+                  {% endif %}
+            {% endif %}
+          </div>
+          <div class="col d-flex pt-1">
+            {% if user!=current_user %}
+              <a class="btn btn-primary flex-grow-1" href="{{url_for('main.send_message', receiver=user.username)}}"
+              data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{user.username}}"
+              >Message</a>
+            {% endif %}
+          </div>
+        </div>  
+
+        <!-- about me -->
+        <div class="mb-5  text-body">
+          <p class="card-title lead fw-normal mb-1">About</p>
+          <div class="p-4 bg-body-tertiary">
+            {%if user.about_me %}
+            <p class="font-italic mb-0">{{user.about_me}}</p>
+            {%endif%}
+            <p class="font-italic mb-1">Web Developer</p>
+            <p class="font-italic mb-1">Lives in New York</p>
+          </div>
+        </div>
+
+        <!-- recent posts  -->
+        <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+          <p class="card-title lead fw-normal mb-0">Recent Posts</p>
+        </div>
+        {% for post in posts %}
+          {% include "_post1.html"%}
+        <br>
+        {% endfor%}
+        <!-- pagination -->
+        {% include 'pagination.html' %}
       </div>
-    </section>
+    </div>
+    <!-- Modal -->
+  <div class="modal fade" id="exampleModal{{user.username}}" tabindex="-1" aria-labelledby="exampleModalLabel{{user.username}}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel{{user.username}}">Send Message to {{user.username}}</h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{{url_for('main.send_message', receiver=user.username)}}">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div data-mdb-input-init class="form-outline mb-4">
+              {{form.message(class='form-control')}}
+              {{form.message.label(class='form-label')}}
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
+            {{form.submit(class='btn btn-primary')}}
+            <!-- <a href="{{url_for('main.send_message', receiver=user.username )}}" class="btn btn-primary" data-mdb-ripple-init>Confirm</a> -->
+        </div>
+      </form> 
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+</section>
 {% endblock %}

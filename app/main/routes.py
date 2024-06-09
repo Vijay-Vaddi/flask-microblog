@@ -67,7 +67,7 @@ def index():
 @bp.route('/user-profile/<username>')
 @login_required
 def user_profile(username): 
-
+    form = MessageForm()
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     posts = user.post.order_by(Post.timestamp.desc()).paginate(
@@ -78,9 +78,9 @@ def user_profile(username):
     prev_url = url_for('main.user_profile', username=username, page=posts.prev_num) \
                                     if posts.has_prev else None
     
-    return render_template('user_profile1.html', user=user, posts=posts, title='User Profile',
+    return render_template('user_profile.html', user=user, posts=posts, title='User Profile',
                            next_url=next_url, prev_url=prev_url, page=page,
-                           total_pages=total_pages, min=min, max=max)
+                           total_pages=total_pages, min=min, max=max, form=form)
 
 
 @bp.route('/edit-profile', methods=['GET', 'POST'])
@@ -226,7 +226,8 @@ def user_popup(username):
 def send_message(receiver):
     user = User.query.filter_by(username=receiver).first_or_404()
     form = MessageForm()
-
+    # next_url = request.url
+    
     if form.validate_on_submit():
         msg = Message(author = current_user, receiver=user,
                       body=form.message.data)
