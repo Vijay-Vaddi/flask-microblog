@@ -51,7 +51,7 @@
             </div>
             {%endif%}
             <!-- edit and delete -->
-            {% if post.author == current_user %}
+            {% if post.author == current_user and title !='sent' %}
             <div class="d-inline-flex">
             <div class="col">
             <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init class="d-flex align-items-center me-3">
