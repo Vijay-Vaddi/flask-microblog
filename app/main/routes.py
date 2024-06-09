@@ -244,12 +244,14 @@ def send_message(receiver):
 @bp.route('/messages')
 @login_required
 def messages():
+    # to reply and message back
+    form = MessageForm()
+
     sent = request.args.get('sent', False, type=bool)
 
     current_user.last_message_read_time = datetime.now(timezone.utc)
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
-    
     page = request.args.get('page', 1, type=int)
 
     if sent: 
@@ -270,7 +272,7 @@ def messages():
     prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
   
     return render_template('messages.html', messages=messages, page=page, 
-                           total_pages=total_pages, min=min, max=max,
+                           total_pages=total_pages, min=min, max=max, form=form,
                            next_url=next_url, prev_url=prev_url, title=title)
 
 

@@ -44,7 +44,8 @@
             <div class="d-inline-flex">
             <div class="col">
                 <div class="float-end mt-2 pt-1">
-                <a href="{{url_for('main.send_message', receiver=post.author.username)}}"><button class="btn btn-primary">Reply</button></a>    
+                <a data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#sendMessageModal{{post.author.username}}" 
+                ><button class="btn btn-primary">Reply</button></a>    
                 </div>
             </div>
             </div>
@@ -88,6 +89,30 @@
         </div>
 </div>
 </div>
-
-
-           
+     
+  <!-- Modal -->
+  {% if title == 'inbox' %}
+  <div class="modal fade" id="sendMessageModal{{post.author.username}}" tabindex="-1" aria-labelledby="sendMessageModalLabel{{post.author.username}}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="sendMessageModalLabel{{post.author.username}}">Send Message to {{post.author.username}}</h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{{url_for('main.send_message', receiver=post.author.username)}}">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div data-mdb-input-init class="form-outline mb-4">
+              {{form.message(class='form-control')}}
+              {{form.message.label(class='form-label')}}
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
+            {{form.submit(class='btn btn-primary')}}
+        </div>
+      </form> 
+        </div>
+    </div>
+    </div>
+    {%endif%}
