@@ -62,7 +62,8 @@
             </div>
             <div class="d-inline-flex">
             <div class="col">
-                <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))" class="btn-link-style d-flex align-items-center me-3" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
+                <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))" class="btn-link-style d-flex align-items-center me-3" 
+                data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
                     <i class="fas fa-trash me-2"></i>
                     <p class="mb-0" >Delete</p>
                 </button>
@@ -90,7 +91,25 @@
 </div>
 </div>
      
-  <!-- Modal -->
+<!-- delete post Modal -->
+
+<div class="modal fade" id="exampleModal{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{post.id}}" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel{{post.id}}">Delete Post!!</h5>
+        <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">Are you sure?!!!</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
+        <a href="{{url_for('main.delete_post', id=post.id)}}" class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
+    </div>
+    </div>
+</div>
+</div>
+
+  <!-- send messag Modal -->
   {% if title == 'inbox' %}
   <div class="modal fade" id="sendMessageModal{{post.author.username}}" tabindex="-1" aria-labelledby="sendMessageModalLabel{{post.author.username}}" aria-hidden="true">
     <div class="modal-dialog">
@@ -99,7 +118,7 @@
             <h5 class="modal-title" id="sendMessageModalLabel{{post.author.username}}">Send Message to {{post.author.username}}</h5>
             <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="POST" action="{{url_for('main.send_message', receiver=post.author.username)}}">
+        <form method="POST" action="{{url_for('main.send_message', current_page='inbox', receiver=post.author.username)}}">
         <div class="modal-body">
             {{form.hidden_tag()}}
             <div data-mdb-input-init class="form-outline mb-4">

@@ -1,6 +1,6 @@
 from app.main import bp
 from flask import redirect, render_template, flash, url_for, \
-                            request, current_app, g
+                            request, current_app, g, session
 from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
                             SearchForm, MessageForm
 from flask_login import current_user, login_required
@@ -19,6 +19,10 @@ def before_request():
         db.session.commit()
         g.search_form = SearchForm()
     g.locale = str(get_locale())
+
+    if request.endpoint and request.endpoint!='static':
+        session['last_endpoint'] = request.endpoint
+        session['last_args'] = request.view_args
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -226,7 +230,6 @@ def user_popup(username):
 def send_message(receiver):
     user = User.query.filter_by(username=receiver).first_or_404()
     form = MessageForm()
-    # next_url = request.url
     
     if form.validate_on_submit():
         msg = Message(author = current_user, receiver=user,
@@ -235,7 +238,10 @@ def send_message(receiver):
         user.add_notification('unread_message_count', user.new_messages())
         db.session.commit()
         flash('Message sent successfully!')
-        return redirect(url_for('main.user_profile', username=receiver))
+        if request.args.get('current_page') == 'inbox':
+            return redirect(url_for('main.messages'))
+        elif request.args.get('current_page') == 'user_profile':
+            return redirect(url_for('main.user_profile', username=receiver))
     
     return render_template('send_message.html', title='Send message',
                            form=form, receiver=receiver)
