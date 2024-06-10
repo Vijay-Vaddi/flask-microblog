@@ -53,6 +53,7 @@
         />
       </a>
       <!-- Left links -->
+       {% if current_user.is_authenticated %}
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
@@ -75,6 +76,7 @@
             <i class="fas fa-search"></i>
           </span>
         </form>
+        {%endif%}
         {%endif%}
       </ul>
       <!-- Left links -->
@@ -185,37 +187,6 @@
     }, 5000);
   });
   </script>
-  
-  <!-- set active to tabs in messages -->
-  <!-- <script type="text/javascript">
-    // wont work due to mgs being loaded from same route
-    // get main div element contain
-    document.addEventListener("DOMContentLoaded", function(){
-      const msg=document.getElementById('messagesTabs');
-
-    // get all list items inside
-    const msg_types = msg.getElementsByClassName('nav-link');
-  
-    // remove current active and set active to onclick elem
-    for( i=0; i < msg_types.length; i++){
-      
-      console.log('Attaching click event to:', msg_types[i]);
-
-      msg_types[i].addEventListener("click", function(){
-        console.log('Click detected on:', this);
-        const current_tab = msg.getElementsByClassName("active");
-        console.log('here ', current_tab)
-
-        if (current_tab.length>0){
-          current_tab[0].classList.remove("active")
-        }
-        // current_tab[0].className = current_tab[0].className.replace("active", "");
-        this.classList.add("active") // +="active"; 
-      });
-    }
-    });
-    
-  </script> -->
 
 <script type="text/javascript">
     //for translation

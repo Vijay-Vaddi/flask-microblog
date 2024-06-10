@@ -56,8 +56,8 @@
         {% elif title == 'Explore' %}
         <h2 class="mb-3">Public Feed</h2>
         {%endif%}
-        {% for post in posts %}
-        {% include "_post1.html"%}
+        {% for post in posts %}  
+          {% include "_post1.html"%}
         <br>
         {% endfor%}
       </div>

@@ -2,13 +2,21 @@
 {% import 'bootstrap_wtf_macros.html' as wtf %}
 
 {%block content%}
-<section class="h-100 gradient-custom-2 ">
-    <div class="container w-80 w-sm-95 w-md-95 mx-auto py-5 h-100">
+<section class="background-color:whitesmoke">
+    <div class="container my-5 py-2">
+      <div class="row d-flex justify-content-center">
+          
+        <!-- profile pic -->
+        <div class="col-auto">
       <div class="card">
-      <div class="card-body p-4 text-black">
+
+        <div class="card-body p-4 text-black">
+
         <div class="row d-flex justify-content-center">
+          
           <!-- profile pic -->
           <div class="col-auto">
+           
             <div class="d-inline-flex">
             <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
             alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
@@ -132,5 +140,8 @@
     </div>
     </div>
   </div>
+  </div>
+  </div>
+
 </section>
 {% endblock %}
