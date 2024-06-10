@@ -58,7 +58,13 @@
           <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Team</a>
+          <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
+            {% set new_messages_count = current_user.new_messages() %}
+            <i class="fas fa-comment-alt"></i>
+          <span id="message_count" style="visibility: {% if new_messages_connt%}visible
+            {%else%}hidden {%endif%};" class="badge rounded-pill badge-notification bg-danger">
+            {{new_messages_count}}</span>
+        </a>
         </li>
 
         {%if g.search_form %}
@@ -89,17 +95,6 @@
       </ul>
       {% else %}
       <!-- Avatar -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 pr-4">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
-            {% set new_messages_count = current_user.new_messages() %}
-            <i class="fas fa-comment-alt"></i>
-          <span id="message_count" style="visibility: {% if new_messages_connt%}visible
-            {%else%}hidden {%endif%};" class="badge rounded-pill badge-notification bg-danger">
-            {{new_messages_count}}</span>
-        </a>
-        </li>
-      </ul>
       <div class="dropdown">
         <a
           data-mdb-dropdown-init
@@ -109,7 +104,7 @@
           role="button"
           aria-expanded="false"
         >
-          <img
+          <span class="px-2" >Hello, {{current_user.username}}</span><img
             src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
             class="rounded-circle"
             height="25"
@@ -189,9 +184,40 @@
       $(".alert").alert('close');
     }, 5000);
   });
-
   </script>
-  <script type="text/javascript">
+  
+  <!-- set active to tabs in messages -->
+  <!-- <script type="text/javascript">
+    // wont work due to mgs being loaded from same route
+    // get main div element contain
+    document.addEventListener("DOMContentLoaded", function(){
+      const msg=document.getElementById('messagesTabs');
+
+    // get all list items inside
+    const msg_types = msg.getElementsByClassName('nav-link');
+  
+    // remove current active and set active to onclick elem
+    for( i=0; i < msg_types.length; i++){
+      
+      console.log('Attaching click event to:', msg_types[i]);
+
+      msg_types[i].addEventListener("click", function(){
+        console.log('Click detected on:', this);
+        const current_tab = msg.getElementsByClassName("active");
+        console.log('here ', current_tab)
+
+        if (current_tab.length>0){
+          current_tab[0].classList.remove("active")
+        }
+        // current_tab[0].className = current_tab[0].className.replace("active", "");
+        this.classList.add("active") // +="active"; 
+      });
+    }
+    });
+    
+  </script> -->
+
+<script type="text/javascript">
     //for translation
     async function translate(source_Elem, dest_Elem, source_Lang, dest_lang) {
       document.getElementById(dest_Elem).innerHTML = "<img src=\"{{url_for('static', filename='loading.gif')}}\">";
