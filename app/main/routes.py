@@ -53,8 +53,9 @@ def index():
         return redirect(url_for('main.index'))
     
     page = request.args.get('page', 1, type=int)
-    posts = current_user.followed_posts().paginate(
-        page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    posts = current_user.followed_posts().filter(Post.user_id!=current_user.id).paginate(
+        page=page, per_page=current_app.config['POSTS_PER_PAGE'], 
+                    error_out=False)
     total_pages=posts.pages
 
     next_url = url_for('main.index', page=posts.next_num) \
