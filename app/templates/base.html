@@ -188,6 +188,39 @@
   });
   </script>
 
+
+<script type="text/javascript">
+  // for submitting comments
+  async function postComment(event, post_id){
+    event.preventDefault();
+    const post = event.target.dataset.post_id;
+    const form = event.target;
+    const formData = new FormData(form);
+    try {
+      const response = await fetch('/comment/'+post,{
+        method:'POST',
+        body: formData,
+      });
+      if (!response.ok){
+        throw new Error('Network  response failed', response.statusText);
+      }
+      const result = await response.json();
+      console.log('after jsoniyf', result)
+      document.getElementById('newComment').innerHTML="<p></p>"
+      document.getElementById('newComment').innerText = result;    
+      form.reset();
+    }
+    catch(error) {
+      console.error('There was a problem:', error);
+      alert('Failed to post!')
+    }
+  }
+
+
+</script>
+
+
+
 <script type="text/javascript">
     //for translation
     async function translate(source_Elem, dest_Elem, source_Lang, dest_lang) {

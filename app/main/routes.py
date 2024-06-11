@@ -1,6 +1,6 @@
 from app.main import bp
 from flask import redirect, render_template, flash, url_for, \
-                            request, current_app, g, session
+                            request, current_app, g, session, jsonify
 from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
                             SearchForm, MessageForm, CommentForm
 from flask_login import current_user, login_required
@@ -76,16 +76,16 @@ def comment(post_id):
     form = CommentForm()
     
     post = Post.query.filter_by(id=post_id).first_or_404()
-    
+    body = form.body.data
     if form.validate_on_submit():
-        comment = Comment(body=form.body.data, author=current_user,
+        comment = Comment(body=body, author=current_user,
                           post=post)
         
         db.session.add(comment)
         db.session.commit()
-
+        print('posted comment')
         flash('Comment posted')
-        return None
+        return jsonify(body) 
     
     # else add exception 
     

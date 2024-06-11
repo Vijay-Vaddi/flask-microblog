@@ -91,7 +91,8 @@
         <!--add post like button, 
         add comment submit form and comment list forms -->
         {% if title == 'Home' or title == 'Explore' %}
-        <form action="{{url_for('main.comment', post_id=post.id)}}" method="POST" >
+        <!-- <form action="{{url_for('main.comment', post_id=post.id)}}" method="POST" > -->
+        <form action="#" data-post_id="{{post.id}}" onsubmit="postComment(event, this.dataset.post_id);" >
             {{comment_form.hidden_tag()}}
             {{comment_form.body.label(class='form-label')}}
             {{comment_form.body(class='form-control')}}
@@ -100,15 +101,20 @@
         {%endif%}
          <!-- for comment in post.comment print comment-->
         <ul>
+            
             {% for comment in post.comment%}
             <li>
+                <span id = "newComment{{post.id}}">
+                    
+                </span>
                 {{comment.body}}
+                
             </li>
             {% endfor %}
         </ul>
 </div>
 </div>
-     
+
 <!-- delete post Modal -->
 
 <div class="modal fade" id="exampleModal{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{post.id}}" aria-hidden="true">
