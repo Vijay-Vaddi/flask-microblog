@@ -58,6 +58,10 @@ class SearchForm(FlaskForm):
         
         super(SearchForm, self).__init__(*args, **kwargs)
 
+class CommentForm(FlaskForm):
+    body = StringField("Add comment", validators=[DataRequired(),Length(min=1, max=160)])
+    submit = SubmitField('Submit')
+
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
 

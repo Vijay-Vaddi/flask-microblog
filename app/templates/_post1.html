@@ -88,6 +88,24 @@
             {% endif %}
          </div>
         </div>
+        <!--add post like button, 
+        add comment submit form and comment list forms -->
+        {% if title == 'Home' or title == 'Explore' %}
+        <form action="{{url_for('main.comment', post_id=post.id)}}" method="POST" >
+            {{comment_form.hidden_tag()}}
+            {{comment_form.body.label(class='form-label')}}
+            {{comment_form.body(class='form-control')}}
+            {{comment_form.submit()}}
+        </form>
+        {%endif%}
+         <!-- for comment in post.comment print comment-->
+        <ul>
+            {% for comment in post.comment%}
+            <li>
+                {{comment.body}}
+            </li>
+            {% endfor %}
+        </ul>
 </div>
 </div>
      

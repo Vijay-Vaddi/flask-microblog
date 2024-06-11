@@ -79,6 +79,10 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
+    # post comment 
+    comment = db.relationship('Comment', backref='author', lazy='dynamic')
+
+    # for API endpoints
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
 
@@ -270,14 +274,30 @@ class SearchableMixin(object):
 class Post(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.String(280))
-    timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc)   )
+    timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     language = db.Column(db.String(5))
     post_image = db.Column(db.String(128))
     __searchable__ = ['body']
+    comment = db.relationship('Comment', backref='post', lazy='dynamic')
+    likes = db.Column(db.Integer)
 
     def __repr__(self) -> str:
         return f"{self.body}"
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(160), index=True)
+    timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    commentor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    likes = db.Column(db.Integer)
+
+    def __repr__(self) -> str:
+        return f"{self.body}"
+
+    
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -318,8 +338,6 @@ class Task(db.Model):
     def get_progress(self):
         job = self.get_rq_job()
         return job.meta.get('progress', 0) if job is not None else 100
-
-
 
 #to hook before_commit, after_commit event handlers to SQLalchemy event listeners
 db.event.listen(db.session, 'before_commit', Post.before_commit)

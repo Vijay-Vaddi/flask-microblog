@@ -58,7 +58,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item pr-3">
           <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
             {% set new_messages_count = current_user.new_messages() %}
             <i class="fas fa-comment-alt"></i>
@@ -106,7 +106,7 @@
           role="button"
           aria-expanded="false"
         >
-          <span class="px-2" >Hello, {{current_user.username}}</span><img
+          <span class="px-2" ></span><img
             src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
             class="rounded-circle"
             height="25"

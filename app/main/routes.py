@@ -2,9 +2,9 @@ from app.main import bp
 from flask import redirect, render_template, flash, url_for, \
                             request, current_app, g, session
 from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
-                            SearchForm, MessageForm
+                            SearchForm, MessageForm, CommentForm
 from flask_login import current_user, login_required
-from app.models import db, User, Post, Message, Notification
+from app.models import db, User, Post, Message, Notification, Comment
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
@@ -29,7 +29,7 @@ def before_request():
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    
+    comment_form = CommentForm()
     form = Postform()
     if form.validate_on_submit():
         try:
@@ -66,8 +66,29 @@ def index():
 
     return render_template("index.html", title='Home', page=page, max=max, min=min,
                            posts=posts.items, form=form, total_pages=total_pages, 
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url, comment_form=comment_form)
 
+
+# for posting comments
+@bp.route('/comment/<post_id>', methods=['GET', 'POST'])
+@login_required
+def comment(post_id):
+    form = CommentForm()
+    
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    
+    if form.validate_on_submit():
+        comment = Comment(body=form.body.data, author=current_user,
+                          post=post)
+        
+        db.session.add(comment)
+        db.session.commit()
+
+        flash('Comment posted')
+        return None
+    
+    # else add exception 
+    
 
 @bp.route('/user-profile/<username>')
 @login_required
@@ -151,6 +172,7 @@ def unfollow(username):
 @bp.route('/explore/')
 @login_required
 def explore():
+    comment_form = CommentForm()
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
@@ -160,7 +182,7 @@ def explore():
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items, 
                            max=max, min=min, next_url=next_url, prev_url=prev_url, 
-                           total_pages=total_pages, page=page) 
+                           total_pages=total_pages, page=page, comment_form=comment_form) 
 
 
 @bp.route('/search', methods=['GET'])
