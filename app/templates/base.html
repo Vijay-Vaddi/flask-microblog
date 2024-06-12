@@ -190,6 +190,45 @@
 
 
 <script type="text/javascript">
+  // edit comment
+  async function submitEditComment(event, comment_id){
+    event.preventDefault();
+    const id = comment_id;
+    const form = event.target;
+    const formData = new FormData(form);
+    console.log(comment_id, formData);
+    try {
+      const response = await fetch('/edit-comment/'+id,{
+        method:'POST',
+        body: formData,
+      });
+      if (!response.ok){
+        throw new Error('Network  response failed', response.statusText);
+      }
+    
+    const result = await response.json();
+
+    // hide form, display comment body
+    const commentBody = document.getElementById('comment-body-'+id);
+    const editForm = document.getElementById('edit-comment-form-'+id);
+    
+    if (commentBody.classList.contains('d-none')){
+     editForm.classList.add('d-none');
+      commentBody.classList.remove('d-none');
+      commentBody.innerText = result.text;
+    }else{
+      editForm.classList.remove('d-none');
+      commentBody.classList.add('d-none');
+    }
+      form.reset();
+    }
+    catch(error) {
+      console.error('There was a problem:', error);
+      alert('Failed to post!');
+    }
+  };
+
+  
   // for submitting comments
   async function postComment(event, post_id){
     event.preventDefault();
