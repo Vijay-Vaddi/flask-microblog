@@ -221,14 +221,15 @@
   }
 
   // toggle edit to post comment 
-  function toggleEditForm(id){
+  function toggleEditForm(event, id, body){
+    event.preventDefault();
+    console.log(id, body)
     const commentBody = document.getElementById('comment-body-'+id);
     const editForm = document.getElementById('edit-comment-form-'+id);
     if (editForm.classList.contains('d-none')){
      commentBody.classList.add('d-none');
-
-      console.log(commentBody.classList)
       editForm.classList.remove('d-none');
+      editForm[1].value= body;
     }else{
       editForm.classList.add('d-none');
       commentBody.classList.remove('d-none')
