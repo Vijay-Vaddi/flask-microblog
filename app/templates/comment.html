@@ -1,7 +1,38 @@
 <!-- vars, comment body, id, author, time, like count -->
- <!-- operations , edit(author), delete(post author and author), hide/show limited comments -->
-  <!-- urls : edit and delete,  -->
-   <!-- edit modal : redirect to postComment() js with same id -->
-    <!-- delete modal : submit delete request -->
+<!-- operations , edit(author), delete(post author and author), hide/show limited comments -->
+<!-- urls : edit and delete,  -->
+<!-- edit modal : redirect to postComment() js with same id -->
+<!-- delete modal : submit delete request -->
 
 <!-- line separate from main post/comment form/comments list -->
+
+
+
+<!-- <div class="card-body p-4"> -->
+
+    <div class="d-flex flex-start mt-3">
+        <img class="rounded-circle shadow-1-strong me-3"
+            src="{{url_for('static', filename='profile_pictures/'+comment.author.profile_pic)}}" alt="avatar" width="30"
+            height="30" />
+        <div>
+            <h6 class="fw-bold mb-1">{{comment.author.username}}</h6>
+            <div class="d-flex align-items-center mb-3">
+                <p class="mb-0" style="font-size: 80%;">
+                    {{moment(comment.timestamp).format('LLL')}}
+                    <!-- <span class="badge bg-primary">Pending</span> -->
+                </p>
+                {%if comment.author == current_user %}
+                <a href="#link to edit comment" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                <a href="#link to delete comment" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
+                {%elif post.author == current_user %}
+                <a href="#link to delete comment" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
+                {%endif%}
+                <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+            </div>
+            <p class="mb-0">
+                {{comment.body}}
+            </p>
+        </div>
+    </div>
+<!-- </div> -->
+<hr class="my-0" style="height: 1px;" />
