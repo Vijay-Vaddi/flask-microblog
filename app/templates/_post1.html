@@ -4,12 +4,11 @@
         <div class="d-flex flex-start align-items-center">
             <a href="{{ url_for('main.user_profile', username=post.author.username) }}">
                 <img class="rounded-circle shadow-1-strong me-3"
-                    src="{{url_for('static', filename='profile_pictures/'+post.author.profile_pic)}}" alt="avatar" width="60"
-                    height="60" /></a>
+                    src="{{url_for('static', filename='profile_pictures/'+post.author.profile_pic)}}" alt="avatar"
+                    width="60" height="60" /></a>
             <div>
                 {% set user_link %}
-                <a class="user_popup"
-                    href="{{ url_for('main.user_profile', username=post.author.username) }}">
+                <a class="user_popup" href="{{ url_for('main.user_profile', username=post.author.username) }}">
                     <h6 class="fw-bold text-primary mb-1">{{ post.author.username }}</h6>
                 </a>
                 {% endset %}
@@ -17,7 +16,7 @@
                 <p class="text-muted small mb-0">
                     {%if title == 'inbox'%}
                     {{user_link}} sent {{ moment(post.timestamp).fromNow().format('LLL') }}
-                    
+
                     {% else %}
                     {{user_link}} said {{ moment(post.timestamp).fromNow().format('LLL')}}
                     {% endif %}
@@ -29,81 +28,95 @@
         <p class="mt-3 mb-4 pb-2">
             <span id="post{{post.id}}">{{ post.body }}
             </span>
-            <span style="display: block;" id ="translation{{post.id}}" ></span>
+            <span style="display: block;" id="translation{{post.id}}"></span>
         </p>
         {% if post.post_image %}
-        <img src="{{url_for('static', filename='posts_images/'+post.author.username+'/'+post.post_image)}}" 
-                                class="card-img-top" alt="Fissure in Sandstone"/>
+        <img src="{{url_for('static', filename='posts_images/'+post.author.username+'/'+post.post_image)}}"
+            class="card-img-top" alt="Fissure in Sandstone" />
         {%endif%}
 
         <!-- edit, delete, reply buttons -->
-         <div class="row">
+        <div class="row">
             <div class="d-inline-flex">
-            {% if title == 'inbox' %}
-            <!-- reply for inbox -->
-            <div class="d-inline-flex">
-            <div class="col">
-                <div class="float-end mt-2 pt-1">
-                <a data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#sendMessageModal{{post.author.username}}" 
-                ><button class="btn btn-primary">Reply</button></a>    
+                <!-- likes -->
+                <div class="d-inline-flex">
+                    <div class="col">
+                        <a href="#" data-mdb-ripple-init
+                            class="d-flex align-items-center me-3">
+                            <i class="fas fa-heart me-2"></i>
+                            <p class="mb-0">Likes</p>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            </div>
-            {%endif%}
-            <!-- edit and delete -->
-            {% if post.author == current_user%}
-            <div class="d-inline-flex">
-            <div class="col">
-            <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init class="d-flex align-items-center me-3">
-                <i class="fas fa-edit me-2"></i>
-                <p class="mb-0">Edit</p>
-            </a>
-            </div>
-            </div>
-            <div class="d-inline-flex">
-            <div class="col">
-                <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))" class="btn-link-style d-flex align-items-center me-3" 
-                data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
-                    <i class="fas fa-trash me-2"></i>
-                    <p class="mb-0" >Delete</p>
-                </button>
-            </div>    
-            </div>
-            {%endif%}
-               <!-- tranlate -->
-            {%if  post.language and post.language !=g.locale and post.author != current_user %}
-               <div class="d-inline-flex">
-               <div class="col d-flex">
-                <span id="">
-                    <a href="javascript:translate(
+
+                {% if title == 'inbox' %}
+                <!-- reply for inbox -->
+                <div class="d-inline-flex">
+                    <div class="col">
+                        <div class="float-end mt-2 pt-1">
+                            <a data-mdb-ripple-init data-mdb-modal-init
+                                data-mdb-target="#sendMessageModal{{post.author.username}}"><button
+                                    class="btn btn-primary">Reply</button></a>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
+                <!-- edit and delete -->
+                {% if post.author == current_user%}
+                <div class="d-inline-flex">
+                    <div class="col">
+                        <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init
+                            class="d-flex align-items-center me-3">
+                            <i class="fas fa-edit me-2"></i>
+                            <p class="mb-0">Edit</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-inline-flex">
+                    <div class="col">
+                        <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))"
+                            class="btn-link-style d-flex align-items-center me-3" data-mdb-ripple-init
+                            data-mdb-modal-init data-mdb-target="#exampleModal{{post.id}}">
+                            <i class="fas fa-trash me-2"></i>
+                            <p class="mb-0">Delete</p>
+                        </button>
+                    </div>
+                </div>
+                {%endif%}
+                <!-- tranlate -->
+                {%if post.language and post.language !=g.locale and post.author != current_user %}
+                <div class="d-inline-flex">
+                    <div class="col d-flex">
+                        <span id="">
+                            <a href="javascript:translate(
                         'post{{post.id}}',
                         'translation{{post.id}}',
                         '{{post.language}}',
-                        '{{g.locale}}')" 
-                        class="d-flex align-items-center me-3"><i class="fa fa-language me-2" aria-hidden="true"></i>
-                        <p class="mb-0">{{_('Translate')}}</p>
-                    </a></span>
+                        '{{g.locale}}')" class="d-flex align-items-center me-3"><i class="fa fa-language me-2"
+                                    aria-hidden="true"></i>
+                                <p class="mb-0">{{_('Translate')}}</p>
+                            </a></span>
+                    </div>
                 </div>
-               </div>
-            {% endif %}
-         </div>
+                {% endif %}
+            </div>
         </div>
         <!--add post like button, 
         add comment submit form and comment list forms -->
         {% if title == 'Home' or title == 'Explore' %}
         <hr className="hr hr-blurry" />
         <div class="row d-flex ">
-            <div class="col-auto" >
+            <div class="col-auto">
                 <div class="d-inline-flex">
-                <a href="{{ url_for('main.user_profile', username=post.author.username) }}">
+                    <a href="{{ url_for('main.user_profile', username=post.author.username) }}">
                         <img class="rounded-circle shadow-1-strong me-3"
-                            src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}" alt="avatar" width="40"
-                            height="40" /></a>
-                <!-- <form action="{{url_for('main.comment', post_id=post.id)}}" method="POST" > -->
+                            src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
+                            alt="avatar" width="40" height="40" /></a>
+                    <!-- <form action="{{url_for('main.comment', post_id=post.id)}}" method="POST" > -->
                 </div>
             </div>
-                <div class="col">    
-                <form action="#" data-post_id="{{post.id}}" onsubmit="postComment(event, this.dataset.post_id);" >
+            <div class="col">
+                <form action="#" data-post_id="{{post.id}}" onsubmit="postComment(event, this.dataset.post_id);">
                     {{comment_form.hidden_tag()}}
                     <!-- {{comment_form.body.label(class='form-label')}} -->
                     {{comment_form.body(class='form-control', placeholder='Add comment')}}
@@ -112,71 +125,80 @@
             </div>
         </div>
         {%endif%}
-         
+
         <!-- for comment in post.comment print comment-->
         <!-- <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10"> -->
-                <div class="mt-3 text-body">
-                    {% for comment in post.comment %}
-                    {% include 'comment.html'%}
-                    {%endfor%}
-                </div>
-            <!-- </div>
+        <div class="mt-3 text-body">
+            {% for comment in post.comment %}
+            {% include 'comment.html'%}
+            {%endfor%}
+        </div>
+        <!-- </div>
             </div> -->
-        
-        <div id = "newComment">
-                </div>
-                <!--  -->
-        
-</div>
+
+        <div id="newComment">
+        </div>
+        <!--  -->
+
+    </div>
 </div>
 
 <!-- delete post Modal -->
 
-<div class="modal fade" id="exampleModal{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{post.id}}" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel{{post.id}}">Delete Post!!</h5>
-        <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">Are you sure?!!!</div>
-    <div class="modal-footer">
-        {% if title == 'sent' %}
-        {% set item = 'message' -%}
-        {%else%}
-        {% set item = 'post' -%}
-        {% endif %}    
-        <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
-        <a href="{{url_for('main.delete_post', id=post.id, next=request.url, item=item)}}" class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
-    </div>
-    </div>
-</div>
-</div>
-
-  <!-- send messag Modal -->
-  {% if title == 'inbox' %}
-  <div class="modal fade" id="sendMessageModal{{post.author.username}}" tabindex="-1" aria-labelledby="sendMessageModalLabel{{post.author.username}}" aria-hidden="true">
+<div class="modal fade" id="exampleModal{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{post.id}}"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="sendMessageModalLabel{{post.author.username}}">Send Message to {{post.author.username}}</h5>
-            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="POST" action="{{url_for('main.send_message', current_page='inbox', receiver=post.author.username)}}">
-        <div class="modal-body">
-            {{form.hidden_tag()}}
-            <div data-mdb-input-init class="form-outline mb-4">
-              {{form.message(class='form-control')}}
-              {{form.message.label(class='form-label')}}
-          </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
-            {{form.submit(class='btn btn-primary')}}
-        </div>
-      </form> 
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel{{post.id}}">Delete Post!!</h5>
+                <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">Are you sure?!!!</div>
+            <div class="modal-footer">
+                {% if title == 'sent' %}
+                {% set item = 'message' -%}
+                {%else%}
+                {% set item = 'post' -%}
+                {% endif %}
+                <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                    data-mdb-dismiss="modal">Close</button>
+                <a href="{{url_for('main.delete_post', id=post.id, next=request.url, item=item)}}"
+                    class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
+            </div>
         </div>
     </div>
+</div>
+
+<!-- send messag Modal -->
+{% if title == 'inbox' %}
+<div class="modal fade" id="sendMessageModal{{post.author.username}}" tabindex="-1"
+    aria-labelledby="sendMessageModalLabel{{post.author.username}}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sendMessageModalLabel{{post.author.username}}">Send Message to
+                    {{post.author.username}}</h5>
+                <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form method="POST"
+                action="{{url_for('main.send_message', current_page='inbox', receiver=post.author.username)}}">
+                <div class="modal-body">
+                    {{form.hidden_tag()}}
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        {{form.message(class='form-control')}}
+                        {{form.message.label(class='form-label')}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                        data-mdb-dismiss="modal">Close</button>
+                    {{form.submit(class='btn btn-primary')}}
+                </div>
+            </form>
+        </div>
     </div>
-    {%endif%}
+</div>
+{%endif%}

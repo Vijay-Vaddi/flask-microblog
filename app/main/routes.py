@@ -87,7 +87,36 @@ def comment(post_id):
                 'id':comment.id } 
     
     # else add exception 
+
+
+@bp.route('/edit-comment/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_comment(id):
+    comment = Comment.query.get(id)
     
+    if comment:
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment.body = form.body.data
+            db.session.add(comment)
+            db.session.commit()
+            return {'message':'Edit successful',
+                     'text':comment.body}, 200
+    else:
+        return '', 404
+
+
+@bp.route('/delete-comment/<id>', methods=['GET', 'POST'])
+@login_required
+def delete_comment(id):
+    comment = Comment.query.get(id)
+    
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        return {'message':'Comment Deleted'}
+    else:
+        return '', 404
 
 @bp.route('/user-profile/<username>')
 @login_required

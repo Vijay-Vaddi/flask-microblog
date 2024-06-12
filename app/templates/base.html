@@ -205,9 +205,6 @@
         throw new Error('Network  response failed', response.statusText);
       }
       const result = await response.json();
-      console.log('after jsoniyf', result.id, result.text)
-      
-
       const para = document.createElement('p')
       para.setAttribute('id',result.id)
       const node = document.createTextNode(result.text)
@@ -223,6 +220,20 @@
     }
   }
 
+  // toggle edit to post comment 
+  function toggleEditForm(id){
+    const commentBody = document.getElementById('comment-body-'+id);
+    const editForm = document.getElementById('edit-comment-form-'+id);
+    if (editForm.classList.contains('d-none')){
+     commentBody.classList.add('d-none');
+
+      console.log(commentBody.classList)
+      editForm.classList.remove('d-none');
+    }else{
+      editForm.classList.add('d-none');
+      commentBody.classList.remove('d-none')
+    }
+  }
 
 </script>
 

@@ -21,17 +21,24 @@
                     {{moment(comment.timestamp).format('LLL')}}
                     <!-- <span class="badge bg-primary">Pending</span> -->
                 </p>
-                {%if comment.author == current_user %}
-                <a href="#link to edit comment" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                <a href="#link to delete comment" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
-                {%elif post.author == current_user %}
-                <a href="#link to delete comment" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
-                {%endif%}
                 <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                {%if comment.author == current_user %}
+                <a href="#" class="" onclick="toggleEditForm({{comment.id}})" ><i class="fas fa-pencil-alt ms-2"></i></a>
+                <a href="{{url_for('main.delete_comment', id=comment.id )}}" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
+                {%elif post.author == current_user %}
+                <a href="{{url_for('main.delete_comment', id=comment.id )}}" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
+                {%endif%}
+
             </div>
-            <p class="mb-0">
+            <p class="mb-0" id="comment-body-{{comment.id}}">
                 {{comment.body}}
             </p>
+            <form id="edit-comment-form-{{comment.id}}" class="d-none" method="POST" action="#" onsubmit="submitEditComment(event, {{comment.id}})">
+                {{ comment_form.hidden_tag() }}
+                {{ comment_form.body(class='form-control', placeholder=comment.body, value = comment.body) }}
+                <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
+                <button type="button" data-comment_id="{{comment.id}}" class="btn btn-secondary btn-sm mt-2" onclick="toggleEditForm({{comment.id}})">Cancel</button>
+            </form>
         </div>
     </div>
 <!-- </div> -->
