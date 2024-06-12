@@ -83,9 +83,8 @@ def comment(post_id):
         
         db.session.add(comment)
         db.session.commit()
-        print('posted comment')
-        flash('Comment posted')
-        return jsonify(body) 
+        return {'text':body,
+                'id':comment.id } 
     
     # else add exception 
     

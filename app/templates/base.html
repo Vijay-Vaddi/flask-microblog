@@ -205,9 +205,16 @@
         throw new Error('Network  response failed', response.statusText);
       }
       const result = await response.json();
-      console.log('after jsoniyf', result)
-      document.getElementById('newComment').innerHTML="<p></p>"
-      document.getElementById('newComment').innerText = result;    
+      console.log('after jsoniyf', result.id, result.text)
+      
+
+      const para = document.createElement('p')
+      para.setAttribute('id',result.id)
+      const node = document.createTextNode(result.text)
+      para.appendChild(node)
+      console.log('para', para)
+      document.getElementById('newComment').appendChild(para)
+      // document.getElementById('newComment').innerText = result.text;    
       form.reset();
     }
     catch(error) {
