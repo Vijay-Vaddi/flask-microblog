@@ -188,7 +188,6 @@
   });
   </script>
 
-
 <script type="text/javascript">
   // edit comment
   async function submitEditComment(event, comment_id){
@@ -228,7 +227,6 @@
     }
   };
 
-  
   // for submitting comments
   async function postComment(event, post_id){
     event.preventDefault();
@@ -244,14 +242,15 @@
         throw new Error('Network  response failed', response.statusText);
       }
       const result = await response.json();
-      const para = document.createElement('p')
-      para.setAttribute('id',result.id)
-      const node = document.createTextNode(result.text)
-      para.appendChild(node)
-      console.log('para', para)
-      document.getElementById('newComment').appendChild(para)
-      // document.getElementById('newComment').innerText = result.text;    
+    //  change posting comment style 
+      if (result.html){
+        const commentContainer = document.getElementById('comment-lists')
+        commentContainer.insertAdjacentHTML('afterbegin', result.html) 
+      }else{
+        throw new Error('Network  response failed', response.statusText);
+      }  
       form.reset();
+      flask_moment_render_all();
     }
     catch(error) {
       console.error('There was a problem:', error);

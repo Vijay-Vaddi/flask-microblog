@@ -83,8 +83,10 @@ def comment(post_id):
         
         db.session.add(comment)
         db.session.commit()
-        return {'text':body,
-                'id':comment.id } 
+    
+    return jsonify({
+            'html':render_template('comment.html', comment_form=form, comment=comment),
+            'text':comment.body}) 
     
     # else add exception 
 
@@ -92,24 +94,23 @@ def comment(post_id):
 @bp.route('/edit-comment/<id>', methods=['GET', 'POST'])
 @login_required
 def edit_comment(id):
-    comment = Comment.query.get(id)
+    comment = Comment.query.get_or_404(id)
     
-    if comment:
-        form = CommentForm()
-        if form.validate_on_submit():
-            comment.body = form.body.data
-            db.session.add(comment)
-            db.session.commit()
-            return {'message':'Edit successful',
-                     'text':comment.body}, 200
-    else:
-        return '', 404
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment.body = form.body.data
+        db.session.add(comment)
+        db.session.commit()
+    
+    return {'message':'Edit successful',
+                    'text':comment.body}
+    
 
 
 @bp.route('/delete-comment/<id>', methods=['GET', 'POST'])
 @login_required
 def delete_comment(id):
-    comment = Comment.query.get(id)
+    comment = Comment.query.get_or_404(id)
     
     if comment:
         db.session.delete(comment)
