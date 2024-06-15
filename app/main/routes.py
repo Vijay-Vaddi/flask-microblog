@@ -82,7 +82,7 @@ def comment(post_id):
                           post=post)
         
         db.session.add(comment)
-        db.session.commit()
+        db.session.commit() 
     
     return jsonify({
             'html':render_template('comment.html', comment_form=form, comment=comment),
