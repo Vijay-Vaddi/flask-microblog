@@ -52,7 +52,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique = True)
     email = db.Column(db.String(128), index=True, unique = True)
     password_hash = db.Column(db.String(256))
-    post = db.relationship('Post', backref='author', lazy='dynamic')
+    post = db.relationship('Post', backref='author', cascade="all, delete-orphan", lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -67,15 +67,15 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     
     # relationships for message table
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', 
-                                   backref='author', lazy='dynamic')
+                                   backref='author', cascade="all, delete-orphan", lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.receiver_id',
-                                        backref='receiver', lazy='dynamic')
+                                        backref='receiver', cascade="all, delete-orphan", lazy='dynamic')
     
     last_message_read_time = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     # relationship for notifications table
     notifications = db.relationship('Notification', backref='user',
-                              lazy='dynamic')
+                              lazy='dynamic', cascade="all, delete-orphan")
     
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
@@ -279,11 +279,12 @@ class Post(SearchableMixin, db.Model):
     language = db.Column(db.String(5))
     post_image = db.Column(db.String(128))
     __searchable__ = ['body']
-    comment = db.relationship('Comment', backref='post', lazy='dynamic')
+    comment = db.relationship('Comment', backref='post',cascade="all, delete-orphan", lazy='dynamic')
     likes = db.Column(db.Integer)
 
     def __repr__(self) -> str:
         return f"{self.body}"
+
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -297,8 +298,6 @@ class Comment(db.Model):
         return f"{self.body}"
 
     
-
-
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -308,6 +307,7 @@ class Message(db.Model):
 
     def __repr__(self) -> str:
         return f"Message {self.body}"
+
 
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -320,6 +320,7 @@ class Notification(db.Model):
 
     def get_data(self):
         return json.loads(str(self.payload_json))
+
 
 class Task(db.Model):
     id = db.Column(db.String(36), primary_key=True)

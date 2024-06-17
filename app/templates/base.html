@@ -264,8 +264,10 @@
   // toggle edit to post comment 
   function toggleEditForm(event, id, body){
     event.preventDefault();
+    
     const commentBody = document.getElementById('comment-body-'+id);
     const editForm = document.getElementById('edit-comment-form-'+id);
+    
     if (editForm.classList.contains('d-none')){
      commentBody.classList.add('d-none');
       editForm.classList.remove('d-none');

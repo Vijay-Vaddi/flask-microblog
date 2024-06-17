@@ -15,9 +15,9 @@
         <div class="row d-flex justify-content-center">
           
           <!-- profile pic -->
-          <div class="col-auto">
+          <div class="col">
            
-            <div class="d-inline-flex">
+            <div class="d-inline-flex flex-column">
             <img alt="default profile pic" src="{{url_for('static', filename='profile_pictures/'+user.profile_pic)}}"
             alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
             style="width: 150px; z-index: 1; height: 150px;">
@@ -26,14 +26,14 @@
         
           <!-- greetings and email -->
           <div class="col-auto align-self-end"">
-            <!-- <div class="d-inline-flex"> -->
+            <div class="d-inline-flex flex-column">
               {% if user == current_user %}
                   <h5 class="d-flex">Hello {{user.username}}</h5>
                   <p>Email {{user.email}}</p>
                       {% else %}
               <h5>{{user.username}}</h5>
               {%endif%}
-            <!-- </div> -->
+            </div>
           </div>  
         </div>
 

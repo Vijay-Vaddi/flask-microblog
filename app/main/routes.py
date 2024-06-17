@@ -123,6 +123,7 @@ def delete_comment(id):
 @login_required
 def user_profile(username): 
     form = MessageForm()
+    comment_form= CommentForm()
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     posts = user.post.order_by(Post.timestamp.desc()).paginate(
@@ -134,7 +135,7 @@ def user_profile(username):
                                     if posts.has_prev else None
     
     return render_template('user_profile.html', user=user, posts=posts, title='User Profile',
-                           next_url=next_url, prev_url=prev_url, page=page,
+                           next_url=next_url, prev_url=prev_url, page=page, comment_form=comment_form,
                            total_pages=total_pages, min=min, max=max, form=form)
 
 
