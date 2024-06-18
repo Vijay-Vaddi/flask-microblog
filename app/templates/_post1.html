@@ -42,10 +42,19 @@
                 {% if title != 'inbox' and  title != 'sent' %}
                 <div class="d-inline-flex">
                     <div class="col">
-                        <a href="#" data-mdb-ripple-init
+                        <a href="#" 
+                            id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
+                            data-mdb-ripple-init
                             class="d-flex align-items-center me-3">
                             <i class="fas fa-heart me-2"></i>
-                            <p class="mb-0">Likes</p>
+                            {%set like_count = post.likes.count() %}
+                    
+                            <span id="post_like_count-{{post.id}}" style="visibility: {% if like_count %}visible
+                            {%else%}hidden {%endif%};" class="">
+                            {% if like_count %}
+                            {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
+                            {%endif%}
+                            <!-- <p class="mb-0">Likes</p> -->
                         </a>
                     </div>
                 </div>

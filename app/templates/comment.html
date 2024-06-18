@@ -11,13 +11,15 @@
                 <p class="mb-0" style="font-size: 80%;">
                     {{ moment(comment.timestamp).fromNow().format('LLL') }}
                 </p>
-                <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleCommentLike(event, {{comment.id}})" class="link-muted">
+                <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleLike(event, {{comment.id}}, 'comment')" class="link-muted">
                     <i class="fas fa-heart ms-2"></i>
                     {%set like_count = comment.likes.count() %}
-                    <p> {{like_count}}</p>
-                    <span id="comment_like_count-{{comment.id}}" style="visibility: {% if like_count >0 %}visible
+                    
+                    <span id="comment_like_count-{{comment.id}}" style="visibility: {% if like_count %}visible
                     {%else%}hidden {%endif%};" class="">
+                    {% if like_count %}
                     {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
+                    {%endif%}
                 </a>
                 {%if comment.author == current_user %}
                 {% set body = comment.body %}

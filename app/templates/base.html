@@ -196,9 +196,9 @@
 <!-- post and comment likes -->
 <script type="text/javascript" >
 
-  function updateLikeCount(item, commentId, likeCount) {
-    console.log('here', commentId, likeCount)
-    const likeCountSpan = document.getElementById(`${item}-${commentId}`);
+  function updateLikeCount(id, likeCount, item) {
+    
+    const likeCountSpan = document.getElementById(`${item}-${id}`);
     if (likeCount > 0) {
       likeCountSpan.style.visibility = 'visible';
       likeCountSpan.innerText = `${likeCount} like${likeCount !== 1 ? 's' : ''}`;
@@ -209,11 +209,18 @@
     }
   }
 
-  async function toggleCommentLike(event, id){
+  async function toggleLike(event, id, item){
     event.preventDefault();
-    const item = '/comment-like/'
+    if(item=='comment'){
+      likeUrl='/comment-like/';
+      spanIdName = 'comment_like_count';
+    }else if(item=='post'){
+      likeUrl='/post-like/';
+      spanIdName = 'post_like_count';
+    }
+
     try{
-      const response = await fetch(`${item}`+id, {
+      const response = await fetch(`${likeUrl}`+id, {
         method:'POST',
 
       });
@@ -222,10 +229,9 @@
       }
       const result = await response.json();
       const likeCount = result.like_count;
-      console.log(likeCount);
       // use the values to update and display count 
       
-      updateLikeCount('comment_like_count',id, likeCount);
+      updateLikeCount(id, likeCount, spanIdName);
     }
 
     catch(error){
