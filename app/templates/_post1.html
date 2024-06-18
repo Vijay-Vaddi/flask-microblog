@@ -144,9 +144,16 @@
             <div class="col"> 
             <div class="mt-3 text-body" id = "{{post.id}}-comments">
                 <!-- add new comments here -->
+            {%if post.comment %}
+            {% set comment_count = post.comment.count() %}                
+            <a href="#" id="toggle-{{post.id}}-comments-btn"
+            onclick="toggleCommentsDisplay(event, {{post.id}}, {{comment_count}} )" >Show {{comment_count}} comment{{ comment_count != 1 and 's' or '' }}</a>
+            <div id="toggle-{{post.id}}-comments" class="d-none">
             {% for comment in post.comment %}
             {% include 'comment.html'%}
             {%endfor%}
+            </div>
+            {%endif%}
             </div>
         </div>
         </div>

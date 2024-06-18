@@ -192,6 +192,25 @@
     }, 5000);
   });
 </script>
+<script type="text/javascript"> 
+  function toggleCommentsDisplay(event, postId, commentCount){
+    event.preventDefault();
+    const commentsContainer = document.getElementById(`toggle-${postId}-comments`);
+    const toggleCommentBtn = document.getElementById(`toggle-${postId}-comments-btn`)
+
+    if (commentsContainer.classList.contains('d-none')){
+      commentsContainer.classList.remove('d-none');
+      toggleCommentBtn.innerText = `Hide ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
+    }else if(!commentsContainer.classList.contains('d-none')){
+      commentsContainer.classList.add('d-none');
+      toggleCommentBtn.innerText = `Show ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
+      
+    }
+  }
+
+
+</script>
+
 
 <!-- post and comment likes -->
 <script type="text/javascript" >
