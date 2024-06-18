@@ -62,7 +62,7 @@
           <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
             {% set new_messages_count = current_user.new_messages() %}
             <i class="fas fa-comment-alt"></i>
-          <span id="message_count" style="visibility: {% if new_messages_connt%}visible
+          <span id="message_count" style="visibility: {% if new_messages_count%}visible
             {%else%}hidden {%endif%};" class="badge rounded-pill badge-notification bg-danger">
             {{new_messages_count}}</span>
         </a>
@@ -178,15 +178,55 @@
     integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+  <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+  <!-- <script type="text/javascript" src=" {{url_for('static', filename='custom_js/custom_js.js')}} "></script> -->
+  
+
+  
   <!-- auto close flashed messages -->
-  <script type="text/javascript">
+
+<script type="text/javascript">
   $(document).ready(function(){
     setTimeout(function() {
       $(".alert").alert('close');
     }, 5000);
   });
-  </script>
+</script>
+
+<!-- post and comment likes -->
+<script type="text/javascript">
+
+  async function toggleCommentLike(event, id){
+    event.preventDefault();
+
+    try{
+      const response = await fetch('/comment-like/'+id, {
+        method:'POST',
+
+      });
+      if (!response.ok){
+        throw new Error('Network  response failed', response.statusText);
+      }
+
+      const user_id = response.user_id;
+      const like_count = response.like_count;
+      // use the user id to display 
+      
+
+
+
+    }
+    catch(error){
+      console.error('There was a problem', error);
+      alert('Failed to like comment!');
+    }
+  }
+
+
+
+</script>
+
+
 
 <script type="text/javascript">
   // edit comment
@@ -381,7 +421,7 @@
       }
     }
 
-  </script>
+</script> 
 </body>
 
 </html>

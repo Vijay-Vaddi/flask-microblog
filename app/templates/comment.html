@@ -11,10 +11,10 @@
                 <p class="mb-0" style="font-size: 80%;">
                     {{ moment(comment.timestamp).fromNow().format('LLL') }}
                 </p>
-                <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleCommentLike(event, {{comment.id}})" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
                 {%if comment.author == current_user %}
                 {% set body = comment.body %}
-                <a href="#" id="toggleComment-{{comment.id}}" data-comment_body="{{comment.body}}"   class="" onclick="toggleEditForm(event, {{comment.id}}, this.dataset.comment_body )" >
+                <a href="#" id="toggleComment-{{comment.id}}" data-comment_body="{{comment.body}}"   class="link-muted" onclick="toggleEditForm(event, {{comment.id}}, this.dataset.comment_body )" >
                     <i class="fas fa-pencil-alt ms-2"></i></a>
                 <a href="{{url_for('main.delete_comment', id=comment.id )}}" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
                 {%elif post.author == current_user %}

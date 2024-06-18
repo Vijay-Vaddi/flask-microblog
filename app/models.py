@@ -82,6 +82,10 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     # post comment 
     comment = db.relationship('Comment', backref='author', lazy='dynamic')
 
+    # post and comment like
+    post_like = db.relationship('PostLike', backref='author', lazy='dynamic')
+    comment_like = db.relationship('CommentLike', backref='author', lazy='dynamic')
+
     # for API endpoints
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
@@ -280,8 +284,8 @@ class Post(SearchableMixin, db.Model):
     post_image = db.Column(db.String(128))
     __searchable__ = ['body']
     comment = db.relationship('Comment', backref='post',cascade="all, delete-orphan", lazy='dynamic')
-    likes = db.Column(db.Integer)
-
+    likes = db.relationship('PostLike', backref='post', cascade='all, delete-orphan', lazy='dynamic')
+    
     def __repr__(self) -> str:
         return f"{self.body}"
 
@@ -292,12 +296,21 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=lambda: datetime.now(timezone.utc))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     commentor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    likes = db.Column(db.Integer)
+    likes = db.relationship('CommentLike', backref='comment', cascade='all, delete-orphan', lazy='dynamic')
 
     def __repr__(self) -> str:
         return f"{self.body}"
 
-    
+class PostLike(db.Model):
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
+
+class CommentLike(db.Model):
+    comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
+
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))

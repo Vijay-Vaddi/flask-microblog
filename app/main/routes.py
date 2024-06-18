@@ -4,7 +4,8 @@ from flask import redirect, render_template, flash, url_for, \
 from app.main.forms import EmptyForm, Postform, UpdateUserProfileForm, \
                             SearchForm, MessageForm, CommentForm
 from flask_login import current_user, login_required
-from app.models import db, User, Post, Message, Notification, Comment
+from app.models import db, User, Post, Message, Notification, Comment, \
+                            PostLike, CommentLike
 from datetime import datetime, timezone
 from flask_babel import get_locale, _
 from langdetect import detect
@@ -357,11 +358,9 @@ def notifications():
 @bp.route('/export_posts')
 @login_required
 def export_posts():   
-    print('inside export')
     if current_user.get_task_in_progress('export_posts'):
         flash('Export already in progress')
     else:
-        print('inside else')
         current_user.launch_task("export_posts", "Exporting posts")
         db.session.commit()
     return redirect(url_for('main.user_profile', username=current_user.username))
@@ -370,9 +369,57 @@ def export_posts():
 @bp.route('/translate', methods=['GET', 'POST'])
 @login_required
 def translate_text():
-    print('insid ')
     data = request.get_json()
     return {'text': translate(
         data['text'], data['source_language'],
         data['dest_language']
     )}
+
+
+@bp.route('/post-like/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post_like(post_id):
+    post = Post.query.get_or_404(post_id)
+    post_like = PostLike.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    
+    if post_like:
+        db.session.delete(post_like)
+        db.session.commit()
+        return jsonify({'Message': 'unliked',
+                        'post_id':post_id,
+                        'user_id':current_user.id,
+                        'like_count':post.likes.count()}), 200
+    else: 
+        post_like = PostLike(user_id=current_user.id, post_id=post_id)
+        db.session.add(post_like)
+        db.session.commit()
+        return jsonify({'Message': 'liked',
+                        'post_id':post_id,
+                        'user_id':current_user.id,
+                        'like_count':post.likes.count()}), 200
+    
+# 'like_count':comment.likes.count()
+@bp.route('/comment-like/<int:comment_id>', methods=['GET', 'POST'])
+@login_required
+def comment_like(comment_id):
+
+    comment = Comment.query.get_or_404(comment_id)
+    print('comment is ', comment)
+    comment_like = CommentLike.query.filter_by(user_id=current_user.id, comment_id=comment_id).first()
+    print('comment like ', comment_like)
+
+    if comment_like:
+        db.session.delete(comment_like)
+        db.session.commit()
+        return jsonify({'Message': 'unliked',
+                        'comment_id':comment_id,
+                        'user_id':current_user.id,
+                        'like_count':comment.likes.count()}), 200
+    else: 
+        comment_like = CommentLike(user_id=current_user.id, comment_id=comment_id)
+        db.session.add(comment_like)
+        db.session.commit()
+        return jsonify({'Message': 'liked',
+                        'comment_id':comment_id,
+                        'user_id':current_user.id,
+                        'like_count':comment.likes.count()}), 200
