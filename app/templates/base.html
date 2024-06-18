@@ -194,39 +194,46 @@
 </script>
 
 <!-- post and comment likes -->
-<script type="text/javascript">
+<script type="text/javascript" >
+
+  function updateLikeCount(item, commentId, likeCount) {
+    console.log('here', commentId, likeCount)
+    const likeCountSpan = document.getElementById(`${item}-${commentId}`);
+    if (likeCount > 0) {
+      likeCountSpan.style.visibility = 'visible';
+      likeCountSpan.innerText = `${likeCount} like${likeCount !== 1 ? 's' : ''}`;
+      console.log(likeCountSpan.innerText)
+      } else {
+      likeCountSpan.style.visibility = 'hidden';
+      likeCountSpan.innerText = '';
+    }
+  }
 
   async function toggleCommentLike(event, id){
     event.preventDefault();
-
+    const item = '/comment-like/'
     try{
-      const response = await fetch('/comment-like/'+id, {
+      const response = await fetch(`${item}`+id, {
         method:'POST',
 
       });
       if (!response.ok){
         throw new Error('Network  response failed', response.statusText);
       }
-
-      const user_id = response.user_id;
-      const like_count = response.like_count;
-      // use the user id to display 
+      const result = await response.json();
+      const likeCount = result.like_count;
+      console.log(likeCount);
+      // use the values to update and display count 
       
-
-
-
+      updateLikeCount('comment_like_count',id, likeCount);
     }
+
     catch(error){
       console.error('There was a problem', error);
       alert('Failed to like comment!');
     }
   }
-
-
-
 </script>
-
-
 
 <script type="text/javascript">
   // edit comment

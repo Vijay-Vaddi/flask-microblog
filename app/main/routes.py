@@ -404,9 +404,7 @@ def post_like(post_id):
 def comment_like(comment_id):
 
     comment = Comment.query.get_or_404(comment_id)
-    print('comment is ', comment)
     comment_like = CommentLike.query.filter_by(user_id=current_user.id, comment_id=comment_id).first()
-    print('comment like ', comment_like)
 
     if comment_like:
         db.session.delete(comment_like)

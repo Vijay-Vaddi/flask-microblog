@@ -31,8 +31,8 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             errors.append(_('Username is already taken!!'))
 
-        if len(username) > 16 or len(username) <5:
-            errors.append(f"Length must be  5-16 characters!!")
+        if len(username) > 16 or len(username) <4:
+            errors.append(f"Length must be  4-16 characters!!")
 
         if ' ' in username:
             errors.append(f"Can not contain empty spaces!")
