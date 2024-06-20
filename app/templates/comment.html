@@ -1,48 +1,80 @@
-
 <!-- <div class="card-body p-4"> -->
 
-    <div class="d-flex flex-start mt-3" id = "comment_file">
-        <img class="rounded-circle shadow-1-strong me-3"
-            src="{{url_for('static', filename='profile_pictures/'+comment.author.profile_pic)}}" alt="avatar" width="30"
-            height="30" />
-            <div class="col">
-            <h6 class="fw-bold mb-1">{{comment.author.username}}</h6>
-            <div class="d-flex align-items-center mb-3">
-                <p class="mb-0" style="font-size: 80%;">
-                    {{ moment(comment.timestamp).fromNow().format('LLL') }}
-                </p>
-                <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleLike(event, {{comment.id}}, 'comment')" class="link-muted">
-                    <i class="fas fa-heart ms-2"></i>
-                    {%set like_count = comment.likes.count() %}
-                    
-                    <span id="comment_like_count-{{comment.id}}" style="visibility: {% if like_count %}visible
+<div class="d-flex flex-start mt-3" id="comment-component-{{comment.id}}">
+    <img class="rounded-circle shadow-1-strong me-3"
+        src="{{url_for('static', filename='profile_pictures/'+comment.author.profile_pic)}}" alt="avatar" width="30"
+        height="30" />
+    <div class="col">
+        <div class="d-flex align-items-center">
+            <a class="" href="{{ url_for('main.user_profile', username=comment.author.username) }}">
+                <h6 class="fw-bold text-primary mb-1 mr-2">{{ comment.author.username }}</h6>
+            </a>
+            <p class="mb-0 ms-1" style="font-size: 80%;">
+                {{ moment(comment.timestamp).fromNow().format('LLL') }}
+            </p>
+        </div>
+        <p class="mb-2" id="comment-body-{{comment.id}}">
+            {{comment.body}}
+        </p>
+        <form id="edit-comment-form-{{comment.id}}" class="d-none" action="#"
+            onsubmit="submitEditComment(event, {{comment.id}})">
+            {{ comment_form.hidden_tag() }}
+            {{ comment_form.body(class='form-control col') }}
+            <div class="d-flex justify-content-end mb-2">
+                <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
+                <button type="button" data-comment_id="{{comment.id}}" class="btn btn-secondary btn-sm mt-2"
+                    onclick="toggleEditForm(event, {{comment.id}})">Cancel</button>
+            </div>
+        </form>
+        <div class="d-flex align-items-center mb-3">
+            <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleLike(event, {{comment.id}}, 'comment')"
+                class="link-muted">
+                <i class="fas fa-heart ms-2"></i>
+                {%set like_count = comment.likes.count() %}
+
+                <span id="comment_like_count-{{comment.id}}" style="visibility: {% if like_count %}visible
                     {%else%}hidden {%endif%};" class="">
                     {% if like_count %}
                     {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
-                    {%endif%}
-                </a>
-                {%if comment.author == current_user %}
-                {% set body = comment.body %}
-                <a href="#" id="toggleComment-{{comment.id}}" data-comment_body="{{comment.body}}"   class="link-muted" onclick="toggleEditForm(event, {{comment.id}}, this.dataset.comment_body )" >
-                    <i class="fas fa-pencil-alt ms-2"></i></a>
-                <a href="{{url_for('main.delete_comment', id=comment.id )}}" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
-                {%elif post.author == current_user %}
-                <a href="{{url_for('main.delete_comment', id=comment.id )}}" class="link-muted"><i class="fas fa-trash ms-2"></i></a>
-                
                 {%endif%}
+            </a>
+            {%if comment.author == current_user %}
+            {% set body = comment.body %}
+            <a href="#" id="toggleComment-{{comment.id}}" data-comment_body="{{comment.body}}" class="link-muted"
+                onclick="toggleEditForm(event, {{comment.id}}, this.dataset.comment_body )">
+                <i class="fas fa-pencil-alt ms-2"></i></a>
+            <a data-mdb-modal-init data-mdb-target="#exampleModal{{comment.id}}" 
+            href="#" class="link-muted"><i
+                    class="fas fa-trash ms-2"></i></a>
+            {%elif post.author == current_user %}
+            <a data-mdb-modal-init data-mdb-target="#exampleModal{{comment.id}}"
+            href="#" class="link-muted"><i
+                    class="fas fa-trash ms-2"></i></a>
+            {%endif%}
 
-            </div>
-            <p class="mb-0" id="comment-body-{{comment.id}}">
-                {{comment.body}}
-            </p>
-            <form id="edit-comment-form-{{comment.id}}" class="d-none" action="#" onsubmit="submitEditComment(event, {{comment.id}})">
-                {{ comment_form.hidden_tag() }}
-                {{ comment_form.body(class='form-control col') }}
-                <div class="d-flex justify-content-end mb-2">
-                <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
-                <button type="button" data-comment_id="{{comment.id}}" class="btn btn-secondary btn-sm mt-2" onclick="toggleEditForm(event, {{comment.id}})">Cancel</button>
-            </div>
-            </form>
         </div>
+
+
+    </div>
 </div>
 <hr class="my-0" style="height: 1px;" />
+<!-- delete comment modal -->
+<div class="modal fade" id="exampleModal{{comment.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{comment.id}}"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel{{comment.id}}">Delete Comment!!</h5>
+                <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">Are you sure?!!!</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                    data-mdb-dismiss="modal">Close</button>
+                <a onclick="deleteComment(event, {{comment.id}}); event.preventDefault();" href="{{url_for('main.delete_comment', id=comment.id)}}"
+                    class="btn btn-primary" data-mdb-ripple-init data-mdb-dismiss="modal">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>

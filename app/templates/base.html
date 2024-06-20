@@ -192,6 +192,41 @@
     }, 5000);
   });
 </script>
+<script type="text/javascript">
+async function deleteComment(event, commentId){
+  event.preventDefault();
+
+   try{
+    const response = await fetch(`/delete-comment/${commentId}`,{
+      method:'POST',
+    });
+    if(!response.ok){
+      throw new Error('Network response failed', response.statusText);
+    }else{
+      console.log('Comment deleted');
+      const result = response.json();
+      console.log(result)
+      //get comment ID from network
+      const commentId = result.comment_id;
+      console.log(commentId, response.comment_id);
+      
+      const commentComponent = document.getElementById(`comment-component-${commentId}`);
+      
+      if (commentComponent){ //handle potential null
+        commentComponent.remove();
+      }else{
+        console.warn(`Comment with ID ${commentId} not found!`);
+      }
+    }
+   }
+   catch (error){
+    console.error('There was a problem deleting comment!!', error)
+   }
+}
+
+</script>
+
+
 <script type="text/javascript"> 
   function toggleCommentsDisplay(event, postId, commentCount){
     event.preventDefault();
@@ -207,10 +242,7 @@
       
     }
   }
-
-
 </script>
-
 
 <!-- post and comment likes -->
 <script type="text/javascript" >

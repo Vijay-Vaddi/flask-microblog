@@ -70,55 +70,25 @@ def index():
                            next_url=next_url, prev_url=prev_url, comment_form=comment_form)
 
 
-# for posting comments
-@bp.route('/comment/<post_id>', methods=['GET', 'POST'])
+@bp.route('/explore/')
 @login_required
-def comment(post_id):
-    form = CommentForm()
-    
-    post = Post.query.filter_by(id=post_id).first_or_404()
-    body = form.body.data
-    if form.validate_on_submit():
-        comment = Comment(body=body, author=current_user,
-                          post=post)
-        
-        db.session.add(comment)
-        db.session.commit() 
-    
-    return jsonify({
-            'html':render_template('comment.html', comment_form=form, comment=comment),
-            'text':comment.body}) 
-    
-    # else add exception 
+def explore():
+    comment_form = CommentForm()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    total_pages=posts.pages
+
+    next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
+    return render_template('index.html', title='Explore', posts=posts.items, 
+                           max=max, min=min, next_url=next_url, prev_url=prev_url, 
+                           total_pages=total_pages, page=page, comment_form=comment_form) 
 
 
-@bp.route('/edit-comment/<id>', methods=['GET', 'POST'])
-@login_required
-def edit_comment(id):
-    comment = Comment.query.get_or_404(id)
-    
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment.body = form.body.data
-        db.session.add(comment)
-        db.session.commit()
-    
-    return {'message':'Edit successful',
-                    'text':comment.body}
-    
-
-
-@bp.route('/delete-comment/<id>', methods=['GET', 'POST'])
-@login_required
-def delete_comment(id):
-    comment = Comment.query.get_or_404(id)
-    
-    if comment:
-        db.session.delete(comment)
-        db.session.commit()
-        return {'message':'Comment Deleted'}
-    else:
-        return '', 404
+#######################################################
+##############   USER PROFILE SECTION  ################
+#######################################################
 
 @bp.route('/user-profile/<username>')
 @login_required
@@ -200,40 +170,17 @@ def unfollow(username):
     return redirect(url_for('main.user_profile', username=username))
 
 
-@bp.route('/explore/')
+@bp.route('/user-profile/<username>/popup')
 @login_required
-def explore():
-    comment_form = CommentForm()
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
-        page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
-    total_pages=posts.pages
-
-    next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
-    prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
-    return render_template('index.html', title='Explore', posts=posts.items, 
-                           max=max, min=min, next_url=next_url, prev_url=prev_url, 
-                           total_pages=total_pages, page=page, comment_form=comment_form) 
+def user_popup(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EmptyForm()
+    return render_template('user_popup.html', user=user, form=form, title='user profile')
 
 
-@bp.route('/search', methods=['GET'])
-@login_required
-def search():
-    if not g.search_form.validate():
-        return redirect(url_for('main.explore'))
-        
-    page = request.args.get('page', 1, type=int)
-    posts, total = Post.search(g.search_form.query.data, page, current_app.config['POSTS_PER_PAGE'])
-    next_url = url_for('main.search', query=g.search_form.query.data, page=page+1)\
-        if total > page*current_app.config['POSTS_PER_PAGE'] else None
-    prev_url = url_for('main.search', query=g.search_form.query.data, page=page-1)\
-        if page > 1 else None
-    
-    total_pages=total//current_app.config['POSTS_PER_PAGE']
-    return render_template('search.html', title=_('search'), posts=posts,
-                           next_url=next_url, prev_url=prev_url, total_pages=total_pages,
-                           min=min, max=max, page=page)
-
+#######################################################
+################   POST'S SECTION  ####################
+#######################################################
 
 @bp.route('/edit-post/<id>', methods=['POST', 'GET'])
 @login_required
@@ -274,14 +221,6 @@ def delete_post(id):
     db.session.commit()
     next_url=request.args.get('next')
     return redirect(next_url)
-
-
-@bp.route('/user-profile/<username>/popup')
-@login_required
-def user_popup(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    form = EmptyForm()
-    return render_template('user_popup.html', user=user, form=form, title='user profile')
 
 
 @bp.route('/send-message/<receiver>', methods=['GET', 'POST'])
@@ -341,6 +280,28 @@ def messages():
                            next_url=next_url, prev_url=prev_url, title=title)
 
 
+#######################################################
+#########    ADDITIONAL FEATURES SECTION    ###########
+#######################################################
+
+@bp.route('/search', methods=['GET'])
+@login_required
+def search():
+    if not g.search_form.validate():
+        return redirect(url_for('main.explore'))
+        
+    page = request.args.get('page', 1, type=int)
+    posts, total = Post.search(g.search_form.query.data, page, current_app.config['POSTS_PER_PAGE'])
+    next_url = url_for('main.search', query=g.search_form.query.data, page=page+1)\
+        if total > page*current_app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('main.search', query=g.search_form.query.data, page=page-1)\
+        if page > 1 else None
+    
+    total_pages=total//current_app.config['POSTS_PER_PAGE']
+    return render_template('search.html', title=_('search'), posts=posts,
+                           next_url=next_url, prev_url=prev_url, total_pages=total_pages,
+                           min=min, max=max, page=page)
+
 @bp.route('/notifications')
 @login_required
 def notifications():
@@ -375,6 +336,64 @@ def translate_text():
         data['dest_language']
     )}
 
+#######################################################
+##############     COMMENTS SECTION    ################
+#######################################################
+
+# for posting comments
+@bp.route('/comment/<post_id>', methods=['GET', 'POST'])
+@login_required
+def comment(post_id):
+    form = CommentForm()
+    
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    body = form.body.data
+    if form.validate_on_submit():
+        comment = Comment(body=body, author=current_user,
+                          post=post)
+        
+        db.session.add(comment)
+        db.session.commit() 
+    
+    return jsonify({
+            'html':render_template('comment.html', comment_form=form, comment=comment),
+            'text':comment.body}) 
+    
+    # else add exception 
+
+# edit comments
+@bp.route('/edit-comment/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_comment(id):
+    comment = Comment.query.get_or_404(id)
+    
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment.body = form.body.data
+        db.session.add(comment)
+        db.session.commit()
+    
+    return {'message':'Edit successful',
+                    'text':comment.body}
+
+# delete comments
+@bp.route('/delete-comment/<id>', methods=['GET', 'POST'])
+@login_required
+def delete_comment(id):
+    comment = Comment.query.get_or_404(id)
+    
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        return jsonify({'message':'Comment Deleted',
+                'comment_id':id})
+    else:
+        return '', 404
+
+
+######################################################
+################   LIKES FEATURE   ###################
+######################################################
 
 @bp.route('/post-like/<int:post_id>', methods=['GET', 'POST'])
 @login_required
