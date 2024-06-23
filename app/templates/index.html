@@ -9,7 +9,7 @@
       {% if form %}
       <div class="col-md-12 col-lg-10 col-xl-8">
         <div>
-          <h1>Hello there {{ current_user.username}}</h1>
+          <h3>Hello there {{ current_user.username}}</h3>
         </div>
         <div class="card">
           <form action="" method="POST" enctype="multipart/form-data">
@@ -52,9 +52,18 @@
       <!-- posts feed -->
       <div class="col-md-12 col-lg-10 col-xl-8">
         {% if title == 'Home' %}
-        <h4 class="mb-3">Your Feed</h4>
+        
+        <h4 class="mb-3">
+          {% if posts %}
+            Your Feed
+          {%else%}
+            Follow users to see their posts here.
+          {%endif%}
+          </h4>
+        
+
         {% elif title == 'Explore' %}
-        <h2 class="mb-3">Public Feed</h2>
+        <h3 class="mb-3">Public Feed</h3>
         {%endif%}
         {% for post in posts %}  
           {% include "_post1.html"%}

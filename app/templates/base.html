@@ -110,7 +110,7 @@
             src="{%if current_user.profile_pic =='default_prof_pic.png'%}
             {{url_for('static', filename='profile_pictures/default_prof_pic.png')}}
             {%else%}
-            {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
+            {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}} {%endif%}"
             class="rounded-circle"
             height="25"
             alt="Black and White Portrait of a Man"
