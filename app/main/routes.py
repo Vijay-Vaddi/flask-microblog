@@ -21,10 +21,9 @@ def before_request():
         g.search_form = SearchForm()
     g.locale = str(get_locale())
 
-    if request.endpoint and request.endpoint!='static':
-        session['last_endpoint'] = request.endpoint
-        session['last_args'] = request.view_args
-
+#######################################################
+########## PRIVATE AND PUBLIC FEED SECTION  ###########
+#######################################################
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
@@ -44,6 +43,7 @@ def index():
         db.session.add(post)
         db.session.commit()
 
+        # check if img exist and save  
         if form.post_image.data:
             post_image = add_pic(form.post_image.data, post=post)
             post.post_image=post_image
@@ -53,10 +53,13 @@ def index():
         flash(_('Post submitted'))
         return redirect(url_for('main.index'))
     
+    # filter out posts by current user for index page  
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().filter(Post.user_id!=current_user.id).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], 
                     error_out=False)
+    
+    # used for limiting pages to display
     total_pages=posts.pages
 
     next_url = url_for('main.index', page=posts.next_num) \
@@ -64,7 +67,6 @@ def index():
     prev_url = url_for('main.index', page=posts.prev_num) \
                         if posts.has_prev else None
     
-
     return render_template("index.html", title='Home', page=page, max=max, min=min,
                            posts=posts.items, form=form, total_pages=total_pages, 
                            next_url=next_url, prev_url=prev_url, comment_form=comment_form)
@@ -74,13 +76,15 @@ def index():
 @login_required
 def explore():
     comment_form = CommentForm()
-    page = request.args.get('page', 1, type=int)
+    
+    page = request.args.get('page', 1, type=int)    
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     total_pages=posts.pages
 
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
+    
     return render_template('index.html', title='Explore', posts=posts.items, 
                            max=max, min=min, next_url=next_url, prev_url=prev_url, 
                            total_pages=total_pages, page=page, comment_form=comment_form) 
@@ -95,11 +99,13 @@ def explore():
 def user_profile(username): 
     form = MessageForm()
     comment_form= CommentForm()
+    
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     posts = user.post.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     total_pages=posts.pages    
+    
     next_url = url_for('main.user_profile', username=username, page=posts.next_num) \
                                     if posts.has_next else None
     prev_url = url_for('main.user_profile', username=username, page=posts.prev_num) \
@@ -113,7 +119,6 @@ def user_profile(username):
 @bp.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-
     form = UpdateUserProfileForm(current_user.username)
 
     if form.validate_on_submit():
@@ -127,10 +132,12 @@ def edit_profile():
 
         flash(_('Changes saved.'))
         return redirect(url_for('main.edit_profile'))
+    
     # to pre populate user info in the form to edit
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        form.profile_pic.data = current_user.profile_pic
 
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
@@ -139,15 +146,19 @@ def edit_profile():
 @login_required
 def follow(username):
     user = User.query.filter_by(username=username).first()
+    
+    # check if user exists and is not current user 
     if user is None:
         flash(_('User %(username)s not found',username=username))
         return redirect(url_for('index'))
     if user == current_user:
         flash(_('You can not follow yourself'))
         return redirect(url_for('main.index'))
+    
     current_user.follow(user)
     db.session.commit()
     flash(_('You are now following %(username)s',username=username))
+    
     return redirect(url_for('main.user_profile', username=username))
 
 
@@ -155,6 +166,8 @@ def follow(username):
 @login_required
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
+    
+    # check if user exists and is not current user 
     if user is None:
         flash(_('User %(username)s not found',username=username))
         return redirect(url_for('main.index'))
@@ -167,6 +180,7 @@ def unfollow(username):
     current_user.unfollow(user)
     db.session.commit()
     flash(_('You are now unfollowing %(username)s',username=username))
+    
     return redirect(url_for('main.user_profile', username=username))
 
 
@@ -174,7 +188,9 @@ def unfollow(username):
 @login_required
 def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
+    
     form = EmptyForm()
+    
     return render_template('user_popup.html', user=user, form=form, title='user profile')
 
 
@@ -185,8 +201,8 @@ def user_popup(username):
 @bp.route('/edit-post/<id>', methods=['POST', 'GET'])
 @login_required
 def edit_post(id):
-    
     post = Post.query.get(id) 
+    
     form = Postform()
     if form.validate_on_submit():
         
