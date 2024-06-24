@@ -4,10 +4,10 @@
         <div class="d-flex flex-start align-items-center">
             <a href="{{ url_for('main.user_profile', username=post.author.username) }}">
                 <img class="rounded-circle shadow-1-strong me-3"
-                    src="{%if current_user.profile_pic =='default_prof_pic.png'%}
+                    src="{%if post.author.profile_pic =='default_prof_pic.png'%}
                     https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
                     {%else%}
-                    {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}} {%endif%}" alt="avatar"
+                    {{url_for('static', filename='profile_pictures/'+post.author.profile_pic)}} {%endif%}" alt="avatar"
                     width="60" height="60" /></a>
                     <!-- name and time -->
             <div class="d-flex align-items-center">
@@ -65,6 +65,7 @@
                 </div>
                 {%endif%}
 
+
                 {% if title == 'inbox' %}
                 <!-- reply for inbox -->
                 <div class="d-inline-flex">
@@ -77,8 +78,10 @@
                     </div>
                 </div>
                 {%endif%}
+                
                 <!-- edit and delete -->
-                {% if post.author == current_user%}
+                {% if post.author == current_user %}
+                {% if title != 'inbox' and  title != 'sent' %}
                 <div class="d-inline-flex">
                     <div class="col">
                         <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init
@@ -88,6 +91,7 @@
                         </a>
                     </div>
                 </div>
+                {%endif%}
                 <div class="d-inline-flex">
                     <div class="col">
                         <button style="color: rgba(var(--mdb-link-color-rgb), var(--mdb-link-opacity, 1))"
@@ -142,7 +146,7 @@
             </div>
         </div>
         {%endif%}
-
+        {% if title != 'inbox' and  title != 'sent' %}
         <!-- for comment in post.comment print comment-->
         <div class="row d-flex justify-content-center">             
             <div class="col"> 
@@ -162,11 +166,11 @@
             </div>
         </div>
         </div>
-            
+        
 
         <div id="newComment">
         </div>
-        <!--  -->
+        {%endif%}
 
     </div>
 </div>

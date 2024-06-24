@@ -17,10 +17,10 @@
           <div class="col">
            
             <div class="d-inline-flex flex-column">
-            <img alt="profile pic" src="{%if current_user.profile_pic =='default_prof_pic.png'%}
+            <img alt="profile pic" src="{%if user.profile_pic =='default_prof_pic.png'%}
             https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
             {%else%}
-            {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}} {%endif%}"
+            {{url_for('static', filename='profile_pictures/'+user.profile_pic)}} {%endif%}"
             alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
             style="width: 150px; z-index: 1; height: 150px;">
           </div>
