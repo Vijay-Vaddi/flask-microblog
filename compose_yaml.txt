@@ -1,0 +1,58 @@
+services:
+  micro-social:
+    build: . 
+    image: micro-social:latest
+    ports:
+      - "8000:5000"
+    volumes:
+      - /home/vaddi/Desktop/project_repo/static-files:/app/static
+    environment:
+      - SECRET_KEY=supersecret
+      - MAIL_SERVER=smtp.googlemail.com
+      - MAIL_PORT=587
+      - MAIL_USE_TLS=true
+      - MAIL_USERNAME=@gmail.com
+      - MAIL_PASSWORD=
+      - DATABASE_URL=mysql+pymysql://microblog:12345@mysql/microblog
+      - MS_TRANSLATOR_KEY=
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - REDIS_URL=redis://redis:6379/0
+      
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=microblog
+      - MYSQL_USER=microblog
+      - MYSQL_PASSWORD=12345
+       
+    volumes:
+      - /home/vaddi/Desktop/project_repo/blog-db-files:/var/lib/mysql  
+
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+  redis:
+    image: redis:latest   
+  
+  rq-worker:
+    image: micro-social:latest
+    entrypoint: /usr/local/bin/rq
+    command: worker -u redis://redis:6379/0 microblog-tasks
+    environment:
+        - SECRET_KEY=supersecret
+        - MAIL_SERVER=smtp.googlemail.com
+        - MAIL_PORT=587
+        - MAIL_USE_TLS=true
+        - MAIL_USERNAME=@gmail.com
+        - MAIL_PASSWORD=
+        - DATABASE_URL=mysql+pymysql://microblog:12345@mysql/microblog
+        - MS_TRANSLATOR_KEY=
+        - ELASTICSEARCH_URL=http://elasticsearch:9200
+        - REDIS_URL=redis://redis:6379/0
+  
