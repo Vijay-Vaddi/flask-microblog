@@ -222,6 +222,9 @@ def delete_post(id):
     next_url=request.args.get('next')
     return redirect(next_url)
 
+#######################################################
+################   MESSSAGE'S SECTION  ################
+#######################################################
 
 @bp.route('/send-message/<receiver>', methods=['GET', 'POST'])
 @login_required
@@ -386,7 +389,7 @@ def delete_comment(id):
         db.session.delete(comment)
         db.session.commit()
         return jsonify({'message':'Comment Deleted',
-                'comment_id':id})
+                'comment_id':id}), 200
     else:
         return '', 404
 

@@ -39,11 +39,11 @@
 
         <!-- edit, delete, reply buttons -->
         <div class="row">
-            <div class="d-inline-flex">
+            <div class="d-inline-flex align-items-center">
                 <!-- likes 1-->
                 {% if title != 'inbox' and  title != 'sent' %}
                 <div class="d-inline-flex">
-                    <div class="col">
+                    <div class="col ">
                         <a href="#" 
                             id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
                             data-mdb-ripple-init

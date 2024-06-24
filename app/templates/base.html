@@ -24,119 +24,95 @@
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-  <!-- Container wrapper -->
-  <div class="container">
-    <!-- Toggle button -->
-    <button
-      data-mdb-collapse-init
-      class="navbar-toggler"
-      type="button"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <!-- Container wrapper -->
+    <div class="container">
+      <!-- Toggle button -->
+      <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
 
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="{{ url_for('main.index')}}">
-        <img
-          src="../static/micro socia logo.png"
-          height="30"
-          alt=""
-          loading="lazy"
-        />
-      </a>
-      <!-- Left links -->
-       {% if current_user.is_authenticated %}
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
-        </li>
-        <li class="nav-item pr-3">
-          <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
-            {% set new_messages_count = current_user.new_messages() %}
-            <i class="fas fa-comment-alt"></i>
-          <span id="message_count" style="visibility: {% if new_messages_count%}visible
-            {%else%}hidden {%endif%};" class="badge rounded-pill badge-notification bg-danger">
-            {{new_messages_count}}</span>
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0" href="{{ url_for('main.index')}}">
+          <img src="../static/micro socia logo.png" height="30" alt="" loading="lazy" />
         </a>
-        </li>
+        <!-- Left links -->
+        {% if current_user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
+          </li>
+          <li class="nav-item pr-3">
+            <a class="nav-link" href="{{ url_for('main.messages') }}">Messages
+              {% set new_messages_count = current_user.new_messages() %}
+              <i class="fas fa-comment-alt"></i>
+              <span id="message_count" style="visibility: {% if new_messages_count%}visible
+            {%else%}hidden {%endif%};" class="badge rounded-pill badge-notification bg-danger">
+                {{new_messages_count}}</span>
+            </a>
+          </li>
 
-        {%if g.search_form %}
-        <form class="d-flex input-group w-auto" method="GET" action="{{url_for('main.search')}}">
-          
-          {{g.search_form.query(size=20, class='form-control', placeholder=g.search_form.query.label.text) }}
-          <span class="input-group-text border-0" id="search-addon">
-            <i class="fas fa-search"></i>
-          </span>
-        </form>
-        {%endif%}
-        {%endif%}
-      </ul>
-      <!-- Left links -->
-    </div>
-    <!-- Collapsible wrapper -->
+          {%if g.search_form %}
+          <form class="d-flex input-group w-auto" method="GET" action="{{url_for('main.search')}}">
 
-    <!-- Right elements -->
-     
-    <div class="d-flex align-items-center">        
-      <!-- Search -->
-      <!-- Notifications -->
-      {% if current_user.is_anonymous %}
+            {{g.search_form.query(size=20, class='form-control', placeholder=g.search_form.query.label.text) }}
+            <!-- <span class="input-group-text border-0" id="search-addon"> -->
+            <button class="btn btn-outline-secondary border-0 ml-0" type="submit" id="search-addon">
+              <i class="fas fa-search"></i>
+            </button>
+            </span>
+          </form>
+          {%endif%}
+          {%endif%}
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-        </li>
-      </ul>
-      {% else %}
-      <!-- Avatar -->
-      <div class="dropdown">
-        <a
-          data-mdb-dropdown-init
-          class="dropdown-toggle d-flex align-items-center hidden-arrow"
-          href="#"
-          id="navbarDropdownMenuAvatar"
-          role="button"
-          aria-expanded="false"
-        >
-          <span class="px-2" ></span><img
-            src="{%if current_user.profile_pic =='default_prof_pic.png'%}
+      <!-- Right elements -->
+
+      <div class="d-flex align-items-center">
+        <!-- Search -->
+        <!-- Notifications -->
+        {% if current_user.is_anonymous %}
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+          </li>
+        </ul>
+        {% else %}
+        <!-- Avatar -->
+        <div class="dropdown">
+          <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+            id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+            <span class="px-2"></span><img src="{%if current_user.profile_pic =='default_prof_pic.png'%}
             {{url_for('static', filename='profile_pictures/default_prof_pic.png')}}
             {%else%}
             {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}} {%endif%}"
-            class="rounded-circle"
-            height="25"
-            alt="Black and White Portrait of a Man"
-            loading="lazy"
-            width="25"
-          />
-        </a>
-        <ul
-          class="dropdown-menu dropdown-menu-end"
-          aria-labelledby="navbarDropdownMenuAvatar"
-        >
-          <li>
-            <a class="dropdown-item" href="{{ url_for('main.user_profile', username=current_user.username) }}">My profile</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>
-          </li>
-        </ul>
+              class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" width="25" />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('main.user_profile', username=current_user.username) }}">My
+                profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
+      {%endif%}
     </div>
-    {%endif%}
-  </div>
     <!-- Right elements -->
-  </div>
-  <!-- Container wrapper -->
-</nav>
+    </div>
+    <!-- Container wrapper -->
+  </nav>
 
   <div class="container mt-3">
     {% with messages = get_flashed_messages() %}
@@ -157,7 +133,7 @@
     <!-- disply task  name and descritption  -->
     <div class="alert alert-success" role="alert" style="display: none;">
       {{task.description}}
-      <span id="{{task.id}}-progress" >{{task.get_progress}} %</span>
+      <span id="{{task.id}}-progress">{{task.get_progress}} %</span>
     </div>
     {% endfor %}
     {% endif %}
@@ -183,217 +159,215 @@
 
   <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
   <!-- <script type="text/javascript" src=" {{url_for('static', filename='custom_js/custom_js.js')}} "></script> -->
-  
 
-  
+
+
   <!-- auto close flashed messages -->
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    setTimeout(function() {
-      $(".alert").alert('close');
-    }, 5000);
-  });
-</script>
-<script type="text/javascript">
-async function deleteComment(event, commentId){
-  event.preventDefault();
-
-   try{
-    const response = await fetch(`/delete-comment/${commentId}`,{
-      method:'POST',
+  <script type="text/javascript">
+    $(document).ready(function () {
+      setTimeout(function () {
+        $(".alert").alert('close');
+      }, 5000);
     });
-    if(!response.ok){
-      throw new Error('Network response failed', response.statusText);
-    }else{
-      console.log('Comment deleted');
-      const result = response.json();
-      console.log(result)
-      //get comment ID from network
-      const commentId = result.comment_id;
-      console.log(commentId, response.comment_id);
-      
-      const commentComponent = document.getElementById(`comment-component-${commentId}`);
-      
-      if (commentComponent){ //handle potential null
-        commentComponent.remove();
-      }else{
-        console.warn(`Comment with ID ${commentId} not found!`);
+  </script>
+  <script type="text/javascript">
+    async function deleteComment(event, commentId) {
+      event.preventDefault();
+
+      try {
+        const response = await fetch(`/delete-comment/${commentId}`, {
+          method: 'POST',
+        });
+        if (!response.ok) {
+          throw new Error('Network response failed', response.statusText);
+        } else {
+          console.log('Comment deleted');
+          const result = await response.json();
+          
+          //get comment ID from network
+          const commentId = result.comment_id;
+          const commentComponent = document.getElementById(`comment-component-${commentId}`);
+
+          if (commentComponent) { //handle potential null
+            commentComponent.remove();
+          } else {
+            console.warn(`Comment with ID ${commentId} not found!`);
+          }
+        }
+      }
+      catch (error) {
+        console.error('There was a problem deleting comment!!', error)
       }
     }
-   }
-   catch (error){
-    console.error('There was a problem deleting comment!!', error)
-   }
-}
 
-</script>
+  </script>
 
 
-<script type="text/javascript"> 
-  function toggleCommentsDisplay(event, postId, commentCount){
-    event.preventDefault();
-    const commentsContainer = document.getElementById(`toggle-${postId}-comments`);
-    const toggleCommentBtn = document.getElementById(`toggle-${postId}-comments-btn`)
+  <script type="text/javascript">
+    function toggleCommentsDisplay(event, postId, commentCount) {
+      event.preventDefault();
+      const commentsContainer = document.getElementById(`toggle-${postId}-comments`);
+      const toggleCommentBtn = document.getElementById(`toggle-${postId}-comments-btn`)
 
-    if (commentsContainer.classList.contains('d-none')){
-      commentsContainer.classList.remove('d-none');
-      toggleCommentBtn.innerText = `Hide ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
-    }else if(!commentsContainer.classList.contains('d-none')){
-      commentsContainer.classList.add('d-none');
-      toggleCommentBtn.innerText = `Show ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
-      
+      if (commentsContainer.classList.contains('d-none')) {
+        commentsContainer.classList.remove('d-none');
+        toggleCommentBtn.innerText = `Hide ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
+      } else if (!commentsContainer.classList.contains('d-none')) {
+        commentsContainer.classList.add('d-none');
+        toggleCommentBtn.innerText = `Show ${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
+
+      }
     }
-  }
-</script>
+  </script>
 
-<!-- post and comment likes -->
-<script type="text/javascript" >
+  <!-- post and comment likes -->
+  <script type="text/javascript">
 
-  function updateLikeCount(id, likeCount, item) {
-    
-    const likeCountSpan = document.getElementById(`${item}-${id}`);
-    if (likeCount > 0) {
-      likeCountSpan.style.visibility = 'visible';
-      likeCountSpan.innerText = `${likeCount} like${likeCount !== 1 ? 's' : ''}`;
-      console.log(likeCountSpan.innerText)
+    function updateLikeCount(id, likeCount, item) {
+
+      const likeCountSpan = document.getElementById(`${item}-${id}`);
+      if (likeCount > 0) {
+        likeCountSpan.style.visibility = 'visible';
+        likeCountSpan.innerText = `${likeCount} like${likeCount !== 1 ? 's' : ''}`;
+        console.log(likeCountSpan.innerText)
       } else {
-      likeCountSpan.style.visibility = 'hidden';
-      likeCountSpan.innerText = '';
-    }
-  }
-
-  async function toggleLike(event, id, item){
-    event.preventDefault();
-    if(item=='comment'){
-      likeUrl='/comment-like/';
-      spanIdName = 'comment_like_count';
-    }else if(item=='post'){
-      likeUrl='/post-like/';
-      spanIdName = 'post_like_count';
-    }
-
-    try{
-      const response = await fetch(`${likeUrl}`+id, {
-        method:'POST',
-
-      });
-      if (!response.ok){
-        throw new Error('Network  response failed', response.statusText);
+        likeCountSpan.style.visibility = 'hidden';
+        likeCountSpan.innerText = '';
       }
-      const result = await response.json();
-      const likeCount = result.like_count;
-      // use the values to update and display count 
-      
-      updateLikeCount(id, likeCount, spanIdName);
     }
 
-    catch(error){
-      console.error('There was a problem', error);
-      alert('Failed to like comment!');
-    }
-  }
-</script>
-
-<script type="text/javascript">
-  // edit comment
-  async function submitEditComment(event, comment_id){
-    event.preventDefault();
-    const id = comment_id;
-    const form = event.target;
-    const formData = new FormData(form);
-    try {
-      const response = await fetch('/edit-comment/'+id,{
-        method:'POST',
-        body: formData,
-      });
-      if (!response.ok){
-        throw new Error('Network  response failed', response.statusText);
+    async function toggleLike(event, id, item) {
+      event.preventDefault();
+      if (item == 'comment') {
+        likeUrl = '/comment-like/';
+        spanIdName = 'comment_like_count';
+      } else if (item == 'post') {
+        likeUrl = '/post-like/';
+        spanIdName = 'post_like_count';
       }
-    
-    const result = await response.json();
 
-    // hide form, display comment body
-    const commentBody = document.getElementById('comment-body-'+id);
-    const editForm = document.getElementById('edit-comment-form-'+id);
-    
-    if (commentBody.classList.contains('d-none')){
-     editForm.classList.add('d-none');
-      commentBody.classList.remove('d-none');
-      commentBody.innerText = result.text;
-      // update toggle buttons dataset for reedit 
-      toggle_btn = document.getElementById('toggleComment-'+id)
-      toggle_btn.dataset.comment_body = result.text
-    }else{
-      editForm.classList.remove('d-none');
-      commentBody.classList.add('d-none');
-    }
-      form.reset();
-    }
-    catch(error) {
-      console.error('There was a problem:', error);
-      alert('Failed to post!');
-    }
-  };
+      try {
+        const response = await fetch(`${likeUrl}` + id, {
+          method: 'POST',
 
-  // for submitting comments
-  async function postComment(event, post_id){
-    event.preventDefault();
-    const post = event.target.dataset.post_id;
-    const form = event.target;
-    const formData = new FormData(form);
-    try {
-      const response = await fetch('/comment/'+post,{
-        method:'POST',
-        body: formData,
-      });
-      if (!response.ok){
-        throw new Error('Network  response failed', response.statusText);
+        });
+        if (!response.ok) {
+          throw new Error('Network  response failed', response.statusText);
+        }
+        const result = await response.json();
+        const likeCount = result.like_count;
+        // use the values to update and display count 
+
+        updateLikeCount(id, likeCount, spanIdName);
       }
-      const result = await response.json();
-    //  change posting comment style 
-      if (result.html){
-        console.log('here')
-        const commentContainer = document.getElementById(post_id+'-comments')
-        commentContainer.insertAdjacentHTML('afterbegin', result.html) 
-      }else{
-        throw new Error('Network  response failed', response.statusText);
-      }  
-      form.reset();
-      flask_moment_render_all();
+
+      catch (error) {
+        console.error('There was a problem', error);
+        alert('Failed to like comment!');
+      }
     }
-    catch(error) {
-      console.error('There was a problem:', error);
-      alert('Failed to post!')
+  </script>
+
+  <script type="text/javascript">
+    // edit comment
+    async function submitEditComment(event, comment_id) {
+      event.preventDefault();
+      const id = comment_id;
+      const form = event.target;
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('/edit-comment/' + id, {
+          method: 'POST',
+          body: formData,
+        });
+        if (!response.ok) {
+          throw new Error('Network  response failed', response.statusText);
+        }
+
+        const result = await response.json();
+
+        // hide form, display comment body
+        const commentBody = document.getElementById('comment-body-' + id);
+        const editForm = document.getElementById('edit-comment-form-' + id);
+
+        if (commentBody.classList.contains('d-none')) {
+          editForm.classList.add('d-none');
+          commentBody.classList.remove('d-none');
+          commentBody.innerText = result.text;
+          // update toggle buttons dataset for reedit 
+          toggle_btn = document.getElementById('toggleComment-' + id)
+          toggle_btn.dataset.comment_body = result.text
+        } else {
+          editForm.classList.remove('d-none');
+          commentBody.classList.add('d-none');
+        }
+        form.reset();
+      }
+      catch (error) {
+        console.error('There was a problem:', error);
+        alert('Failed to post!');
+      }
+    };
+
+    // for submitting comments
+    async function postComment(event, post_id) {
+      event.preventDefault();
+      const post = event.target.dataset.post_id;
+      const form = event.target;
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('/comment/' + post, {
+          method: 'POST',
+          body: formData,
+        });
+        if (!response.ok) {
+          throw new Error('Network  response failed', response.statusText);
+        }
+        const result = await response.json();
+        //  change posting comment style 
+        if (result.html) {
+          console.log('here')
+          const commentContainer = document.getElementById(post_id + '-comments')
+          commentContainer.insertAdjacentHTML('afterbegin', result.html)
+        } else {
+          throw new Error('Network  response failed', response.statusText);
+        }
+        form.reset();
+        flask_moment_render_all();
+      }
+      catch (error) {
+        console.error('There was a problem:', error);
+        alert('Failed to post!')
+      }
     }
-  }
 
-  // toggle edit to post comment 
-  function toggleEditForm(event, id, body){
-    event.preventDefault();
-    
-    const commentBody = document.getElementById('comment-body-'+id);
-    const editForm = document.getElementById('edit-comment-form-'+id);
-    
-    if (editForm.classList.contains('d-none')){
-     commentBody.classList.add('d-none');
-      editForm.classList.remove('d-none');
-      editForm[1].value= body;
-    }else{
-      editForm.classList.add('d-none');
-      commentBody.classList.remove('d-none')
+    // toggle edit to post comment 
+    function toggleEditForm(event, id, body) {
+      event.preventDefault();
+
+      const commentBody = document.getElementById('comment-body-' + id);
+      const editForm = document.getElementById('edit-comment-form-' + id);
+
+      if (editForm.classList.contains('d-none')) {
+        commentBody.classList.add('d-none');
+        editForm.classList.remove('d-none');
+        editForm[1].value = body;
+      } else {
+        editForm.classList.add('d-none');
+        commentBody.classList.remove('d-none')
+      }
     }
-  }
 
-</script>
-
+  </script>
 
 
-<script type="text/javascript">
+
+  <script type="text/javascript">
     //for translation
     async function translate(source_Elem, dest_Elem, source_Lang, dest_lang) {
       document.getElementById(dest_Elem).innerHTML = "<img src=\"{{url_for('static', filename='loading.gif')}}\">";
-      
+
       const response = await fetch('/translate', {
         method: "POST",
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
@@ -405,7 +379,7 @@ async function deleteComment(event, commentId){
       })
       const data = await response.json();
       console.log(data)
-      document.getElementById(dest_Elem).innerHTML="<p></p>"
+      document.getElementById(dest_Elem).innerHTML = "<p></p>"
       document.getElementById(dest_Elem).innerText = data.text;
     }
 
@@ -477,10 +451,10 @@ async function deleteComment(event, commentId){
 
     document.addEventListener('DOMContentLoaded', initialize_notifications);
     {% endif %}
-     
+
     function set_task_progress(task_id, progress) {
       const progress_element = document.getElementById(task_id + '-progress')
-      const progress_div = document.getElementById(task_id+'-progress-div')
+      const progress_div = document.getElementById(task_id + '-progress-div')
       if (progress_element) {
         console.log(progress_element)
         progress_element.innerText = progress;
@@ -488,7 +462,7 @@ async function deleteComment(event, commentId){
       }
     }
 
-</script> 
+  </script>
 </body>
 
 </html>

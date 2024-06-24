@@ -2,12 +2,11 @@
 {% import 'bootstrap_wtf_macros.html' as wtf %}
 
 {%block content%}
-<section class="background-color:whitesmoke">
-    <div class="container my-5 py-2">
+<!-- <!-- <section class="background-color:whitesmoke"> -->
       <div class="row d-flex justify-content-center">
           
         <!-- profile pic -->
-        <div class="col-auto">
+        <div class="col" style="max-width: 75%;">
       <div class="card">
 
         <div class="card-body p-4 text-black">
@@ -53,8 +52,8 @@
           </div>
         </div>
           <!-- post, followers , following count -->
-          <div class="col p-4 text-black bg-body-tertiary">
-            <div class="d-flex text-center py-1 text-body">
+          <div class="col p-4 text-black bg-body-tertiary d-flex align-items-end">
+            <div class="d-flex text-center py-1 w-100 justify-content-around text-body">
               <div>
                 <p class="mb-1 h5">{{user.post.count()}}</p>
                 <p class="small text-muted mb-0">Posts</p>
@@ -72,7 +71,7 @@
         </div>
         <!-- follow/unfollow and message -->
         <div class="row ">
-          <div class="col d-flex pt-1">
+          <div class="col d-flex pt-1 justify-content-end">
             {% if user!=current_user %}
                   {% if not current_user.is_following(user) %}
                   <a  class="btn btn-primary flex-grow-1" 
@@ -139,7 +138,6 @@
         </div>
     </div>
     </div>
-  </div>
   </div>
   </div>
 
