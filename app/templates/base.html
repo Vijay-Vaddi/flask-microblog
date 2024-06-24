@@ -91,7 +91,8 @@
           <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
             id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
             <span class="px-2"></span><img src="{%if current_user.profile_pic =='default_prof_pic.png'%}
-            {{url_for('static', filename='profile_pictures/default_prof_pic.png')}}
+            https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
+            
             {%else%}
             {{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}} {%endif%}"
               class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" width="25" />
