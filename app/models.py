@@ -36,7 +36,6 @@ class PaginatedAPIMixin(object):
                 'prev':url_for(endpoint, page=page -1, per_page=per_page,
                                **kwargs) if resources.has_prev else None,                               
             }
-
         }
         return data
 
@@ -55,7 +54,6 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     post = db.relationship('Post', backref='author', cascade="all, delete-orphan", lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-
     profile_pic = db.Column(db.String(64), nullable = False, default='default_prof_pic.png')
 
     # relationships for follow table -exists only in model space
@@ -230,6 +228,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
             return None
         return user
 
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
@@ -245,7 +244,7 @@ class SearchableMixin(object):
         for i in range(len(ids)):
             when.append((ids[i], i))
 
-        # pass when to order_by search query score 
+        # pass 'when' to order by search query score 
         return cls.query.filter(cls.id.in_(ids)).order_by(
             db.case(*when, value=cls.id)), total
     
@@ -275,6 +274,7 @@ class SearchableMixin(object):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
 
+
 class Post(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.String(280))
@@ -301,6 +301,8 @@ class Comment(db.Model):
     def __repr__(self) -> str:
         return f"{self.body}"
 
+
+# composite keys used for single like per user
 class PostLike(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -328,13 +330,14 @@ class Notification(db.Model):
 
     # to support other notifications besides messages. 
     name = db.Column(db.String(128), index=True)
-    timestamp = db.Column(db.Float,  default=time, index=True) #unix time stamp to make it friendly on js side
+    #unix time stamp to make it friendly on js side
+    timestamp = db.Column(db.Float,  default=time, index=True) 
     payload_json = db.Column(db.Text)
 
     def get_data(self):
         return json.loads(str(self.payload_json))
 
-
+# to store background jobs 
 class Task(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(128), index=True)
