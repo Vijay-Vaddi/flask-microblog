@@ -2,58 +2,58 @@
 {% import 'bootstrap_wtf_macros.html' as wtf %}
 
 {%block content%}
-<!-- <!-- <section class="background-color:whitesmoke"> -->
-      <div class="row d-flex justify-content-center">
-          
-        <!-- profile pic -->
-        <div class="col" style="max-width: 75%;">
-      <div class="card">
-
-        <div class="card-body p-4 text-black">
-
+<div class="row d-flex justify-content-center">
+  <!-- profile pic -->
+  <div class="col" style="max-width: 75%;">
+    <div class="card">
+      <div class="card-body p-4 text-black">
         <div class="row d-flex justify-content-center">
-          
+
           <!-- profile pic -->
           <div class="col">
-           
             <div class="d-inline-flex flex-column">
-            <img alt="profile pic" src="{%if user.profile_pic =='default_prof_pic.png'%}
+              <img alt="profile pic" src="{%if user.profile_pic =='default_prof_pic.png'%}
             https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
             {%else%}
             {{url_for('static', filename='profile_pictures/'+user.profile_pic)}} {%endif%}"
-            alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
-            style="width: 150px; z-index: 1; height: 150px;">
+                alt="Generic placeholder image" class="d-flex img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1; height: 150px;">
+            </div>
           </div>
-          </div>
-        
+
           <!-- greetings and email -->
           <div class="col-auto align-self-end">
             <div class="d-inline-flex flex-column">
               {% if user == current_user %}
-                  <h5 class="d-flex">Hello {{user.username}}</h5>
-                  <p>Email {{user.email}}</p>
-                      {% else %}
+              <h5 class="d-flex">Hello {{user.username}}</h5>
+              <p>Email {{user.email}}</p>
+              {% else %}
               <h5>{{user.username}}</h5>
               {%endif%}
             </div>
-          </div>  
+          </div>
         </div>
 
-       <!-- last seen edit prof and export posts -->
+        <!-- last seen edit prof and export posts -->
         <div class="row d-flex">
           <div class="col">
             <div class="d-inline-flex flex-column">
-            {% if user == current_user %}
-              <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{url_for('main.edit_profile')}}">Edit profile</a>
+              {% if user == current_user %}
+              <a class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;"
+                href="{{url_for('main.edit_profile')}}">Edit profile</a>
               {% elif user.last_seen %}
-              <p class="text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;" >Last seen on: <span>{{moment(user.last_seen).format('LLL')}}</span></p>
+              <p class="text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;">Last seen on:
+                <span>{{moment(user.last_seen).format('LLL')}}</span></p>
               {%endif%}
-              {% if user==current_user and current_user.post.count()>=1 and not current_user.get_task_in_progress('export_posts') %}
-              <a class="btn btn-outline-dark text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;" href="{{ url_for('main.export_posts') }}">
-                    Export posts </a>
+              {% if user==current_user and current_user.post.count()>=1 and not
+              current_user.get_task_in_progress('export_posts') %}
+              <a class="btn btn-outline-dark text-body mb-2" data-mdb-ripple-color="dark" style="z-index: 1;"
+                href="{{ url_for('main.export_posts') }}">
+                Export posts </a>
               {%endif%}
+            </div>
           </div>
-        </div>
+
           <!-- post, followers , following count -->
           <div class="col p-4 text-black bg-body-tertiary d-flex align-items-end">
             <div class="d-flex text-center py-1 w-100 justify-content-around text-body">
@@ -72,26 +72,26 @@
             </div>
           </div>
         </div>
+
         <!-- follow/unfollow and message -->
         <div class="row ">
           <div class="col d-flex pt-1 justify-content-end">
             {% if user!=current_user %}
-                  {% if not current_user.is_following(user) %}
-                  <a  class="btn btn-primary flex-grow-1" 
-                              href="{{url_for('main.follow', username=user.username)}}">Follow</a>
-                  {% else %}
-                  <a  class="btn btn-primary flex-grow-1" 
-                              href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a>
-                  {% endif %}
+            {% if not current_user.is_following(user) %}
+            <a class="btn btn-primary flex-grow-1" href="{{url_for('main.follow', username=user.username)}}">Follow</a>
+            {% else %}
+            <a class="btn btn-primary flex-grow-1"
+              href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a>
+            {% endif %}
             {% endif %}
           </div>
           <div class="col d-flex pt-1">
             {% if user!=current_user %}
-              <a class="btn btn-primary flex-grow-1"
-              data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#sendMessageModal{{user.username}}">Messages<a>
-            {% endif %}
+            <a class="btn btn-primary flex-grow-1" data-mdb-ripple-init data-mdb-modal-init
+              data-mdb-target="#sendMessageModal{{user.username}}">Messages<a>
+                {% endif %}
           </div>
-        </div>  
+        </div>
 
         <!-- about me -->
         <div class="mb-5  text-body">
@@ -116,39 +116,44 @@
           </p>
         </div>
         {% for post in posts %}
-          {% include "_post1.html"%}
+        {% include "_post1.html"%}
         <br>
         {% endfor%}
         <!-- pagination -->
         {% include 'pagination.html' %}
       </div>
     </div>
+    
     <!-- send message Modal -->
-  <div class="modal fade" id="sendMessageModal{{user.username}}" tabindex="-1" aria-labelledby="sendMessageModalLabel{{user.username}}" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal fade" id="sendMessageModal{{user.username}}" tabindex="-1"
+      aria-labelledby="sendMessageModalLabel{{user.username}}" aria-hidden="true">
+      <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header">
+          <div class="modal-header">
             <h5 class="modal-title" id="sendMessageModalLabel{{user.username}}">Send Message to {{user.username}}</h5>
-            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="POST" action="{{url_for('main.send_message', receiver=user.username, current_page='user_profile')}}">
-        <div class="modal-body">
-            {{form.hidden_tag()}}
-            <div data-mdb-input-init class="form-outline mb-4">
-              {{form.message(class='form-control')}}
-              {{form.message.label(class='form-label')}}
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+              aria-label="Close"></button>
           </div>
+          <form method="POST"
+            action="{{url_for('main.send_message', receiver=user.username, current_page='user_profile')}}">
+            <div class="modal-body">
+              {{form.hidden_tag()}}
+              <div data-mdb-input-init class="form-outline mb-4">
+                {{form.message(class='form-control')}}
+                {{form.message.label(class='form-label')}}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                data-mdb-dismiss="modal">Close</button>
+              {{form.submit(class='btn btn-primary')}}
+            </div>
+          </form>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Close</button>
-            {{form.submit(class='btn btn-primary')}}
-        </div>
-      </form> 
-        </div>
-    </div>
+      </div>
     </div>
   </div>
-  </div>
+</div>
 
 </section>
 {% endblock %}

@@ -55,7 +55,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     profile_pic = db.Column(db.String(64), nullable = False, default='default_prof_pic.png')
-
+    
     # relationships for follow table -exists only in model space
     followed = db.relationship(
         'User',  secondary = followers,

@@ -22,13 +22,13 @@
                   width="40" height="40" /></a>
                 <div data-mdb-input-init class="form-outline w-100">
                   {{form.post(class="form-control", cols='35', rows=4)}}
-
                   {{form.post.label(class="form-label")}}
                 </div>
                 {% for error in form.post.errors%}
                 <span style="color: red;">{{error}}</span>
                 {% endfor%}
               </div>
+              
               <!-- image upload section -->
               <div class="row justify-content-evenly" style="padding-top: 5px;">
                 <div class="col-sm-5">
@@ -52,7 +52,6 @@
       <!-- posts feed -->
       <div class="col-md-12 col-lg-10 col-xl-8">
         {% if title == 'Home' %}
-        
         <h4 class="mb-3">
           {% if posts %}
             Your Feed
@@ -60,8 +59,6 @@
             Follow users to see their posts here.
           {%endif%}
           </h4>
-        
-
         {% elif title == 'Explore' %}
         <h3 class="mb-3">Public Feed</h3>
         {%endif%}
