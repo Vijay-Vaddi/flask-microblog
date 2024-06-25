@@ -226,7 +226,8 @@ def edit_post(id):
 @bp.route('/delete-post/<id>', methods=['POST', 'GET'])
 @login_required
 def delete_post(id):
-    # 
+    
+    # check if item is post or message and del accordingly
     item = request.args.get('item')
     if item == 'post':
         del_item = Post.query.get(id) 
@@ -254,7 +255,10 @@ def send_message(receiver):
         db.session.add(msg)
         user.add_notification('unread_message_count', user.new_messages())
         db.session.commit()
+
         flash('Message sent successfully!')
+        
+        # check for request origin and redirect user back
         if request.args.get('current_page') == 'inbox':
             return redirect(url_for('main.messages'))
         elif request.args.get('current_page') == 'user_profile':
@@ -263,11 +267,11 @@ def send_message(receiver):
     return render_template('send_message.html', title='Send message',
                            form=form, receiver=receiver)
 
-
+# view messages
 @bp.route('/messages')
 @login_required
 def messages():
-    # to reply and message back
+    # send messagefrom obj to reply and message back
     form = MessageForm()
 
     sent = request.args.get('sent', False, type=bool)
@@ -277,15 +281,16 @@ def messages():
     db.session.commit()
     page = request.args.get('page', 1, type=int)
 
+    # check if request is for inbox items or sent items 
     if sent: 
         messages = current_user.messages_sent.order_by(
-            Message.timestamp.desc()).paginate(page=page, 
+                                        Message.timestamp.desc()).paginate(page=page, 
                                         per_page=current_app.config['POSTS_PER_PAGE'], 
                                         error_out=False)
         title = 'sent'
     else:
         messages = current_user.messages_received.order_by(
-            Message.timestamp.desc()).paginate(page=page, 
+                                        Message.timestamp.desc()).paginate(page=page, 
                                         per_page=current_app.config['POSTS_PER_PAGE'], 
                                         error_out=False)
         title = 'inbox'
@@ -303,6 +308,7 @@ def messages():
 #########    ADDITIONAL FEATURES SECTION    ###########
 #######################################################
 
+#full text search of posts 
 @bp.route('/search', methods=['GET'])
 @login_required
 def search():
@@ -311,6 +317,7 @@ def search():
         
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(g.search_form.query.data, page, current_app.config['POSTS_PER_PAGE'])
+    
     next_url = url_for('main.search', query=g.search_form.query.data, page=page+1)\
         if total > page*current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('main.search', query=g.search_form.query.data, page=page-1)\
@@ -321,9 +328,11 @@ def search():
                            next_url=next_url, prev_url=prev_url, total_pages=total_pages,
                            min=min, max=max, page=page)
 
+
 @bp.route('/notifications')
 @login_required
 def notifications():
+    # since : last notifications time
     since = request.args.get('since', 0.0, type=float)
     notifications = current_user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc()) 
@@ -407,7 +416,7 @@ def delete_comment(id):
         return jsonify({'message':'Comment Deleted',
                 'comment_id':id}), 200
     else:
-        return '', 404
+        return 'Comment does not exists', 404
 
 
 ######################################################
@@ -418,8 +427,11 @@ def delete_comment(id):
 @login_required
 def post_like(post_id):
     post = Post.query.get_or_404(post_id)
+    
+    # check if user liked a post
     post_like = PostLike.query.filter_by(user_id=current_user.id, post_id=post_id).first()
     
+    # if liked, unlike
     if post_like:
         db.session.delete(post_like)
         db.session.commit()
@@ -427,6 +439,7 @@ def post_like(post_id):
                         'post_id':post_id,
                         'user_id':current_user.id,
                         'like_count':post.likes.count()}), 200
+    # else like post
     else: 
         post_like = PostLike(user_id=current_user.id, post_id=post_id)
         db.session.add(post_like)
@@ -436,14 +449,16 @@ def post_like(post_id):
                         'user_id':current_user.id,
                         'like_count':post.likes.count()}), 200
     
-# 'like_count':comment.likes.count()
+
 @bp.route('/comment-like/<int:comment_id>', methods=['GET', 'POST'])
 @login_required
 def comment_like(comment_id):
 
     comment = Comment.query.get_or_404(comment_id)
+    # check if user liked a post
     comment_like = CommentLike.query.filter_by(user_id=current_user.id, comment_id=comment_id).first()
 
+    # if liked, unlike
     if comment_like:
         db.session.delete(comment_like)
         db.session.commit()
@@ -451,6 +466,7 @@ def comment_like(comment_id):
                         'comment_id':comment_id,
                         'user_id':current_user.id,
                         'like_count':comment.likes.count()}), 200
+    # else like comment
     else: 
         comment_like = CommentLike(user_id=current_user.id, comment_id=comment_id)
         db.session.add(comment_like)
