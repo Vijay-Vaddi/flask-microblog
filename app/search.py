@@ -1,6 +1,8 @@
 from flask import current_app
 
+# when searchable item is added to db
 def add_to_index(index, model):
+    # if elasticsearch not configured
     if not current_app.elasticsearch:
         return
     payload = {}
@@ -9,13 +11,13 @@ def add_to_index(index, model):
         payload[field] = getattr(model, field)
     current_app.elasticsearch.index(index=index, id=model.id, document=payload)
 
-
+# when searchable item is deleted
 def remove_from_index(index, model):
     if not current_app.elasticsearch:
         return
     current_app.elasticsearch.delete(index=index, id=model.id)
 
-
+# search for item
 def query_index(index, query, page, per_page):
     if not current_app.elasticsearch:
         return
