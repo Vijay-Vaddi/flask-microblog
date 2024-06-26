@@ -12,6 +12,9 @@
             {% endfor %}
         </p>
         <p>
+            <img src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}">
+        </p>
+        <p>
             {{ form.profile_pic.label }}<br>
             {{ form.profile_pic(size=32) }}<br>
             {% for error in form.profile_pic.errors %}

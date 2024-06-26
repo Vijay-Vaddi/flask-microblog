@@ -10,7 +10,7 @@
         <div class="row d-flex justify-content-center">
 
           <!-- profile pic -->
-          <div class="col">
+          <div class="col ">
             <div class="d-inline-flex flex-column">
               <img alt="profile pic" src="{%if user.profile_pic =='default_prof_pic.png'%}
             https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
@@ -20,18 +20,20 @@
                 style="width: 150px; z-index: 1; height: 150px;">
             </div>
           </div>
+        
 
           <!-- greetings and email -->
-          <div class="col-auto align-self-end">
-            <div class="d-inline-flex flex-column">
+          <div class="col align-self-end">
+            <div class="d-inline-flex flex-column ">
               {% if user == current_user %}
               <h5 class="d-flex">Hello {{user.username}}</h5>
               <p>Email {{user.email}}</p>
               {% else %}
-              <h5>{{user.username}}</h5>
+              <h5 class="">{{user.username}}'s page</h5>
               {%endif%}
             </div>
           </div>
+        
         </div>
 
         <!-- last seen edit prof and export posts -->
