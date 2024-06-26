@@ -46,21 +46,22 @@
                 <!-- likes 1-->
                 {% if title != 'inbox' and  title != 'sent' %}
                 <div class="d-inline-flex">
-                    <div class="col ">
+                    <div class="col d-inline-flex">
                         <a href="#" 
                             id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
                             data-mdb-ripple-init
                             class="d-flex align-items-center me-3">
-                            <i class="fas fa-heart me-2"></i>
+                            <i class="fas fa-heart me-0"></i></a>
                             {%set like_count = post.likes.count() %}
                     
-                            <span id="post_like_count-{{post.id}}" style="visibility: {% if like_count %}visible
+                            <a href="#" data-mdb-ripple-init data-mdb-modal-init
+                            data-mdb-target="#user_list_modal{{post.id}}">
+                            <span class="d-flex align-items-center me-3" id="post_like_count-{{post.id}}" style="visibility: {% if like_count %}visible
                             {%else%}hidden {%endif%};" class="">
                             {% if like_count %}
                             {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
                             {%endif%}
-                            <!-- <p class="mb-0">Likes</p> -->
-                        </a>
+                        </a>    
                     </div>
                 </div>
                 {%endif%}
@@ -233,3 +234,34 @@
     </div>
 </div>
 {%endif%}
+
+<!-- likes display modal -->
+<div class="modal fade" id="user_list_modal{{post.id}}" tabindex="-1" aria-labelledby="user_list_modalLabel{{post.id}}"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="user_list_modalLabel{{post.id}}">Liked Users</h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% for like in post.likes%}   
+            <a href="{{url_for('main.user_profile', username=like.author.username)}}">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{%if like.author.profile_pic =='default_prof_pic.png'%}
+                    https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
+                    {%else%}
+                    {{url_for('static', filename='profile_pictures/'+like.author.profile_pic)}} {%endif%}" alt="avatar" width="25"
+                height="25" />
+            {{like.author.username}}<br>
+            </a>
+            {%endfor%}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                data-mdb-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>

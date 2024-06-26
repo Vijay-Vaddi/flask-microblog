@@ -1,0 +1,20 @@
+<div class="modal fade" id="user_list_modal{{post.id}}" tabindex="-1" aria-labelledby="user_list_modalLabel{{post.id}}"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="user_list_modalLabel{{post.id}}">Delete Post!!</h5>
+                <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">Are you sure?!!!</div>
+            <div class="modal-footer">
+                Footer
+                <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                    data-mdb-dismiss="modal">Close</button>
+                <a href="{{url_for('main.delete_post', id=post.id, next=request.url, item=item)}}"
+                    class="btn btn-primary" data-mdb-ripple-init>Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
