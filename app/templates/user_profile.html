@@ -62,12 +62,18 @@
                 <p class="small text-muted mb-0">Posts</p>
               </div>
               <div class="px-3">
+                <a href="#" data-mdb-ripple-init data-mdb-modal-init
+                data-mdb-target="#followers_list_modal{{user.id}}">
                 <p class="mb-1 h5">{{user.followers.count()}}</p>
                 <p class="small text-muted mb-0">Followers</p>
+              </a>
               </div>
               <div>
+                <a href="#" data-mdb-ripple-init data-mdb-modal-init
+                data-mdb-target="#followed_user_list_modal{{user.id}}">
                 <p class="mb-1 h5">{{user.followed.count()}}</p>
                 <p class="small text-muted mb-0">Following</p>
+                </a>
               </div>
             </div>
           </div>
@@ -153,6 +159,69 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- followers/followed display modal -->
+<div class="modal fade" id="followed_user_list_modal{{user.id}}" tabindex="-1" aria-labelledby="followed_user_list_modalLabel{{user.id}}"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="followed_user_list_modalLabel{{user.id}}">Followed Users</h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% for usr in user.followed %}   
+            <a href="{{url_for('main.user_profile', username=usr.username)}}">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{%if usr.profile_pic =='default_prof_pic.png'%}
+                    https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
+                    {%else%}
+                    {{url_for('static', filename='profile_pictures/'+usr.profile_pic)}} {%endif%}" alt="avatar" width="25"
+                height="25" />
+            {{usr.username}}<br>
+            </a>
+            {%endfor%}
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                data-mdb-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="followers_list_modal{{user.id}}" tabindex="-1" aria-labelledby="followers_list_modalLabel{{user.id}}"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="followers_list_modalLabel{{user.id}}">Followers</h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% for usr in user.followers %}   
+            <a href="{{url_for('main.user_profile', username=usr.username)}}">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{%if usr.profile_pic =='default_prof_pic.png'%}
+                    https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
+                    {%else%}
+                    {{url_for('static', filename='profile_pictures/'+usr.profile_pic)}} {%endif%}" alt="avatar" width="25"
+                height="25" />
+            {{usr.username}}<br>
+            </a>
+            {%endfor%}
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                data-mdb-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
 </div>
 
 </section>
