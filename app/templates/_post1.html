@@ -1,40 +1,45 @@
 <div class="card">
     <div class="card-body">
         <!-- pic, name and time -->
-        <div class="d-flex flex-start align-items-center">
+        <div class="d-flex flex-start ">
+            <!-- prof pic -->
             <a href="{{ url_for('main.user_profile', username=post.author.username) }}">
-                <img class="rounded-circle shadow-1-strong me-3"
-                    src="{%if post.author.profile_pic =='default_prof_pic.png'%}
+                <img class="rounded-circle shadow-1-strong me-3" src="{%if post.author.profile_pic =='default_prof_pic.png'%}
                     https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
                     {%else%}
                     {{url_for('static', filename='profile_pictures/'+post.author.profile_pic)}} {%endif%}" alt="avatar"
-                    width="60" height="60" /></a>
-                    <!-- name and time -->
-            <div class="d-flex align-items-center">
-                {% set user_link %}
-                <a class="user_popup" href="{{ url_for('main.user_profile', username=post.author.username) }}">
-                    <h6 class="fw-bold text-primary mb-1">{{ post.author.username }}</h6>
-                </a>
-                {% endset %}
-                <!-- set time -->
-                <p class="text-muted small mb-0">
-                    {%if title == 'inbox'%}
-                    {{user_link}} <span class="ms-1"> sent {{ moment(post.timestamp).fromNow().format('LLL') }}</span>
+                    width="60" height="60" />
+            </a>
+            <!-- name and time -->
+            <div>
+                <div class="d-flex">
+                    {% set user_link %}
+                    <a class="user_popup " href="{{ url_for('main.user_profile', username=post.author.username) }}">
+                        <h5 class="fw-bold text-primary mb-1">{{ post.author.username }}</h5>
+                    </a>
+                    {% endset %}
+                    <!-- set time -->
+                    <p class="text-muted small mb-0">
+                        {%if title == 'inbox'%}
+                        {{user_link}} <span class="ms-1"> sent {{ moment(post.timestamp).fromNow().format('LLL')
+                            }}</span>
 
-                    {% else %}
-                    {{user_link}} <span class="ms-1">said {{ moment(post.timestamp).fromNow().format('LLL') }}</span>
-                    {% endif %}
-                </p>
-            </div>   
-
+                        {% else %}
+                        {{user_link}} <span class="ms-1"> {{ moment(post.timestamp).fromNow().format('LLL') }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div>
+                    <!-- post text body -->
+                    <p class="d-flex mt-3 mb-4 pb-2">
+                        <span id="post{{post.id}}">{{ post.body }}
+                        </span>
+                        <span style="display: block;" id="translation{{post.id}}"></span>
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <!-- post text body -->
-        <p class="mt-3 mb-4 pb-2">
-            <span id="post{{post.id}}">{{ post.body }}
-            </span>
-            <span style="display: block;" id="translation{{post.id}}"></span>
-        </p>
         {% if post.post_image %}
         <img src="{{url_for('static', filename='posts_images/'+post.author.username+'/'+post.post_image)}}"
             class="card-img-top mb-3" alt="Fissure in Sandstone" />
@@ -44,24 +49,22 @@
         <div class="row">
             <div class="d-inline-flex align-items-center">
                 <!-- likes 1-->
-                {% if title != 'inbox' and  title != 'sent' %}
+                {% if title != 'inbox' and title != 'sent' %}
                 <div class="d-inline-flex">
                     <div class="col d-inline-flex">
-                        <a href="#" 
-                            id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
-                            data-mdb-ripple-init
-                            class="d-flex align-items-center me-3">
+                        <a href="#" id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
+                            data-mdb-ripple-init class="d-flex align-items-center me-3">
                             <i class="fas fa-heart me-0"></i></a>
-                            {%set like_count = post.likes.count() %}
-                    
-                            <a href="#" data-mdb-ripple-init data-mdb-modal-init
+                        {%set like_count = post.likes.count() %}
+
+                        <a href="#" data-mdb-ripple-init data-mdb-modal-init
                             data-mdb-target="#user_list_modal{{post.id}}">
                             <span class="d-flex align-items-center me-3" id="post_like_count-{{post.id}}" style="visibility: {% if like_count %}visible
                             {%else%}hidden {%endif%};" class="">
-                            {% if like_count %}
-                            {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
+                                {% if like_count %}
+                                {{like_count}} like{{ like_count != 1 and 's' or '' }}</span>
                             {%endif%}
-                        </a>    
+                        </a>
                     </div>
                 </div>
                 {%endif%}
@@ -79,10 +82,10 @@
                     </div>
                 </div>
                 {%endif%}
-                
+
                 <!-- edit and delete -->
                 {% if post.author == current_user %}
-                {% if title != 'inbox' and  title != 'sent' %}
+                {% if title != 'inbox' and title != 'sent' %}
                 <div class="d-inline-flex">
                     <div class="col">
                         <a href="{{url_for('main.edit_post', id=post.id)}}" data-mdb-ripple-init
@@ -141,33 +144,34 @@
                     <!-- {{comment_form.body.label(class='form-label')}} -->
                     {{comment_form.body(class='form-control', placeholder='Add comment')}}
                     <div class="d-flex justify-content-end">
-                    {{comment_form.submit(class='btn btn-sm btn-primary mt-2 justify-content-end')}}
-                </div>
+                        {{comment_form.submit(class='btn btn-sm btn-primary mt-2 justify-content-end')}}
+                    </div>
                 </form>
             </div>
         </div>
         {%endif%}
-        {% if title != 'inbox' and  title != 'sent' %}
+        {% if title != 'inbox' and title != 'sent' %}
         <!-- for comment in post.comment print comment-->
-        <div class="row d-flex justify-content-center">             
-            <div class="col"> 
-            <div class="mt-3 text-body" id = "{{post.id}}-comments">
-                <!-- add new comments here -->
-            {% set comment_count = post.comment.count() %}
-            {%if comment_count %}
-                            
-            <a href="#" id="toggle-{{post.id}}-comments-btn"
-            onclick="toggleCommentsDisplay(event, {{post.id}}, {{comment_count}} )" >Show {{comment_count}} comment{{ comment_count != 1 and 's' or '' }}</a>
-            <div id="toggle-{{post.id}}-comments" class="d-none">
-            {% for comment in post.comment %}
-            {% include 'comment.html'%}
-            {%endfor%}
-            </div>
-            {%endif%}
+        <div class="row d-flex justify-content-center">
+            <div class="col">
+                <div class="mt-3 text-body" id="{{post.id}}-comments">
+                    <!-- add new comments here -->
+                    {% set comment_count = post.comment.count() %}
+                    {%if comment_count %}
+
+                    <a href="#" id="toggle-{{post.id}}-comments-btn"
+                        onclick="toggleCommentsDisplay(event, {{post.id}}, {{comment_count}} )">Show {{comment_count}}
+                        comment{{ comment_count != 1 and 's' or '' }}</a>
+                    <div id="toggle-{{post.id}}-comments" class="d-none">
+                        {% for comment in post.comment %}
+                        {% include 'comment.html'%}
+                        {%endfor%}
+                    </div>
+                    {%endif%}
+                </div>
             </div>
         </div>
-        </div>
-        
+
 
         <div id="newComment">
         </div>
@@ -237,31 +241,30 @@
 
 <!-- likes display modal -->
 <div class="modal fade" id="user_list_modal{{post.id}}" tabindex="-1" aria-labelledby="user_list_modalLabel{{post.id}}"
-aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="user_list_modalLabel{{post.id}}">Liked Users</h5>
-            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
-                aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            {% for like in post.likes%}   
-            <a href="{{url_for('main.user_profile', username=like.author.username)}}">
-                <img class="rounded-circle shadow-1-strong me-3"
-                    src="{%if like.author.profile_pic =='default_prof_pic.png'%}
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="user_list_modalLabel{{post.id}}">Liked Users</h5>
+                <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% for like in post.likes%}
+                <a href="{{url_for('main.user_profile', username=like.author.username)}}">
+                    <img class="rounded-circle shadow-1-strong me-3" src="{%if like.author.profile_pic =='default_prof_pic.png'%}
                     https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg
                     {%else%}
-                    {{url_for('static', filename='profile_pictures/'+like.author.profile_pic)}} {%endif%}" alt="avatar" width="25"
-                height="25" />
-            {{like.author.username}}<br>
-            </a>
-            {%endfor%}
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-mdb-ripple-init
-                data-mdb-dismiss="modal">Close</button>
+                    {{url_for('static', filename='profile_pictures/'+like.author.profile_pic)}} {%endif%}" alt="avatar"
+                        width="25" height="25" />
+                    {{like.author.username}}<br>
+                </a>
+                {%endfor%}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-ripple-init
+                    data-mdb-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
-</div>
 </div>
