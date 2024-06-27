@@ -2,7 +2,6 @@
 
 {% block content %}
 
-<h1>Hello there {{ current_user.username}}</h1>
 {% if form %}
 <div class="container my-5 py-2">
     <div class="row d-flex justify-content-center">
@@ -16,13 +15,20 @@
                                 src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}"
                                 alt="avatar" width="40" height="40" />
                             <div data-mdb-input-init class="form-outline w-100">
-                                {{form.post(class="form-control", cols='35', rows=4)}}
+                                {{form.post(class="form-control", cols='35', rows=2)}}
                                 {{form.post.label(class="form-label")}}
                             </div>
                         </div>
                         {% for error in form.post.errors%}
                         <span style="color: red;">{{error}}</span>
                         {% endfor%}
+                        <!-- display if post has image -->
+                        <br>
+                        {% if form.post_image %}
+                        <img src="{{url_for('static', filename='posts_images/'+current_user.username+'/'+form.post_image.data) }}"
+                            class="card-img-top mb-3 rounded-sm" alt="post img" />
+                        {%endif%}
+                
                         <!-- upload image section -->
                         <div class="row justify-content-evenly" style="padding-top: 5px;">
                             <div class="col-sm-5">
