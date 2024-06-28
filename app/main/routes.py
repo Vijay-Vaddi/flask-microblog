@@ -218,7 +218,8 @@ def edit_post(id):
     # populate post with existing values
     form.post.data = post
     form.post.label.text= 'Edit your post'
-    form.post_image.data=post.post_image
+    if post.post_image:
+        form.post_image.data=post.post_image
     return render_template('edit_post.html', form=form, title='Edit post')
 
 

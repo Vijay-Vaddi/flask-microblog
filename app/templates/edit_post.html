@@ -24,7 +24,7 @@
                         {% endfor%}
                         <!-- display if post has image -->
                         <br>
-                        {% if form.post_image %}
+                        {% if form.post_image.data %}
                         <img src="{{url_for('static', filename='posts_images/'+current_user.username+'/'+form.post_image.data) }}"
                             class="card-img-top mb-3 rounded-sm" alt="post img" />
                         {%endif%}

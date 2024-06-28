@@ -11,14 +11,14 @@
     background-size: auto 100%;
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 300px) {
 .h-custom-2 {
     height: 100%;
     }
 }
 
 </style>
-<hr class="hr hr-blurry" />
+<!-- <hr class="hr hr-blurry" /> -->
 <section class="vh-100" style="padding-top: 2%;">
     <div class="container-fluid">
       <div class="row">
@@ -28,7 +28,7 @@
             <form method="POST" style="width: 23rem;">
                 {{ form.csrf_token }}
                 {{form.hidden_tag()}}
-            
+              <div style="height: 250px;"></div>
               <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Your credentials</h3>
                 
               <div class="form-outline mb-4" data-mdb-input-init>
@@ -55,8 +55,8 @@
           </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
-            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+          <img src="{{url_for('static', filename='default_images/login_page.jpg')}}"
+            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left; height: 80;">
         </div>
       </div>
     </div>

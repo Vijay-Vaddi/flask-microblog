@@ -18,12 +18,22 @@
                         <h5 class="fw-bold text-primary mb-1">{{ post.author.username }}</h5>
                     </a>
                     {% endset %}
+                    {%if title == 'sent'%}
+                    {% set receiver_link %}
+                            <a class="user_popup"  href="{{ url_for('main.user_profile', username=post.receiver.username) }}">
+                                <h5 class="fw-bold text-primary" style="margin-left: 5px;">{{ post.receiver.username }}</h5>
+                            </a>
+                    {% endset %}
+                    {%endif%}
+                       
                     <!-- set time -->
                     <p class="text-muted small mb-0">
                         {%if title == 'inbox'%}
                         {{user_link}} <span class="ms-1"> sent {{ moment(post.timestamp).fromNow().format('LLL')
                             }}</span>
-
+                        {%elif title =='sent'%}                         
+                        {{user_link}} <span class="ms-1 ml-2 pl-2"> sent to  {{ moment(post.timestamp).fromNow().format('LLL')
+                        }} to    </span>  {{receiver_link}}
                         {% else %}
                         {{user_link}} <span class="ms-1"> {{ moment(post.timestamp).fromNow().format('LLL') }}</span>
                         {% endif %}
@@ -34,7 +44,9 @@
                     <p class="d-flex mt-3 mb-4 pb-2">
                         <span id="post{{post.id}}">{{ post.body }}
                         </span>
+                    <div>
                         <span style="display: block;" id="translation{{post.id}}"></span>
+                    </div>
                     </p>
                 </div>
             </div>
@@ -68,7 +80,6 @@
                     </div>
                 </div>
                 {%endif%}
-
 
                 {% if title == 'inbox' %}
                 <!-- reply for inbox -->
