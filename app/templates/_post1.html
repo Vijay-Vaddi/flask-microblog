@@ -20,20 +20,21 @@
                     {% endset %}
                     {%if title == 'sent'%}
                     {% set receiver_link %}
-                            <a class="user_popup"  href="{{ url_for('main.user_profile', username=post.receiver.username) }}">
-                                <h5 class="fw-bold text-primary" style="margin-left: 5px;">{{ post.receiver.username }}</h5>
-                            </a>
+                    <a class="user_popup" href="{{ url_for('main.user_profile', username=post.receiver.username) }}">
+                        <h5 class="fw-bold text-primary" style="margin-left: 5px;">{{ post.receiver.username }}</h5>
+                    </a>
                     {% endset %}
                     {%endif%}
-                       
+
                     <!-- set time -->
                     <p class="text-muted small mb-0">
                         {%if title == 'inbox'%}
                         {{user_link}} <span class="ms-1"> sent {{ moment(post.timestamp).fromNow().format('LLL')
                             }}</span>
-                        {%elif title =='sent'%}                         
-                        {{user_link}} <span class="ms-1 ml-2 pl-2"> sent to  {{ moment(post.timestamp).fromNow().format('LLL')
-                        }} to    </span>  {{receiver_link}}
+                        {%elif title =='sent'%}
+                        {{user_link}} <span class="ms-1 ml-2 pl-2"> sent to {{
+                            moment(post.timestamp).fromNow().format('LLL')
+                            }} to </span> {{receiver_link}}
                         {% else %}
                         {{user_link}} <span class="ms-1"> {{ moment(post.timestamp).fromNow().format('LLL') }}</span>
                         {% endif %}
@@ -66,9 +67,14 @@
                     <div class="col d-inline-flex">
                         <a href="#" id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
                             data-mdb-ripple-init class="d-flex align-items-center me-3">
-                            <i class="fas fa-heart me-0"></i></a>
-                        {%set like_count = post.likes.count() %}
+                            {% set liked_user_ids = post.likes | map(attribute='user_id') | list %}
+                            {% if current_user.id in liked_user_ids %}
+                            <i class="fa-solid fa-heart"></i>
+                            {%else%}
+                            <i class="fa-regular fa-heart"></i>
+                            {%endif%}</a>
 
+                        {%set like_count = post.likes.count() %}
                         <a href="#" data-mdb-ripple-init data-mdb-modal-init
                             data-mdb-target="#user_list_modal{{post.id}}">
                             <span class="d-flex align-items-center me-3" id="post_like_count-{{post.id}}" style="visibility: {% if like_count %}visible

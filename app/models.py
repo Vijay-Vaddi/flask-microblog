@@ -286,6 +286,11 @@ class Post(SearchableMixin, db.Model):
     def __repr__(self) -> str:
         return f"{self.body}"
 
+# composite keys used for single like per user
+class PostLike(db.Model):
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -300,11 +305,6 @@ class Comment(db.Model):
 
 
 # composite keys used for single like per user
-class PostLike(db.Model):
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-
-
 class CommentLike(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
