@@ -90,17 +90,16 @@
       updateLikeCount(id, likeCount, spanIdName);
 
       // toggle like fa button
-      // like_info = result.Message;
-      // const likeIcon = document.getElementById(likeIconId);
-      // console.log('sdssdsd',likeIcon);
-      // if (like_info==='liked'){
-      //   likeIcon.classList.remove('fa-regular');
-      //   likeIcon.classList.add('fa-solid');
-      // }else if (like_info==='unlike'){
-      //   likeIcon.classList.remove('fa-solid');
-      //   likeIcon.classList.add('fa-regular');
-      // }
-
+      like_info = result.Message;
+      const likeIcon = document.getElementById(likeIconId);
+      console.log('sdssdsd',likeIcon);
+      if (like_info==='liked'){
+        likeIcon.classList.remove('fa-regular');
+        likeIcon.classList.add('fa-solid');
+      } else if(like_info==='unliked'){
+        likeIcon.classList.remove('fa-solid');
+        likeIcon.classList.add('fa-regular');
+      }
     }
 
     catch (error) {

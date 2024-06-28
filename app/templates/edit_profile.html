@@ -12,7 +12,7 @@
             {% endfor %}
         </p>
         <p>
-            <img src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}">
+            <img height="35px" src="{{url_for('static', filename='profile_pictures/'+current_user.profile_pic)}}">
         </p>
         <p>
             {{ form.profile_pic.label }}<br>
