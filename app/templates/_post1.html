@@ -68,11 +68,9 @@
                         <a href="#" id="togglePostLike-{{post.id}}" onclick="toggleLike(event, {{post.id}}, 'post')"
                             data-mdb-ripple-init class="d-flex align-items-center me-3">
                             {% set liked_user_ids = post.likes | map(attribute='user_id') | list %}
-                            {% if current_user.id in liked_user_ids %}
-                            <i class="fa-solid fa-heart"></i>
-                            {%else%}
-                            <i class="fa-regular fa-heart"></i>
-                            {%endif%}</a>
+                            <i class="{% if current_user.id in liked_user_ids %} fa-solid 
+                            {%else%} fa-regular {%endif%} fa-heart" id="post-like-icon-{{post.id}}"></i>
+                            </a>
 
                         {%set like_count = post.likes.count() %}
                         <a href="#" data-mdb-ripple-init data-mdb-modal-init

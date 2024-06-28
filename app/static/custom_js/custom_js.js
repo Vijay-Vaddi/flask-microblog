@@ -70,9 +70,11 @@
     if (item == 'comment') {
       likeUrl = '/comment-like/';
       spanIdName = 'comment_like_count';
+      likeIconId = `comment-like-icon-${id}`
     } else if (item == 'post') {
       likeUrl = '/post-like/';
       spanIdName = 'post_like_count';
+      likeIconId = `post-like-icon-${id}`
     }
 
     try {
@@ -85,8 +87,20 @@
       const result = await response.json();
       const likeCount = result.like_count;
       // use the values to update and display count 
-
       updateLikeCount(id, likeCount, spanIdName);
+
+      // toggle like fa button
+      // like_info = result.Message;
+      // const likeIcon = document.getElementById(likeIconId);
+      // console.log('sdssdsd',likeIcon);
+      // if (like_info==='liked'){
+      //   likeIcon.classList.remove('fa-regular');
+      //   likeIcon.classList.add('fa-solid');
+      // }else if (like_info==='unlike'){
+      //   likeIcon.classList.remove('fa-solid');
+      //   likeIcon.classList.add('fa-regular');
+      // }
+
     }
 
     catch (error) {
@@ -241,7 +255,6 @@
     message_count.innerText = n;
     message_count.style.visibility = n ? 'visible' : 'hidden';
   }
-
 
 
   function set_task_progress(task_id, progress) {

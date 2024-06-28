@@ -34,14 +34,9 @@
             <a href="#" id="toggleCommentLike-{{comment.id}}" onclick="toggleLike(event, {{comment.id}}, 'comment')"
                 class="link-muted me-2">
                 {% set liked_user_ids = comment.likes | map(attribute='user_id') | list %}
-                            {% if current_user.id in liked_user_ids %}
-                            <i class="fa-solid fa-heart"></i>
-                            {%else%}
-                            <i class="fa-regular fa-heart"></i>
-                            {%endif%}</a>
-                
-                <!-- <i class="fas fa-heart me-0"></i></a> -->
-                
+                            <i class="{% if current_user.id in liked_user_ids %} fa-solid 
+                            {%else%} fa-regular {%endif%} fa-heart" id="comment-like-icon-{{comment.id}}"></i>
+                            </a>                
                 {%set like_count = comment.likes.count() %}
                 <a href="#" data-mdb-ripple-init data-mdb-modal-init
                             data-mdb-target="#user_list_modal{{comment.id}}">
