@@ -60,13 +60,17 @@ def create_app(config_class=Config):
     app.register_blueprint(api_bp, url_prefix='/api')
 
     if not app.debug and not app.testing:
+        # check if mailing is configured else skip it.
         if app.config['MAIL_SERVER']:
+            # set email auth tuple
             auth = None
             if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
                 auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+            # set secure connection
             secure = None
             if app.config['MAIL_USE_TLS']:
                 secure = ()
+                
             mail_handler = SMTPHandler(
                 mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
                 fromaddr='no-reply@' + app.config['MAIL_SERVER'],
