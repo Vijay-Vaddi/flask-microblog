@@ -70,7 +70,7 @@ def create_app(config_class=Config):
             secure = None
             if app.config['MAIL_USE_TLS']:
                 secure = ()
-                
+
             mail_handler = SMTPHandler(
                 mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
                 fromaddr='no-reply@' + app.config['MAIL_SERVER'],
@@ -97,7 +97,7 @@ def create_app(config_class=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info('Microblog startup')
     
-    
+
     return app
 
 
