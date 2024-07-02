@@ -14,4 +14,3 @@ ENV FLASK_APP microblog.py
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
-
